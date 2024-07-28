@@ -1,0 +1,71 @@
+@charset "utf-8";
+
+footer {
+  height: 128px;
+  padding-top: 40px;
+  background-color: #f6f6f6;
+  text-align: center;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.item {
+  position: relative;
+  margin-left: 12px;
+  padding-left: 13px;
+  font-size: 13px;
+  letter-spacing: -0.1px;
+  color: #000;
+
+  &:first-child {
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  &::before {
+    position: absolute;
+    top: 50%;
+    height: 12px;
+    left: 0;
+    width: 1px;
+    margin-top: -6px;
+    background-color: #d7d7d7;
+    content: "";
+  }
+}
+
+.address {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.logo {
+  color: #444;
+  font-size: 12px;
+  margin-right: 4px;
+}
+
+.member {
+  margin-left: 4px;
+  font-family: "Verdana Regular", "Malgun Gothic", "맑은 고딕", "Dotum", "돋움",
+    "Helvetica", "Apple SD Gothic Neo", "sans-serif";
+  font-size: 10px;
+  color: #444;
+  font-weight: 800;
+}
+
+.address_text {
+  font-family: "Verdana Regular", "Malgun Gothic", "맑은 고딕", "Dotum", "돋움",
+    "Helvetica", "Apple SD Gothic Neo", "sans-serif";
+  font-size: 10px;
+  color: #444;
+
+  &:last-child {
+    margin-left: 4px;
+  }
+}
