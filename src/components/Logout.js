@@ -3,14 +3,21 @@ import useAuthStore from '../stores/useAuthStore';
 import { baseUrl } from '../App';
 
 const Logout = () => {
-    const { isLoggedIn, setIsLoggedIn } = useAuthStore((state) => state);
+    const { setIsLoggedIn } = useAuthStore((state) => state);
+    const { setUsername } = useAuthStore((store) => store);
 
-    const accessToken = localStorage.getItem('accessToken');
+    const token = localStorage.getItem('accessToken');
+    console.log(token);
 
     const logout = async () => {
         try {
-            const response = await axios.post(`${baseUrl}/api/users/logout`, {}, { headers: `Bearer ${accessToken}` });
+            const response = await axios.post(
+                `${baseUrl}/api/users/logout`,
+                {},
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
             localStorage.clear();
+            setUsername('');
             setIsLoggedIn(false);
         } catch (err) {
             console.error(err);

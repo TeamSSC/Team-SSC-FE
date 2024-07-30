@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 
 const NavBar = () => {
     const authData = useAuthStore();
-    console.log(authData.username);
 
     const navigate = useNavigate();
     return (
