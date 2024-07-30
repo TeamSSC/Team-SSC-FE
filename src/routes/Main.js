@@ -1,9 +1,12 @@
 import styles from './Main.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { baseUrl } from '../App';
+import useAuthStore from '../stores/useAuthStore';
 
 const Main = () => {
-    const { isLoggedIn, username, setIsLoggedIn, setUsernmae } = useAuthStore((state) => state);
+    const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
+    const setUsername = useAuthStore((state) => state.setUsername);
 
     const [loginId, setLoginId] = useState('');
     const [password, setPassword] = useState('');
@@ -14,11 +17,10 @@ const Main = () => {
                 email: loginId,
                 password: password,
             });
-            console.log(response.data.data);
             localStorage.setItem('accessToken', response.data.data.accessToken);
             localStorage.setItem('refreshToken', response.data.data.refreshToken);
+            setUsername(response.data.data.username);
             setIsLoggedIn(true);
-            setUsernmae(response.data.data.username);
         } catch (err) {
             console.error(err);
         }
