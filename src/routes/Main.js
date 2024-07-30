@@ -1,5 +1,6 @@
 import styles from './Main.module.scss';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 const Main = () => {
     const [loginId, setLoginId] = useState('');
