@@ -3,6 +3,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './components/layout/Layout.js';
 import Main from './routes/Main';
 import Signup from './routes/Signup.js';
+import Board from "./routes/Board";
+import CreateBoard from "./routes/CreateBoard";
 
 export const baseUrl = 'http://localhost:8080';
 
@@ -18,6 +20,14 @@ const router = createBrowserRouter([
             {
                 path: '/signup',
                 element: <Signup />,
+            },
+            {
+                path: '/boards',
+                element: <Board />,
+            },
+            {
+                path: '/boards/create',
+                element: <CreateBoard />,
             },
         ],
     },
