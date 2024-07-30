@@ -2,6 +2,7 @@ import styles from './Main.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { baseUrl } from '../App';
+import axios from 'axios';
 import useAuthStore from '../stores/useAuthStore';
 
 const Main = () => {
