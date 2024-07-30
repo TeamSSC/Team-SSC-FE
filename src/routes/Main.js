@@ -1,12 +1,21 @@
-import styles from "./Main.module.scss";
-import { useNavigate } from "react-router-dom";
+import styles from './Main.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 const Main = () => {
-  const navigate = useNavigate();
+    const [loginId, setLoginId] = useState('');
+    const [password, setPassword] = useState('');
 
-  return (
-    <div className={styles.mainPage_wrapper}>트랙 기수 보여주는 페이지</div>
-  );
+    const navigate = useNavigate();
+
+    return (
+        <div className={styles.loginForm_wrapper}>
+            <h1>로그인 하기</h1>
+            <input placeholder="아이디를 입력하세요..." onChange={(e) => setLoginId(e.target.value)}></input>
+            <input placeholder="비밀번호를 입력하세요..." onChange={(e) => setPassword(e.target.value)}></input>
+            <button>로그인 하기</button>
+            <button onClick={() => navigate('/signup')}>회원가입 하기</button>
+        </div>
+    );
 };
 
 export default Main;
