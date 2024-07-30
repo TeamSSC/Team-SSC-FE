@@ -5,6 +5,7 @@ import Main from './routes/Main';
 import Signup from './routes/Signup.js';
 import Board from "./routes/Board";
 import CreateBoard from "./routes/CreateBoard";
+import BoardDetail from "./routes/BoardDetail";
 
 export const baseUrl = 'http://localhost:8080';
 
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
             {
                 path: '/boards/create',
                 element: <CreateBoard />,
+            },
+            {
+                path: '/boards/:id', // BoardDetail로 라우팅 추가
+                element: <BoardDetail />,
             },
         ],
     },

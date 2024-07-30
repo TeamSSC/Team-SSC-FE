@@ -16,7 +16,6 @@ const PostItem = ({ post }) => {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
                     }
                 });
-                console.log(response.data);
                 setLikeCount(response.data.data.likeCount);
             } catch (err) {
                 console.error(err);
