@@ -1,9 +1,6 @@
 import styles from './Main.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import useAuthStore from '../stores/useAuthStore';
-import axios from 'axios';
-import { baseUrl } from '../App';
 
 const Main = () => {
     const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
