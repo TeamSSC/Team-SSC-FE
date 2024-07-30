@@ -6,7 +6,8 @@ import axios from 'axios';
 import { baseUrl } from '../App';
 
 const Main = () => {
-    const { isLoggedIn, username, setIsLoggedIn, setUsernmae } = useAuthStore((state) => state);
+    const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
+    const setUsername = useAuthStore((state) => state.setUsername);
 
     const [loginId, setLoginId] = useState('');
     const [password, setPassword] = useState('');
@@ -17,11 +18,10 @@ const Main = () => {
                 email: loginId,
                 password: password,
             });
-            console.log(response.data.data);
             localStorage.setItem('accessToken', response.data.data.accessToken);
             localStorage.setItem('refreshToken', response.data.data.refreshToken);
+            setUsername(response.data.data.username);
             setIsLoggedIn(true);
-            setUsernmae(response.data.data.username);
         } catch (err) {
             console.error(err);
         }
