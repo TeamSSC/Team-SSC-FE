@@ -1,5 +1,7 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './PeriodHeader.module.scss';
+
 const PeriodHeader = () => {
     const navigate = useNavigate();
 
@@ -21,8 +23,14 @@ const PeriodHeader = () => {
                     시간표
                 </a>
             </button>
-            <button>커뮤니티</button>
-            <button>공지사항</button>
+            <button
+                onClick={() => navigate('/boards')}
+            >
+                커뮤니티
+            </button>
+            <button
+                onClick={() => navigate('/notice')}
+            >공지사항</button>
         </div>
     );
 };

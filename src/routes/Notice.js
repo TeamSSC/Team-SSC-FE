@@ -3,9 +3,10 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import PostItem from '../components/board/PostItem';
 import Pagination from '../components/pagination/Pagination';
-import styles from './Notice.module.scss'; // 스타일을 Notice.module.scss로 변경
+import styles from './Notice.module.scss';
+import useAuthStore from "../stores/useAuthStore";
 
-const API_URL = 'http://localhost:8080/api/notices'; // API URL을 notices로 변경
+const API_URL = 'http://localhost:8080/api/notices';
 
 const Notice = () => {
     const [notices, setNotices] = useState([]);
@@ -13,6 +14,8 @@ const Notice = () => {
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+
+    const authData = useAuthStore(); // useAuthStore를 사용해 authData를 가져옴
 
     useEffect(() => {
         const fetchNotices = async () => {
@@ -24,7 +27,7 @@ const Notice = () => {
                     params: { page: currentPage },
                 });
                 setNotices(response.data.data.content);
-                setTotalPages(response.data.data.totalPages); // totalPages를 설정
+                setTotalPages(response.data.data.totalPages);
                 setLoading(false);
             } catch (err) {
                 console.error(err);
@@ -42,7 +45,7 @@ const Notice = () => {
     }, [currentPage]);
 
     const handlePageChange = (pageNumber) => {
-        if (pageNumber > 0 && pageNumber) {
+        if (pageNumber > 0 && pageNumber <= totalPages) {
             setCurrentPage(pageNumber);
         }
     };
@@ -53,7 +56,7 @@ const Notice = () => {
     return (
         <div className={styles.noticeContainer}>
             <header className={styles.header}>
-                <h1>공지사항</h1>
+                <h1>{authData?.periodId} 공지사항</h1>
                 <Link to="/notice/create" className={styles.createPostButton}>
                     공지사항 생성
                 </Link>
@@ -73,7 +76,7 @@ const Notice = () => {
             </div>
             <Pagination
                 currentPage={currentPage}
-                totalPages={totalPages} // Pagination에 totalPages 전달
+                totalPages={totalPages}
                 onPageChange={handlePageChange}
             />
         </div>
