@@ -1,0 +1,42 @@
+/* Notice.module.scss */
+
+/* Container styling for the notice board */
+.noticeContainer {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header styling with space between the title and the create button */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Styling for the create post button */
+.createPostButton {
+  padding: 10px 20px;
+  background-color: #007bff; /* You can customize this color */
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px; /* Adjust font size as needed */
+}
+
+/* Styling for the list of notices */
+.noticeList {
+  margin-top: 20px;
+}
+
+/* Style for individual notice items */
+.noticeItem {
+  margin-bottom: 15px;
+}
+
+/* Optional: Style for each notice item link */
+.noticeItem a {
+  text-decoration: none;
+  color: #333; /* You can customize this color */
+}
