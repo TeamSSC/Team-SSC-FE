@@ -1,0 +1,24 @@
+// src/components/board/LikeButton.module.scss
+.likes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+
+  .heartIcon {
+    font-size: 2em;
+    color: #e74c3c;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: color 0.3s;
+
+    &:hover {
+      color: #c0392b;
+    }
+  }
+
+  .likesCount {
+    font-size: 1.5em;
+    color: #333;
+  }
+}

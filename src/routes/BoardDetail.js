@@ -1,10 +1,20 @@
+// src/routes/BoardDetail.js
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart as faHeartSolid, faHeart as faHeartRegular } from '@fortawesome/free-solid-svg-icons';
+import PostHeader from '../components/board/PostHeader';
+import FileLinks from '../components/board/FileLinks';
+import LikeButton from '../components/board/LikeButton';
+import CommentForm from '../components/board/CommentForm';
+import CommentList from '../components/board/CommentList';
 import styles from './BoardDetail.module.scss';
 import { baseUrl } from '../App';
+
+// 날짜 포맷 함수
+const formatDate = (dateArray) => {
+    const [year, month, day, hour, minute, second] = dateArray;
+    return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
+};
 
 const BoardDetail = () => {
     const { id } = useParams();
@@ -20,7 +30,7 @@ const BoardDetail = () => {
     const [replies, setReplies] = useState({});
     const [newComment, setNewComment] = useState('');
     const [replyContent, setReplyContent] = useState({});
-    const [replyFormVisible, setReplyFormVisible] = useState({}); // 답글 작성 폼 표시 상태
+    const [replyFormVisible, setReplyFormVisible] = useState({});
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -60,11 +70,6 @@ const BoardDetail = () => {
         fetchLikes();
         fetchComments();
     }, [id]);
-
-    const formatDate = (dateArray) => {
-        const [year, month, day, hour, minute, second] = dateArray;
-        return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
-    };
 
     const handleLikeToggle = async () => {
         try {
@@ -144,7 +149,6 @@ const BoardDetail = () => {
                 ...prev,
                 [parentCommentId]: ''
             }));
-            // 답글 작성 후 해당 댓글의 답글을 새로 조회
             await fetchReplies(parentCommentId);
         } catch (err) {
             console.error(err);
@@ -164,108 +168,40 @@ const BoardDetail = () => {
 
     return (
         <div className={styles.boardDetailContainer}>
-            <h1>{post.title}</h1>
-            <div className={styles.postInfo}>
-                <span>작성자: {post.username}</span>
-                <span>작성일: {formatDate(post.createAt)}</span>
-            </div>
-            <p>{post.content}</p>
-            <div className={styles.fileLinks}>
-                {post.fileLinks.map((fileLink, index) => (
-                    <div key={index} className={styles.fileLinkItem}>
-                        <a href={fileLink} target="_blank" rel="noopener noreferrer">
-                            <img src={fileLink} alt={`Attachment ${index + 1}`} />
-                        </a>
-                    </div>
-                ))}
-            </div>
-            <div className={styles.likes}>
-                <FontAwesomeIcon
-                    icon={liked ? faHeartSolid : faHeartRegular}
-                    className={styles.heartIcon}
-                    onClick={handleLikeToggle}
-                />
-                <span className={styles.likesCount}>{likes}</span>
-            </div>
-
-            {/* 댓글 작성 폼 */}
-            <div className={styles.commentFormContainer}>
-                <form onSubmit={handleCommentSubmit} className={styles.commentForm}>
-                    <textarea
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                        className={styles.commentTextarea}
-                        placeholder="댓글을 입력하세요..."
+            {post && (
+                <>
+                    <PostHeader
+                        title={post.title}
+                        username={post.username}
+                        createAt={post.createAt}
                     />
-                    <button type="submit" className={styles.submitButton}>댓글 제출</button>
-                </form>
-            </div>
-
-            {/* 댓글 섹션 */}
-            <div className={styles.commentsSection}>
-                {commentsLoading ? (
-                    <p>Loading comments...</p>
-                ) : commentsError ? (
-                    <p>Error loading comments: {commentsError.message}</p>
-                ) : (
-                    comments.map(comment => (
-                        <div key={comment.commentId} className={styles.comment}>
-                            <p>
-                                <strong>{comment.username}</strong>
-                                <span className={styles.timestamp}>{formatDate(comment.createAt)}</span>
-                            </p>
-                            <p>{comment.content}</p>
-                            {/* 답글 보기/접기 버튼 */}
-                            {comment.reply && (
-                                <div className={styles.replyToggle} onClick={() => toggleReplies(comment.commentId)}>
-                                    <span className={styles.arrow} />
-                                    {expandedReplies[comment.commentId] ? '답글 접기' : '답글 보기'}
-                                </div>
-                            )}
-                            {/* 답글 목록 */}
-                            {expandedReplies[comment.commentId] && replies[comment.commentId] && (
-                                <div className={styles.replies}>
-                                    {replies[comment.commentId].map(reply => (
-                                        <div key={reply.commentId} className={styles.comment}>
-                                            <p>
-                                                <strong>{reply.username}</strong>
-                                                <span className={styles.timestamp}>{formatDate(reply.createAt)}</span>
-                                            </p>
-                                            <p>{reply.content}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                            {/* 답글 작성 버튼과 폼 */}
-                            <div className={styles.replyFormContainer}>
-                                <button
-                                    onClick={() => toggleReplyForm(comment.commentId)}
-                                    className={styles.toggleReplyFormButton}
-                                >
-                                    {replyFormVisible[comment.commentId] ? '답글 숨기기' : '답글 작성하기'}
-                                </button>
-                                {replyFormVisible[comment.commentId] && (
-                                    <form
-                                        onSubmit={(e) => handleReplySubmit(comment.commentId, e)}
-                                        className={styles.replyForm}
-                                    >
-                                        <textarea
-                                            value={replyContent[comment.commentId] || ''}
-                                            onChange={(e) => setReplyContent(prev => ({
-                                                ...prev,
-                                                [comment.commentId]: e.target.value
-                                            }))}
-                                            className={styles.replyTextarea}
-                                            placeholder="답글을 입력하세요..."
-                                        />
-                                        <button type="submit" className={styles.submitButton}>답글 제출</button>
-                                    </form>
-                                )}
-                            </div>
-                        </div>
-                    ))
-                )}
-            </div>
+                    <FileLinks fileLinks={post.fileLinks} />
+                    <LikeButton
+                        liked={liked}
+                        likes={likes}
+                        onLikeToggle={handleLikeToggle}
+                    />
+                    <CommentForm
+                        newComment={newComment}
+                        setNewComment={setNewComment}
+                        handleCommentSubmit={handleCommentSubmit}
+                    />
+                    <CommentList
+                        comments={comments}
+                        formatDate={formatDate}
+                        toggleReplies={toggleReplies}
+                        expandedReplies={expandedReplies}
+                        replies={replies}
+                        toggleReplyForm={toggleReplyForm}
+                        replyContent={replyContent}
+                        setReplyContent={setReplyContent}
+                        handleReplySubmit={handleReplySubmit}
+                        replyFormVisible={replyFormVisible}
+                        commentsLoading={commentsLoading}
+                        commentsError={commentsError}
+                    />
+                </>
+            )}
         </div>
     );
 };

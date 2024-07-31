@@ -1,0 +1,20 @@
+// src/components/board/PostHeader.module.scss
+.postHeader {
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.postInfo {
+  display: flex;
+  justify-content: space-between;
+  color: #666;
+  margin-bottom: 20px;
+
+  span {
+    margin-right: 10px;
+  }
+}
