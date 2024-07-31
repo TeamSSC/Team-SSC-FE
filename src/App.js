@@ -3,14 +3,13 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './components/layout/Layout.js';
 import Main from './routes/Main';
 import Signup from './routes/Signup.js';
-<<<<<<< HEAD
+
 import Period from './routes/Period.js';
-=======
+
 import Board from './routes/Board';
 import CreateBoard from './routes/CreateBoard';
 import BoardDetail from './routes/BoardDetail';
 import Track from './routes/Track.js';
->>>>>>> f5dbc516a2158db959c55f2aeba0c5553501fef0
 
 export const baseUrl = 'http://localhost:8080';
 
@@ -28,10 +27,9 @@ const router = createBrowserRouter([
                 element: <Signup />,
             },
             {
-<<<<<<< HEAD
                 path: '/periods',
                 element: <Period />,
-=======
+
                 path: '/boards',
                 element: <Board />,
             },
@@ -46,7 +44,6 @@ const router = createBrowserRouter([
             {
                 path: '/track',
                 element: <Track />,
->>>>>>> f5dbc516a2158db959c55f2aeba0c5553501fef0
             },
         ],
     },
