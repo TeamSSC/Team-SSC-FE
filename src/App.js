@@ -11,10 +11,6 @@ import PeriodDetail from './routes/PeriodDetail.js';
 import Period from './routes/ManagerPage.js';
 import MemberCards from './routes/MemberCards.js';
 import Profile from './routes/Profile';
-import Board from './routes/Board';
-import CreateBoard from './routes/CreateBoard';
-import BoardDetail from './routes/BoardDetail';
-import Track from './routes/Track.js';
 
 export const baseUrl = 'http://localhost:8080';
 
@@ -60,7 +56,7 @@ const router = createBrowserRouter([
                 element: <MemberCards />,
             },
             {
-                path: '/Profile',
+                path: '/profile',
                 element: <Profile />,
             },
         ],
