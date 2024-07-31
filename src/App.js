@@ -7,6 +7,7 @@ import Board from './routes/Board';
 import CreateBoard from './routes/CreateBoard';
 import BoardDetail from './routes/BoardDetail';
 import Track from './routes/Track.js';
+import PeriodDetail from './routes/PeriodDetail.js';
 
 export const baseUrl = 'http://localhost:8080';
 
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
             {
                 path: '/track',
                 element: <Track />,
+            },
+            {
+                path: '/period/:periodId/',
+                element: <PeriodDetail />,
             },
         ],
     },

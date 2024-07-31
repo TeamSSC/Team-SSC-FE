@@ -8,6 +8,9 @@ import useAuthStore from '../stores/useAuthStore';
 const Main = () => {
     const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
     const setUsername = useAuthStore((state) => state.setUsername);
+    const setPeriodId = useAuthStore((state) => state.setPeriodId);
+
+    const authData = useAuthStore();
 
     const [loginId, setLoginId] = useState('');
     const [password, setPassword] = useState('');
@@ -22,6 +25,12 @@ const Main = () => {
             localStorage.setItem('refreshToken', response.data.data.refreshToken);
             setUsername(response.data.data.username);
             setIsLoggedIn(true);
+            setPeriodId(response.data.data.periodId);
+            if (authData.periodId) {
+                navigate(`/period/${authData.periodId}`);
+            } else {
+                navigate('/admin');
+            }
         } catch (err) {
             alert(err.response.data.message || '로그인 실패 하셨습니다.');
         }
