@@ -23,7 +23,7 @@ const Main = () => {
             setUsername(response.data.data.username);
             setIsLoggedIn(true);
         } catch (err) {
-            console.error(err);
+            alert(err.response.data.message || '로그인 실패 하셨습니다.');
         }
     };
 

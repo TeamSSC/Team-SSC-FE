@@ -1,23 +1,40 @@
 .navBar_wrapper {
-  display: flex;
-  justify-content: start;
-  align-items: start;
-  padding: 20px; // 위와 왼쪽에 공간을 추가하기 위해 padding을 사용합니다.
+    display: flex;
+    justify-content: space-between; /* 좌우 공간을 균등하게 분배 */
+    align-items: center; /* 세로 축에서 중앙 정렬 */
+    padding: 20px; /* 위와 왼쪽에 공간을 추가 */
+    border-bottom: 2px solid rgb(127, 127, 127);
 }
 
 .navBar_button {
-  width: 300px;
-  height: 50px;
-  margin-top: 20px; // 위쪽에서 떨어지도록 설정
-  margin-left: 20px; // 왼쪽에서 떨어지도록 설정
-  background-color: white; // 버튼의 배경색 (필요에 따라 변경)
-  color: black; // 버튼 텍스트 색상 (필요에 따라 변경)
-  border-radius: 5px; // 모서리를 둥글게
-  cursor: pointer; // 커서를 포인터로 변경
-  font-size: 32px; // 버튼 텍스트 크기 (필요에 따라 변경)
-  font-weight: bold;
+    width: 300px;
+    height: 50px;
+    margin-top: 20px; /* 위쪽에서 떨어지도록 설정 */
+    margin-left: 20px; /* 왼쪽에서 떨어지도록 설정 */
+    background-color: white; /* 버튼의 배경색 */
+    color: black; /* 버튼 텍스트 색상 */
+    border-radius: 5px; /* 모서리를 둥글게 */
+    cursor: pointer; /* 커서를 포인터로 변경 */
+    font-size: 32px; /* 버튼 텍스트 크기 */
+    font-weight: bold;
 
-  &:hover {
-    background-color: #b4bfc9; // 버튼을 호버할 때의 배경색 (필요에 따라 변경)
-  }
+    &:hover {
+        background-color: #b4bfc9; /* 버튼을 호버할 때의 배경색 */
+    }
+}
+
+.nav_user {
+    display: flex;
+    align-items: center; /* 세로 축에서 중앙 정렬 */
+    gap: 0.5rem; /* 요소 간 간격 */
+    margin-right: 20px; /* 오른쪽에서 떨어지도록 설정 */
+    button {
+        width: 120px;
+    }
+}
+
+.nav_user p {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
 }

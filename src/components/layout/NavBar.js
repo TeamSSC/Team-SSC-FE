@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 
 const NavBar = () => {
     const authData = useAuthStore();
-    console.log(authData.username);
 
     const navigate = useNavigate();
     return (
@@ -15,8 +14,8 @@ const NavBar = () => {
                     Team SSC
                 </button>
                 {authData?.isLoggedIn ? (
-                    <div>
-                        <p>{authData?.username}</p> <Logout />
+                    <div className={styles.nav_user}>
+                        <p>{authData?.username}님</p> <Logout />
                     </div>
                 ) : null}
             </div>
