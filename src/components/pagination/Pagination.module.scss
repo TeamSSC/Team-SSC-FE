@@ -1,0 +1,35 @@
+// src/components/pagination/Pagination.module.scss
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.pageButton {
+  padding: 10px 15px;
+  margin: 0 5px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pageButton:disabled {
+  cursor: not-allowed;
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+}
+
+.pageButton:not(:disabled):hover {
+  background-color: #e0e0e0;
+}
+
+.currentPage {
+  padding: 10px 15px;
+  margin: 0 5px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  background-color: #f9f9f9;
+}

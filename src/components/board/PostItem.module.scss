@@ -1,0 +1,40 @@
+.boardList {
+  margin-bottom: 20px;
+  padding: 0 5px;
+}
+
+.boardItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+}
+
+.boardTitle {
+  flex: 3;
+}
+
+.boardDetails {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 2;
+}
+
+.boardAuthor {
+  margin-right: 10px;
+}
+
+.boardLikes {
+  display: flex;
+  align-items: center;
+  min-width: 40px;
+  text-align: right;
+}
+
+
+.heartIcon {
+  margin-right: 5px;
+  color: red;
+}
