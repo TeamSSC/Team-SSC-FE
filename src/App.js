@@ -7,6 +7,7 @@ import Board from './routes/Board';
 import CreateBoard from './routes/CreateBoard';
 import BoardDetail from './routes/BoardDetail';
 import Track from './routes/Track.js';
+import Profile from "./routes/Profile";
 
 import Period from './routes/Period.js';
 
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
             {
                 path: '/track',
                 element: <Track />,
+            },
+            {
+                path: '/Profile',
+                element: <Profile />,
             },
         ],
     },
