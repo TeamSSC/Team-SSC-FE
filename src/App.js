@@ -3,9 +3,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './components/layout/Layout.js';
 import Main from './routes/Main';
 import Signup from './routes/Signup.js';
-import Board from "./routes/Board";
-import CreateBoard from "./routes/CreateBoard";
-import BoardDetail from "./routes/BoardDetail";
+import Board from './routes/Board';
+import CreateBoard from './routes/CreateBoard';
+import BoardDetail from './routes/BoardDetail';
+import Track from './routes/Track.js';
 
 export const baseUrl = 'http://localhost:8080';
 
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
             {
                 path: '/boards/:id', // BoardDetail로 라우팅 추가
                 element: <BoardDetail />,
+            },
+            {
+                path: '/track',
+                element: <Track />,
             },
         ],
     },

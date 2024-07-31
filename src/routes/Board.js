@@ -18,9 +18,9 @@ const Board = () => {
             try {
                 const response = await axios.get(API_URL, {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                     },
-                    params: { page: currentPage }
+                    params: { page: currentPage },
                 });
                 setPosts(response.data.data.content);
             } catch (err) {
@@ -32,12 +32,11 @@ const Board = () => {
                 } else {
                     setError(err);
                 }
-            } finally {
-                setLoading(false);
             }
         };
 
         fetchPosts();
+        setLoading(false);
     }, [currentPage]);
 
     const handlePageChange = (pageNumber) => {
@@ -59,7 +58,7 @@ const Board = () => {
             </header>
             <div className={styles.boardList}>
                 {posts.length > 0 ? (
-                    posts.map(post => (
+                    posts.map((post) => (
                         <div key={post.boardId}>
                             <Link to={`/boards/${post.boardId}`}>
                                 <PostItem post={post} />
@@ -70,10 +69,7 @@ const Board = () => {
                     <p>No posts available</p>
                 )}
             </div>
-            <Pagination
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-            />
+            <Pagination currentPage={currentPage} onPageChange={handlePageChange} />
         </div>
     );
 };
