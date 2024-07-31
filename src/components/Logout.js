@@ -7,7 +7,6 @@ const Logout = () => {
     const { setUsername } = useAuthStore((store) => store);
 
     const token = localStorage.getItem('accessToken');
-    console.log(token);
 
     const logout = async () => {
         try {

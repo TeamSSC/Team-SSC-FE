@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Modal from 'react-modal'; // 모달 패키지 import
+import Modal from '../components/modal/Modal';
 import { baseUrl } from '../App'; // baseUrl을 '../App'에서 가져옴
+import styles from './Period.module.scss';
 
-const Period = () => {
+const ManagerPage = () => {
     const [data, setData] = useState([]); // 기수 목록 상태
     const [selectedPeriods, setSelectedPeriods] = useState([]); // 선택된 기수 상태
     const [users, setUsers] = useState([]); // 유저 목록 상태
@@ -68,7 +69,7 @@ const Period = () => {
         setIsModalOpen(false);
     };
 
-    // 유저 상태 변경 처리`
+    // 유저 상태 변경 처리
     const handleStatusChange = (userId, newStatus) => {
         setUserStatuses((prevStatuses) => ({
             ...prevStatuses,
@@ -157,166 +158,40 @@ const Period = () => {
     };
 
     return (
-        <div style={styles.container}>
-            <div style={styles.buttonContainer}>
-                <button style={styles.topButton} onClick={openModal}>
+        <div className={styles.container}>
+            <div className={styles.buttonContainer}>
+                <button className={styles.topButton} onClick={openModal}>
                     유저 상태변경
                 </button>
-                <button style={styles.topButton}>알림보내기</button>
+                <button className={styles.topButton}>알림보내기</button>
             </div>
 
-            <h1 style={styles.title}>회원가입 승인 대기자 목록</h1>
+            <h1 className={styles.title}>회원가입 승인 대기자 목록</h1>
 
-            <ul style={styles.list}>
+            <ul className={styles.list}>
                 {data.map((period) => (
-                    <li key={period.id} style={styles.listItem}>
+                    <li key={period.id} className={styles.listItem}>
                         <input
                             type="checkbox"
                             checked={selectedPeriods.includes(period.id)}
                             onChange={() => toggleSelectPeriod(period.id)}
-                            style={styles.checkbox}
+                            className={styles.checkbox}
                         />
-                        <span style={styles.periodName}>{period.name}</span>
+                        <span className={styles.periodName}>{period.name}</span>
                     </li>
                 ))}
             </ul>
 
-            <div style={styles.actionButtonContainer}>
-                <button style={styles.actionButton} onClick={rejectPeriods}>
+            <div className={styles.actionButtonContainer}>
+                <button className={styles.actionButton} onClick={rejectPeriods}>
                     거부하기
                 </button>
-                <button style={styles.actionButton} onClick={approvePeriods}>
+                <button className={styles.actionButton} onClick={approvePeriods}>
                     승인하기
                 </button>
             </div>
-
-            {/* 유저 상태 변경 모달 */}
-            <Modal isOpen={isModalOpen} onRequestClose={closeModal} contentLabel="유저 상태 변경" style={modalStyles}>
-                <h2 style={styles.modalTitle}>유저 상태 변경</h2>
-                <ul style={styles.list}>
-                    {users.map((user) => (
-                        <li key={user.id} style={styles.listItem}>
-                            <span style={styles.userName}>{user.name}</span>
-                            <select
-                                value={userStatuses[user.id] || user.status}
-                                onChange={(e) => handleStatusChange(user.id, e.target.value)}
-                                style={styles.select}
-                            >
-                                <option value="PENDING">PENDING</option>
-                                <option value="APPROVED">APPROVED</option>
-                                <option value="REJECTED">REJECTED</option>
-                            </select>
-                        </li>
-                    ))}
-                </ul>
-                <button style={styles.confirmButton} onClick={confirmStatusChanges}>
-                    확인
-                </button>
-            </Modal>
         </div>
     );
 };
 
-// 스타일 객체
-const styles = {
-    container: {
-        backgroundColor: '#e3c6ff',
-        padding: '20px',
-        borderRadius: '10px',
-        maxWidth: '400px',
-        margin: '0 auto',
-    },
-    buttonContainer: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        marginBottom: '20px',
-    },
-    topButton: {
-        backgroundColor: '#007bff',
-        color: '#fff',
-        padding: '10px 20px',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
-    },
-    title: {
-        textAlign: 'center',
-        color: '#333',
-    },
-    list: {
-        listStyleType: 'none',
-        padding: 0,
-    },
-    listItem: {
-        display: 'flex',
-        alignItems: 'center',
-        backgroundColor: '#8c4fff',
-        color: '#fff',
-        padding: '10px',
-        marginBottom: '5px',
-        borderRadius: '5px',
-    },
-    checkbox: {
-        marginRight: '10px',
-    },
-    periodName: {
-        flexGrow: 1,
-    },
-    userName: {
-        flexGrow: 1,
-        marginRight: '10px',
-    },
-    select: {
-        padding: '5px',
-        borderRadius: '5px',
-    },
-    actionButtonContainer: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        marginTop: '20px',
-    },
-    actionButton: {
-        backgroundColor: '#fff',
-        color: '#333',
-        padding: '10px 20px',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
-        flexGrow: 1,
-        marginLeft: '10px',
-    },
-    modalTitle: {
-        textAlign: 'center',
-        color: '#333',
-        marginBottom: '20px',
-    },
-    confirmButton: {
-        backgroundColor: '#8c4fff',
-        color: '#fff',
-        padding: '10px 20px',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
-        display: 'block',
-        margin: '0 auto',
-    },
-};
-
-// 모달 스타일 객체
-const modalStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-        backgroundColor: '#e3c6ff',
-        padding: '30px',
-        borderRadius: '10px',
-        maxWidth: '500px',
-        width: '90%',
-    },
-};
-
-export default Period;
+export default ManagerPage;

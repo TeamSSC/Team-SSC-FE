@@ -16,7 +16,8 @@ const useAuthStore = create(
                 set({ username: value });
             },
             setPeriodId: (value) => {
-                set({ track: value });
+                console.log('Setting periodId:', value);
+                set({ periodId: value });
             },
         }),
         {

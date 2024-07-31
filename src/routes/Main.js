@@ -21,13 +21,14 @@ const Main = () => {
                 email: loginId,
                 password: password,
             });
-            localStorage.setItem('accessToken', response.data.data.accessToken);
-            localStorage.setItem('refreshToken', response.data.data.refreshToken);
-            setUsername(response.data.data.username);
+            const userData = response.data.data;
+            localStorage.setItem('accessToken', userData?.accessToken);
+            localStorage.setItem('refreshToken', userData?.refreshToken);
+            setUsername(userData?.username);
             setIsLoggedIn(true);
-            setPeriodId(response.data.data.periodId);
-            if (authData.periodId) {
-                navigate(`/period/${authData.periodId}`);
+            setPeriodId(userData.trackName + String(userData.period) + '기');
+            if (userData.periodId != null) {
+                navigate(`/period/${userData.periodId}`);
             } else {
                 navigate('/admin');
             }

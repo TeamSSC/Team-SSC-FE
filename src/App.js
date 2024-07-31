@@ -8,13 +8,8 @@ import CreateBoard from './routes/CreateBoard';
 import BoardDetail from './routes/BoardDetail';
 import Track from './routes/Track.js';
 import PeriodDetail from './routes/PeriodDetail.js';
-
-import Period from './routes/Period.js';
-
-import Board from './routes/Board';
-import CreateBoard from './routes/CreateBoard';
-import BoardDetail from './routes/BoardDetail';
-import Track from './routes/Track.js';
+import Period from './routes/ManagerPage.js';
+import MemberCards from './routes/MemberCards.js';
 
 export const baseUrl = 'http://localhost:8080';
 
@@ -32,12 +27,10 @@ const router = createBrowserRouter([
                 element: <Signup />,
             },
             {
-
                 path: '/periods',
                 element: <Period />,
             },
             {
-
                 path: '/boards',
                 element: <Board />,
             },
@@ -54,8 +47,12 @@ const router = createBrowserRouter([
                 element: <Track />,
             },
             {
-                path: '/period/:periodId/',
+                path: '/period/:periodId',
                 element: <PeriodDetail />,
+            },
+            {
+                path: '/period/:periodId/memberCards',
+                element: <MemberCards />,
             },
         ],
     },
