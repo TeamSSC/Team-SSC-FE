@@ -8,7 +8,6 @@ const PeriodHeader = () => {
             <button>
                 <a href="https://teamsparta.notion.site/8b0500cba8ac47cd8ef8b85f82afdae0">발제 모음</a>
             </button>
-            <button>팀</button>
             <button>팀 편성표</button>
             <button>
                 <a href="https://zep.us/play/y0B0nA">잽</a>

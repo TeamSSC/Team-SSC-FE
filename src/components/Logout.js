@@ -5,6 +5,7 @@ import { baseUrl } from '../App';
 const Logout = () => {
     const { setIsLoggedIn } = useAuthStore((state) => state);
     const { setUsername } = useAuthStore((store) => store);
+    const { setPeriodId } = useAuthStore((store) => store);
 
     const token = localStorage.getItem('accessToken');
 
@@ -18,6 +19,9 @@ const Logout = () => {
             localStorage.clear();
             setUsername('');
             setIsLoggedIn(false);
+            setPeriodId('');
+
+            alert('로그아웃 되었습니다.');
         } catch (err) {
             console.error(err);
         }
