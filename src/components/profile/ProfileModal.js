@@ -19,7 +19,7 @@ const mbtiOptions = [
     { value: 'ESTJ', label: 'ESTJ' },
     { value: 'ESFJ', label: 'ESFJ' },
     { value: 'ESTP', label: 'ESTP' },
-    { value: 'ESFP', label: 'ESFP' }
+    { value: 'ESFP', label: 'ESFP' },
 ];
 
 const ProfileModal = ({ onClose }) => {
@@ -37,19 +37,16 @@ const ProfileModal = ({ onClose }) => {
         // 프로필 내용을 가져와서 상태를 초기화합니다.
         const fetchProfileData = async () => {
             try {
-                const response = await axios.get(
-                    'http://localhost:8080/api/users/profile',
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                        },
-                    }
-                );
+                const response = await axios.get('http://localhost:8080/api/users/profile', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    },
+                });
                 const data = response.data;
                 setGitLink(data.gitLink || '');
                 setVlogLink(data.vlogLink || '');
                 setIntro(data.intro || '');
-                setMbti(mbtiOptions.find(option => option.value === data.mbti) || null); // MBTI 데이터 설정
+                setMbti(mbtiOptions.find((option) => option.value === data.mbti) || null); // MBTI 데이터 설정
             } catch (error) {
                 console.error('Error fetching profile data:', error);
             }
@@ -72,16 +69,12 @@ const ProfileModal = ({ onClose }) => {
         formData.append('file', selectedFile);
 
         try {
-            await axios.patch(
-                'http://localhost:8080/api/users/profile/image/update',
-                formData,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                        'Content-Type': 'multipart/form-data'
-                    },
-                }
-            );
+            await axios.patch('http://localhost:8080/api/users/profile/image/update', formData, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             alert('프로필 이미지가 성공적으로 업데이트되었습니다.');
             window.location.reload(); // 페이지 새로 고침
             onClose(); // 모달 닫기
@@ -115,16 +108,12 @@ const ProfileModal = ({ onClose }) => {
         }
 
         try {
-            await axios.patch(
-                'http://localhost:8080/api/users/profile/update',
-                dataToUpdate,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                        'Content-Type': 'application/json'
-                    },
-                }
-            );
+            await axios.patch('http://localhost:8080/api/users/profile/update', dataToUpdate, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json',
+                },
+            });
             alert('프로필 내용이 성공적으로 업데이트되었습니다.');
             window.location.reload(); // 페이지 새로 고침
             onClose(); // 모달 닫기
@@ -137,19 +126,15 @@ const ProfileModal = ({ onClose }) => {
     return (
         <div className={styles.modalOverlay} onClick={onClose}>
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                <button className={styles.closeButton} onClick={onClose}>X</button>
+                <button className={styles.closeButton} onClick={onClose}>
+                    X
+                </button>
                 {!showUpload && !showEditProfile ? (
                     <div className={styles.modalButtons}>
-                        <button
-                            className={styles.modalButton}
-                            onClick={handleEditProfile}
-                        >
+                        <button className={styles.modalButton} onClick={handleEditProfile}>
                             프로필 이미지 수정
                         </button>
-                        <button
-                            className={styles.modalButton}
-                            onClick={handleEditProfileDetails}
-                        >
+                        <button className={styles.modalButton} onClick={handleEditProfileDetails}>
                             프로필 내용 수정
                         </button>
                     </div>
@@ -167,36 +152,16 @@ const ProfileModal = ({ onClose }) => {
                             placeholder="블로그 링크"
                             onChange={(e) => setVlogLink(e.target.value)}
                         />
-                        <textarea
-                            value={intro}
-                            placeholder="자기소개"
-                            onChange={(e) => setIntro(e.target.value)}
-                        />
-                        <Select
-                            options={mbtiOptions}
-                            value={mbti}
-                            onChange={setMbti}
-                            placeholder="MBTI"
-                            isSearchable
-                        />
-                        <button
-                            className={styles.modalButton}
-                            onClick={handleUpdateProfile}
-                        >
+                        <textarea value={intro} placeholder="자기소개" onChange={(e) => setIntro(e.target.value)} />
+                        <Select options={mbtiOptions} value={mbti} onChange={setMbti} placeholder="MBTI" isSearchable />
+                        <button className={styles.modalButton} onClick={handleUpdateProfile}>
                             프로필 내용 등록
                         </button>
                     </div>
                 ) : (
                     <div className={styles.uploadSection}>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleFileChange}
-                        />
-                        <button
-                            className={styles.modalButton}
-                            onClick={handleUpload}
-                        >
+                        <input type="file" accept="image/*" onChange={handleFileChange} />
+                        <button className={styles.modalButton} onClick={handleUpload}>
                             프로필 이미지 등록
                         </button>
                     </div>
