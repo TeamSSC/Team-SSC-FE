@@ -8,6 +8,9 @@ import useAuthStore from '../stores/useAuthStore';
 const Main = () => {
     const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
     const setUsername = useAuthStore((state) => state.setUsername);
+    const setPeriodId = useAuthStore((state) => state.setPeriodId);
+
+    const authData = useAuthStore();
 
     const [loginId, setLoginId] = useState('');
     const [password, setPassword] = useState('');
@@ -18,10 +21,17 @@ const Main = () => {
                 email: loginId,
                 password: password,
             });
-            localStorage.setItem('accessToken', response.data.data.accessToken);
-            localStorage.setItem('refreshToken', response.data.data.refreshToken);
-            setUsername(response.data.data.username);
+            const userData = response.data.data;
+            localStorage.setItem('accessToken', userData?.accessToken);
+            localStorage.setItem('refreshToken', userData?.refreshToken);
+            setUsername(userData?.username);
             setIsLoggedIn(true);
+            setPeriodId(userData.trackName + String(userData.period) + '기');
+            if (userData.periodId != null) {
+                navigate(`/period/${userData.periodId}`);
+            } else {
+                navigate('/admin');
+            }
         } catch (err) {
             alert(err.response.data.message || '로그인 실패 하셨습니다.');
         }

@@ -1,0 +1,111 @@
+.container {
+    background-color: #e3c6ff;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.topButton {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.title {
+    text-align: center;
+    color: #333;
+}
+
+.list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.listItem {
+    display: flex;
+    align-items: center;
+    background-color: #8c4fff;
+    color: #fff;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.checkbox {
+    margin-right: 10px;
+}
+
+.periodName {
+    flex-grow: 1;
+}
+
+.userName {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.select {
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.actionButtonContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.actionButton {
+    background-color: #fff;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+.modalTitle {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.confirmButton {
+    background-color: #8c4fff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+}
+
+// 모달 스타일 객체
+.modalStyles {
+    content {
+        top: 50%;
+        left: 50%;
+        right: auto;
+        bottom: auto;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        background-color: #e3c6ff;
+        padding: 30px;
+        border-radius: 10px;
+        max-width: 500px;
+        width: 90%;
+    }
+}
