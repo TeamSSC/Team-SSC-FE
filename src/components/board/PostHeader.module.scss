@@ -1,20 +1,141 @@
-// src/components/board/PostHeader.module.scss
+/* src/components/board/PostHeader.module.scss */
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+}
+
 .postHeader {
-  margin-bottom: 20px;
-}
-
-h1 {
-  font-size: 2em;
-  margin-bottom: 10px;
-}
-
-.postInfo {
   display: flex;
   justify-content: space-between;
-  color: #666;
+  align-items: center;
   margin-bottom: 20px;
+}
 
-  span {
-    margin-right: 10px;
-  }
+.title {
+  font-size: 2em;
+  margin: 0;
+}
+
+.authorActions {
+  display: flex;
+  margin-left: 50px;
+  gap: 10px;
+}
+
+.editButton, .deleteButton {
+  width: 80px;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.3s;
+}
+
+.editButton {
+  background-color: #007bff;
+  color: white;
+}
+
+.editButton:hover {
+  background-color: #0056b3;
+}
+
+.deleteButton {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.deleteButton:hover {
+  background-color: #c0392b;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 100%;
+}
+
+.modal h2 {
+  margin-top: 0;
+}
+
+.modal input[type="text"], .modal textarea {
+  width: calc(100% - 16px);
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+.imageList {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column; /* 세로 방향으로 나열 */
+  gap: 10px; /* 문구와 이미지 간의 간격 */
+}
+
+.imageList p {
+  font-size: 0.9em;
+  margin: 0 0 10px 0; /* 문구와 이미지 간의 간격 설정 */
+}
+
+.imageItem {
+  display: flex;
+  align-items: center;
+  max-width: 120px;
+  cursor: pointer; /* 클릭 가능하도록 설정 */
+}
+
+.imageItem img {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.selected {
+  border: 2px solid #007bff; /* 선택된 이미지에 테두리 추가 */
+}
+
+.modal input[type="file"] {
+  margin-top: 10px;
+  padding: 5px;
+}
+
+.modal button {
+  width: 100px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.modal button:first-of-type {
+  background-color: #007bff;
+  color: white;
+}
+
+.modal button:first-of-type:hover {
+  background-color: #0056b3;
+}
+
+.modal button:last-of-type {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.modal button:last-of-type:hover {
+  background-color: #c0392b;
 }

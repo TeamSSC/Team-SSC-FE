@@ -9,15 +9,11 @@ import CommentForm from '../components/board/CommentForm';
 import CommentList from '../components/board/CommentList';
 import styles from './BoardDetail.module.scss';
 import { baseUrl } from '../App';
-
-// 날짜 포맷 함수
-const formatDate = (dateArray) => {
-    const [year, month, day, hour, minute, second] = dateArray;
-    return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
-};
+import useAuthStore from '../stores/useAuthStore';
 
 const BoardDetail = () => {
     const { id } = useParams();
+    const authData = useAuthStore();
     const [post, setPost] = useState(null);
     const [likes, setLikes] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -36,6 +32,7 @@ const BoardDetail = () => {
         const fetchPost = async () => {
             try {
                 const response = await axios.get(`${baseUrl}/api/boards/${id}`);
+                console.log("Fetched post data:", response.data.data);  // 확인용 로그
                 setPost(response.data.data);
             } catch (err) {
                 setError(err);
@@ -163,6 +160,11 @@ const BoardDetail = () => {
         }));
     };
 
+    const formatDate = (dateArray) => {
+        const [year, month, day, hour, minute, second] = dateArray;
+        return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
+    };
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
 
@@ -173,8 +175,14 @@ const BoardDetail = () => {
                     <PostHeader
                         title={post.title}
                         username={post.username}
-                        createAt={post.createAt}
+                        createdAt={formatDate(post.createAt)}
+                        content={post.content}
+                        isAuthor={authData?.username === post.username}
+                        initialImages={post.fileLinks}  // 이미지 데이터 전달
                     />
+                    <div className={styles.postContent}>
+                        <p>{post.content}</p> {/* 포스트 내용 표시 */}
+                    </div>
                     <FileLinks fileLinks={post.fileLinks} />
                     <LikeButton
                         liked={liked}
