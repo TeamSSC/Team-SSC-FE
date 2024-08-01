@@ -8,7 +8,7 @@ import CreateBoard from './routes/CreateBoard';
 import BoardDetail from './routes/BoardDetail';
 import Track from './routes/Track.js';
 import PeriodDetail from './routes/PeriodDetail.js';
-import Period from './routes/ManagerPage.js';
+import Period from './routes/Period.js';
 import MemberCards from './routes/MemberCards.js';
 import Profile from './routes/Profile';
 import Notice from './routes/Notice';
@@ -29,10 +29,7 @@ const router = createBrowserRouter([
                 path: '/signup',
                 element: <Signup />,
             },
-            {
-                path: '/periods',
-                element: <Period />,
-            },
+
             {
                 path: '/boards',
                 element: <Board />,
@@ -68,6 +65,10 @@ const router = createBrowserRouter([
             {
                 path: '/notice/create',
                 element: <CreateNotice />,
+            },
+            {
+                path: '/admin/:id',
+                element: <Period />,
             },
         ],
     },

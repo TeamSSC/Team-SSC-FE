@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import styles from './Track.module.scss';
 import Modal from '../components/modal/Modal';
 import CreateTrack from '../components/admin/CreateTrack';
+import UpdateTrack from '../components/admin/UpdateTrack';
+import { useNavigate } from 'react-router-dom';
 
 const customModalStyles = {
     content: {
@@ -21,8 +23,12 @@ const Track = () => {
     const [data, setData] = useState([]);
     const [showAddTrackForm, setShowAddTrackForm] = useState(false);
     const [isCreatTrack, setIsCreatTrack] = useState(false);
+    const [isUpdateTrack, setIsUpdateTrack] = useState(false);
+    const [trackId, setTrackId] = useState(null);
 
     const token = localStorage.getItem('accessToken');
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         getTrackListHook();
@@ -36,10 +42,24 @@ const Track = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
+            console.log(response.data);
             setData(response.data.data);
         } catch (err) {
             console.error('API 호출 에러:', err);
+        }
+    };
+    const deleteTrack = async (id) => {
+        const confirmed = window.confirm('정말로 삭제하시겠습니까?');
+        if (confirmed) {
+            try {
+                await axios.delete(`${baseUrl}/api/tracks/${id}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                // 삭제 후 트랙 리스트를 갱신합니다.
+                getTrackListHook();
+            } catch (err) {
+                console.error('트랙 삭제 에러:', err);
+            }
         }
     };
 
@@ -49,19 +69,21 @@ const Track = () => {
         setIsCreatTrack(true);
     };
 
+    const handleUpdateTrackClick = (id) => {
+        setIsUpdateTrack(true);
+        setTrackId(id);
+    };
+
     // 기수 추가 버튼 클릭 시 호출되는 함수
     const handleAddPeriodClick = () => {
         console.log('기수 추가 버튼 클릭됨');
     };
 
-    // 개별 트랙 버튼 클릭 시 호출될 함수
-    const handleTrackClick = (track) => {
-        console.log(`트랙 클릭됨: ${track.name}`);
-        // 필요한 경우, 여기서 추가 동작을 정의할 수 있습니다.
-    };
-
-    const closeModal = () => {
+    const closeCreateModal = () => {
         setIsCreatTrack(false);
+    };
+    const closeUpdateModal = () => {
+        setIsUpdateTrack(false);
     };
 
     if (isLoading) {
@@ -71,24 +93,37 @@ const Track = () => {
     return (
         <div className={styles.track_form}>
             <div className={styles.track_info_wrapper}>
-                <h1>전체 트랙</h1>
-                <div>
-                    {data.map((track, index) => (
-                        <button key={index} onClick={() => handleTrackClick(track)}>
+                <div className={styles.track_info_header}>
+                    <h1>전체 트랙</h1>
+                    <button onClick={handleAddTrackClick}>트랙 생성</button>
+                </div>
+                {data.map((track, index) => (
+                    <div key={index} className={styles.track_btn_wrapper}>
+                        <button className={styles.track_name} onClick={() => navigate(`/admin/${track.id}`)}>
                             {track.name}
                         </button>
-                    ))}
-                </div>
+                        <div className={styles.setTrack_button_wrapper}>
+                            <button className={styles.edit_button} onClick={() => handleUpdateTrackClick(track.id)}>
+                                수정
+                            </button>
+                            <button className={styles.delete_button} onClick={() => deleteTrack(track.id)}>
+                                삭제
+                            </button>
+                        </div>
+                    </div>
+                ))}
             </div>
-            <div className={styles.track_btn_wrapper}>
-                <button onClick={handleAddPeriodClick}>기수 추가</button>
-                <button onClick={handleAddTrackClick}>트랙 생성</button>
-            </div>
-            {isCreatTrack ? (
-                <Modal isOpen={isCreatTrack} onRequestClose={closeModal} style={customModalStyles}>
-                    <CreateTrack closeModal={closeModal} getTrackListHook={getTrackListHook} />
+            {isCreatTrack && (
+                <Modal isOpen={isCreatTrack} onRequestClose={closeCreateModal} style={customModalStyles}>
+                    <CreateTrack closeModal={closeCreateModal} getTrackListHook={getTrackListHook} />
                 </Modal>
-            ) : null}
+            )}
+
+            {isUpdateTrack && (
+                <Modal isOpen={isUpdateTrack} onRequestClose={closeUpdateModal} style={customModalStyles}>
+                    <UpdateTrack closeModal={closeUpdateModal} getTrackListHook={getTrackListHook} trackId={trackId} />
+                </Modal>
+            )}
         </div>
     );
 };
