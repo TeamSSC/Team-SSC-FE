@@ -9,6 +9,7 @@ const Main = () => {
     const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
     const setUsername = useAuthStore((state) => state.setUsername);
     const setPeriodId = useAuthStore((state) => state.setPeriodId);
+    const setUserPeriodId = useAuthStore((state) => state.setUserPeriodId);
 
     const authData = useAuthStore();
 
@@ -27,6 +28,7 @@ const Main = () => {
             setUsername(userData?.username);
             setIsLoggedIn(true);
             setPeriodId(userData.trackName + String(userData.period) + '기');
+            setUserPeriodId(userData.periodId);
             if (userData.periodId != null) {
                 navigate(`/period/${userData.periodId}`);
             } else {

@@ -1,0 +1,59 @@
+.track_form {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    height: 100vh;
+}
+
+.track_info_header {
+    display: flex;
+    justify-content: space-between;
+    button {
+        height: 60px;
+    }
+}
+
+.track_name {
+    color: black;
+    width: 80%;
+    border: none; /* 트랙 이름 버튼의 보더 없애기 */
+    background: none; /* 배경색 없애기 */
+    cursor: pointer; /* 클릭 가능하게 커서 변경 */
+    height: 100%; /* 부모 div의 height를 따르도록 설정 */
+    display: flex; /* 버튼 내용물의 정렬을 위해 flex 사용 */
+    align-items: center; /* 내용물 수직 중앙 정렬 */
+}
+.track_name:hover {
+    background-color: gray;
+}
+.edit_button {
+    width: 120px;
+    background-color: #007bff; /* 수정 버튼 파란색 */
+    color: white; /* 글씨 색 흰색 */
+    border: none; /* 보더 없애기 */
+    cursor: pointer; /* 클릭 가능하게 커서 변경 */
+}
+
+.delete_button {
+    width: 120px;
+    margin-left: 20px;
+    background-color: #ff3114; /* 삭제 버튼 빨간색 */
+    color: white; /* 글씨 색 흰색 */
+    border: none; /* 보더 없애기 */
+    cursor: pointer; /* 클릭 가능하게 커서 변경 */
+}
+.delete_button:hover {
+    background-color: #e35535;
+}
+
+.track_btn_wrapper {
+    display: flex; /* 버튼들을 가로로 정렬 */
+    justify-content: space-between;
+    align-items: center; /* 수직 중앙 정렬 */
+    height: 60px; /* 부모 div의 height 설정 */
+}
+
+.setTrack_button_wrapper {
+    display: flex; /* 수정/삭제 버튼을 세로로 정렬 */
+    height: 100%; /* 부모 div의 height를 따르도록 설정 */
+}
