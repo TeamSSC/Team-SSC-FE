@@ -1,0 +1,49 @@
+// src/components/board/Comment.module.scss
+.comment {
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+  margin-bottom: 15px;
+
+  .username {
+    font-weight: bold;
+  }
+
+  .timestamp {
+    font-size: 0.9em;
+    color: #999;
+  }
+}
+
+.comment:last-child {
+  border-bottom: none;
+}
+
+.replyToggle {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #007bff;
+  font-size: 0.9em;
+  margin-top: 10px;
+
+  .arrow {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #007bff;
+    margin-right: 5px;
+    transition: transform 0.3s;
+  }
+
+  &.expanded .arrow {
+    transform: rotate(180deg);
+  }
+}
+
+.replies {
+  margin-top: 10px;
+  padding-left: 20px;
+  border-left: 1px solid #ddd;
+}

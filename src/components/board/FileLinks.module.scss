@@ -1,0 +1,19 @@
+// src/components/board/FileLinks.module.scss
+.fileLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.fileLinkItem {
+  max-width: 200px;
+  max-height: 200px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  }
+}
