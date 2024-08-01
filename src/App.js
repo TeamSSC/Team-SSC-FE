@@ -13,6 +13,7 @@ import MemberCards from './routes/MemberCards.js';
 import Profile from './routes/Profile';
 import Notice from "./routes/Notice";
 import CreateNotice from "./routes/CreateNotice";
+import TeamLineUp from "./routes/TeamLineUp";
 
 export const baseUrl = 'http://localhost:8080';
 
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
             {
                 path: '/notice/create',
                 element: <CreateNotice />,
+            },
+            {
+                path: '/team/lineup',
+                element: <TeamLineUp />,
             },
         ],
     },
