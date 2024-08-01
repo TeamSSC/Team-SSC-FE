@@ -1,9 +1,11 @@
+// Board.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import PostItem from '../components/board/PostItem';
 import Pagination from '../components/pagination/Pagination';
 import styles from './Board.module.scss';
+import useAuthStore from "../stores/useAuthStore";
 
 const API_URL = 'http://localhost:8080/api/boards';
 
@@ -12,6 +14,8 @@ const Board = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
+
+    const authData = useAuthStore(); // authData를 가져옵니다.
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -28,7 +32,7 @@ const Board = () => {
                 if (err.response && err.response.status === 400) {
                     alert('해당 페이지에 게시글이 없습니다');
                     setCurrentPage(currentPage - 1);
-                    setError(null); // Clear the error to avoid displaying it in the UI
+                    setError(null); // UI에 오류를 표시하지 않도록 오류 상태를 초기화
                 } else {
                     setError(err);
                 }
@@ -51,7 +55,7 @@ const Board = () => {
     return (
         <div className={styles.boardContainer}>
             <header className={styles.header}>
-                <h1>자바 5기 게시판</h1>
+                <h1>{authData?.periodId} 게시판</h1>
                 <Link to="/boards/create" className={styles.createPostButton}>
                     게시글 생성
                 </Link>
