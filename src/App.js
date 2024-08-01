@@ -11,8 +11,8 @@ import PeriodDetail from './routes/PeriodDetail.js';
 import Period from './routes/ManagerPage.js';
 import MemberCards from './routes/MemberCards.js';
 import Profile from './routes/Profile';
-import Notice from "./routes/Notice";
-import CreateNotice from "./routes/CreateNotice";
+import Notice from './routes/Notice';
+import CreateNotice from './routes/CreateNotice';
 
 export const baseUrl = 'http://localhost:8080';
 
@@ -46,7 +46,7 @@ const router = createBrowserRouter([
                 element: <BoardDetail />,
             },
             {
-                path: '/track',
+                path: '/admin',
                 element: <Track />,
             },
             {

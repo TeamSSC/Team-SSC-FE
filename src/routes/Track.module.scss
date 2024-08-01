@@ -1,0 +1,23 @@
+.track_form {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    height: 100vh;
+}
+.track_info_wrapper {
+    button {
+        width: 200px;
+        background-color: white;
+        color: black;
+        border: 1px solid black;
+    }
+}
+
+.track_btn_wrapper {
+    display: flex;
+    justify-content: space-around;
+
+    button {
+        width: 200px;
+    }
+}
