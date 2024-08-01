@@ -1,10 +1,8 @@
-// src/pages/TeamLineUp.module.scss
-
 .teamLineUpContainer {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center; // 중앙 정렬
+  align-items: center;
 }
 
 .header {
@@ -21,10 +19,10 @@
 
 .filters {
   display: flex;
-  justify-content: flex-start; // 왼쪽 정렬
+  justify-content: flex-start;
   width: 100%;
   margin-bottom: 20px;
-  gap: 15px; // 필터 간의 간격
+  gap: 15px;
 }
 
 .filterGroup {
@@ -50,11 +48,11 @@
 }
 
 .sectionSelect {
-  width: 120px; // 좌우 크기 절반으로 줄이기
+  width: 120px;
 }
 
 .weekSelect {
-  width: 300px; // 좌우 크기 두 배로 늘리기
+  width: 300px;
 }
 
 .filterGroup select:hover {
@@ -68,5 +66,145 @@
 }
 
 .teamLineUpContent {
-  /* 팀 편성표의 실제 내용 스타일링을 여기에 추가할 수 있습니다. */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
+}
+
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  width: 250px; /* 카드 너비를 조정합니다. */
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  transform: scale(1.03);
+}
+
+.cardTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.cardContent {
+  font-size: 1rem;
+  color: #555;
+}
+
+.cardUserName {
+  margin: 5px 0;
+}
+
+.createTeamButton {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.createTeamButton:hover {
+  background-color: #0056b3;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContent {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90vw; /* 화면 크기에 따라 최대 너비 조정 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow-y: auto; /* 내용이 넘칠 경우 스크롤 */
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: black;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  padding: 5px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+
+.closeButton:hover {
+  color: #333; /* 마우스 오버 시 색상 변경 */
+}
+
+.select {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 1rem;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s, box-shadow 0.3s;
+  outline: none;
+}
+
+.input {
+  width: 95%;
+  margin-top: 10px;
+  padding: 10px;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+}
+
+.createButton {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #28a745;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.createButton:hover {
+  background-color: #218838;
 }
