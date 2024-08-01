@@ -1,0 +1,13 @@
+.createTrack_wrapper {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.createTrack_button_wrapper {
+    display: flex;
+    justify-content: space-between;
+    button {
+        width: 150px;
+    }
+}

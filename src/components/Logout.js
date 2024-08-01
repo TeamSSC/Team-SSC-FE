@@ -31,7 +31,9 @@ const Logout = () => {
 
     return (
         <div>
-            <button onClick={() => logout()}>로그아웃</button>
+            <button style={{ width: 120 }} onClick={() => logout()}>
+                로그아웃
+            </button>
         </div>
     );
 };
