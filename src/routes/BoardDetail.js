@@ -13,7 +13,10 @@ import useAuthStore from '../stores/useAuthStore';
 
 const BoardDetail = () => {
     const { id } = useParams();
-    const authData = useAuthStore();
+    const authData = useAuthStore(state => ({
+        isLoggedIn: state.isLoggedIn,
+        username: state.username
+    }));
     const [post, setPost] = useState(null);
     const [likes, setLikes] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -32,7 +35,6 @@ const BoardDetail = () => {
         const fetchPost = async () => {
             try {
                 const response = await axios.get(`${baseUrl}/api/boards/${id}`);
-                console.log("Fetched post data:", response.data.data);  // 확인용 로그
                 setPost(response.data.data);
             } catch (err) {
                 setError(err);
@@ -178,10 +180,10 @@ const BoardDetail = () => {
                         createdAt={formatDate(post.createAt)}
                         content={post.content}
                         isAuthor={authData?.username === post.username}
-                        initialImages={post.fileLinks}  // 이미지 데이터 전달
+                        initialImages={post.fileLinks}
                     />
                     <div className={styles.postContent}>
-                        <p>{post.content}</p> {/* 포스트 내용 표시 */}
+                        <p>{post.content}</p>
                     </div>
                     <FileLinks fileLinks={post.fileLinks} />
                     <LikeButton
@@ -207,6 +209,7 @@ const BoardDetail = () => {
                         replyFormVisible={replyFormVisible}
                         commentsLoading={commentsLoading}
                         commentsError={commentsError}
+                        currentUser={authData?.username}  // currentUser 전달
                     />
                 </>
             )}

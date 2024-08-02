@@ -15,7 +15,8 @@ const CommentList = ({
                          handleReplySubmit,
                          replyFormVisible,
                          commentsLoading,
-                         commentsError
+                         commentsError,
+                         currentUser
                      }) => {
     return (
         <div className={styles.commentsSection}>
@@ -37,6 +38,7 @@ const CommentList = ({
                         setReplyContent={setReplyContent}
                         handleReplySubmit={handleReplySubmit}
                         replyFormVisible={replyFormVisible}
+                        currentUser={currentUser}
                     />
                 ))
             )}
