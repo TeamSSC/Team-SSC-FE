@@ -65,10 +65,8 @@ const Main = () => {
                     setIsLoggedIn(true);
                     setPeriodId(userData?.trackName + String(userData?.period) + '기');
                     setUserPeriodId(userData?.periodId);
-                    console.log(userData);
 
-
-                    if (userData.periodId != null) {
+                    if (userData.periodId != null, userData.userStatus != 'PENDING') {
                         navigate(`/period/${userData.periodId}`);
                     } else {
                         navigate('/kakao/approvalStatus');
