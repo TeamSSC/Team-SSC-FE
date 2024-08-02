@@ -48,8 +48,8 @@ const Chat = () => {
         setStompClient(stomp);
 
         return () => {
-            if (stompClient) {
-                stompClient.deactivate();
+            if (stomp) {
+                stomp.deactivate();
             }
         };
     }, [periodId]); // Dependencies to recreate effect when token or periodId changes
