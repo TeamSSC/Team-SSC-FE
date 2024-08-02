@@ -18,7 +18,7 @@ const PeriodMyTeam = () => {
 
     const getMyTeam = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/teams/myteam`, {
+            const response = await axios.get(`ws:${baseUrl}/api/teams/myteam`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setTeamList(response.data.data);

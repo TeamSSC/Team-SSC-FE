@@ -11,6 +11,8 @@ const PeriodMyTeamDetail = ({ selectedTeam }) => {
 
     const token = localStorage.getItem('accessToken');
 
+    console.log(selectedTeam);
+
     const navigate = useNavigate();
 
     useEffect(() => {
