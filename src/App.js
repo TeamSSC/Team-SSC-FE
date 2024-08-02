@@ -16,6 +16,7 @@ import CreateNotice from "./routes/CreateNotice";
 import TeamLineUp from "./routes/TeamLineUp";
 import TeamProject from "./routes/TeamProject";
 import MemberCard from "./routes/MemberCard";
+import KakaoApprovalStatus from "./routes/KakaoApprovalStatus";
 
 export const baseUrl = 'http://localhost:8080';
 
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
             {
                 path: '/members/card',
                 element: <MemberCard />,
+            },
+            {
+                path: '/kakao/approvalStatus',
+                element: <KakaoApprovalStatus />,
             },
         ],
     },
