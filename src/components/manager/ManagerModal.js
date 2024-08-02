@@ -211,9 +211,6 @@ const ManagerModal = ({ onClose }) => {
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                 <button className={styles.closeButton} onClick={onClose}>X</button>
                 <div className={styles.modalHeader}>
-                    <button className={styles.modalButton} onClick={() => handleAction('statusChange')}>
-                        유저 상태 변경
-                    </button>
                     <button className={styles.modalButton} onClick={() => handleAction('notify')}>
                         알림 보내기
                     </button>
