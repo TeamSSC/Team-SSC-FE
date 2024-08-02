@@ -23,7 +23,15 @@ const TeamLineUp = () => {
     if (token) {
         try {
             const decodedToken = jwtDecode(token);
-            userRole = decodedToken?.roles?.[0] || '';
+            const roles = decodedToken?.roles || [];
+
+            // 'MANAGER'가 역할 목록에 포함되어 있으면 'MANAGER'로 설정
+            if (roles.includes('MANAGER')) {
+                userRole = 'MANAGER';
+            } else if (roles.includes('USER')) {
+                // 'USER'만 포함되어 있으면 'USER'로 설정
+                userRole = 'USER';
+            }
         } catch (error) {
             console.error('토큰 디코딩 오류:', error);
         }
