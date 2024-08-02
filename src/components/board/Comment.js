@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import styles from './Comment.module.scss';
 import CommentEditModal from './CommentEditModal';  // 모달 컴포넌트 import
 
@@ -13,7 +14,9 @@ const Comment = ({
                      setReplyContent,
                      handleReplySubmit,
                      replyFormVisible,
-                     currentUser
+                     currentUser,
+                     removeComment,  // 부모 컴포넌트에서 댓글 제거를 위한 함수
+                     removeReply      // 부모 컴포넌트에서 답글 제거를 위한 함수
                  }) => {
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
     const [updatedContent, setUpdatedContent] = useState(comment.content);
@@ -34,6 +37,29 @@ const Comment = ({
         }));
     };
 
+    const handleDelete = async (id, type) => {
+        if (window.confirm('정말로 삭제하시겠습니까?')) {
+            try {
+                const token = localStorage.getItem('accessToken');
+                await axios.delete(`http://localhost:8080/api/comments/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                // 댓글 삭제 시
+                if (type === 'comment') {
+                    removeComment(id);
+                }
+                // 답글 삭제 시
+                else if (type === 'reply') {
+                    removeReply(id);
+                }
+            } catch (error) {
+                console.error('Error deleting content:', error);
+            }
+        }
+    };
+
     return (
         <div className={styles.comment}>
             <p>
@@ -49,7 +75,12 @@ const Comment = ({
                     >
                         수정
                     </button>
-                    <button className={styles.deleteButton}>삭제</button>
+                    <button
+                        className={styles.deleteButton}
+                        onClick={() => handleDelete(comment.commentId, 'comment')}
+                    >
+                        삭제
+                    </button>
                 </div>
             )}
             {isEditModalVisible && (
@@ -87,7 +118,12 @@ const Comment = ({
                                     >
                                         수정
                                     </button>
-                                    <button className={styles.deleteButton}>삭제</button>
+                                    <button
+                                        className={styles.deleteButton}
+                                        onClick={() => handleDelete(reply.commentId, 'reply')}
+                                    >
+                                        삭제
+                                    </button>
                                 </div>
                             )}
                             {isReplyEditModalVisible[reply.commentId] && (
