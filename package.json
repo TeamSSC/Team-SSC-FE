@@ -18,6 +18,7 @@
     "react-router-dom": "^6.25.1",
     "react-scripts": "5.0.1",
     "react-select": "^5.8.0",
+    "routes": "^2.1.0",
     "sass": "^1.77.8",
     "socket.io-client": "^4.7.5",
     "sockjs-client": "^1.6.1",

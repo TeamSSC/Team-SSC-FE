@@ -11,8 +11,11 @@ import PeriodDetail from './routes/PeriodDetail.js';
 import Period from './routes/Period.js';
 import MemberCards from './routes/MemberCards.js';
 import Profile from './routes/Profile';
-import Notice from './routes/Notice';
-import CreateNotice from './routes/CreateNotice';
+import Notice from "./routes/Notice";
+import CreateNotice from "./routes/CreateNotice";
+import TeamLineUp from "./routes/TeamLineUp";
+import TeamProject from "./routes/TeamProject";
+import MemberCard from "./routes/MemberCard";
 
 export const baseUrl = 'http://localhost:8080';
 
@@ -67,8 +70,20 @@ const router = createBrowserRouter([
                 element: <CreateNotice />,
             },
             {
+                path: '/team/lineup',
+                element: <TeamLineUp />,
+            },
+            {
                 path: '/admin/:id',
                 element: <Period />,
+            },
+            {
+                path: '/team/project/:weekProgressId/:teamId', // weekProgressId와 teamId를 URL 파라미터로 받도록 변경
+                element: <TeamProject />,
+            },
+            {
+                path: '/members/card',
+                element: <MemberCard />,
             },
         ],
     },
