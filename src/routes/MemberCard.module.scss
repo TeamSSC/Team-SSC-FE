@@ -1,0 +1,106 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f4f4f4; // 배경 색상 추가
+  min-height: 100vh; // 최소 높이 설정
+}
+
+.title {
+  font-size: 28px; // 제목 폰트 크기 증가
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333; // 텍스트 색상 조정
+}
+
+.buttonGroup {
+  display: flex;
+  margin-bottom: 20px;
+  gap: 10px; // 버튼 간격 조정
+}
+
+.roleButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s; // 부드러운 전환 효과 추가
+
+  &.active {
+    background-color: #0056b3;
+  }
+
+  &:hover {
+    background-color: #0056b3;
+    transform: scale(1.05); // 버튼 확대 효과
+  }
+}
+
+.section {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 10px; // 패딩 추가
+  background-color: #fff; // 배경 색상 추가
+  border-radius: 8px; // 모서리 둥글기
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // 그림자 추가
+}
+
+.subtitle {
+  font-size: 22px; // 서브타이틀 폰트 크기 증가
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #444; // 텍스트 색상 조정
+}
+
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center; // 카드 중앙 정렬
+}
+
+.card {
+  width: calc(20% - 10px); // 카드 너비 설정
+  padding: 15px; // 패딩 조정
+  border: 1px solid #ddd; // 경계 색상 조정
+  border-radius: 8px; // 모서리 둥글기
+  background-color: #fff; // 카드 배경 색상
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // 카드 그림자 추가
+  transition: transform 0.3s; // 카드 확대 효과 추가
+
+  &:hover {
+    transform: scale(1.05); // 카드 확대 효과
+  }
+}
+
+.pagination {
+  display: flex;
+  gap: 5px;
+  justify-content: center; // 페이지 버튼 중앙 정렬
+}
+
+.pageButton {
+  padding: 8px 16px; // 버튼 패딩 조정
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s, color 0.3s; // 부드러운 전환 효과 추가
+
+  &:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+}
+
+.active {
+  background-color: #007bff;
+  color: #fff;
+}

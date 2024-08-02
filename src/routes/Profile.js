@@ -20,19 +20,17 @@ const Profile = () => {
     });
 
     const { userId } = useParams();
-
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate();
+    const authData = useAuthStore();
 
     const defaultProfileImage =
         'https://team-ssc.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%EB%B3%B8+%ED%94%84%EB%A1%9C%ED%95%84+%EC%82%AC%EC%A7%84.webp';
 
-    const authData = useAuthStore();
-    const navigate = useNavigate();
-
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/users/${userId}/profile`); // 나중에 {userId} 바꿔야함
+                const response = await axios.get(`http://localhost:8080/api/users/${userId}/profile`);
                 setProfile(response.data.data);
             } catch (error) {
                 console.error('Error fetching profile:', error);
@@ -40,7 +38,7 @@ const Profile = () => {
         };
 
         fetchProfile();
-    }, []);
+    }, [userId]);
 
     const handleEditProfile = () => {
         setIsModalOpen(true); // 모달 열기
@@ -50,8 +48,17 @@ const Profile = () => {
         setIsModalOpen(false); // 모달 닫기
     };
 
+    const handleBackClick = () => {
+        navigate(-1); // 뒤로가기
+    };
+
     return (
         <div className={styles.profileContainer}>
+            <div className={styles.profileHeader}>
+                <button className={styles.backButton} onClick={handleBackClick}>
+                    &larr; 뒤로가기
+                </button>
+            </div>
             <div className={styles.profilePhoto}>
                 <img
                     src={profile.profileImage || defaultProfileImage}
