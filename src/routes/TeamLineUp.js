@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import useAuthStore from "../stores/useAuthStore";
+import { useNavigate } from 'react-router-dom';
 import styles from './TeamLineUp.module.scss';
 import { jwtDecode } from 'jwt-decode';
 
@@ -13,21 +14,22 @@ const TeamLineUp = () => {
     const [isTeamCreationModalOpen, setIsTeamCreationModalOpen] = useState(false);
     const [newTeamSection, setNewTeamSection] = useState('A');
     const [newTeamUserEmails, setNewTeamUserEmails] = useState([]);
-    const [emailCount, setEmailCount] = useState(5); // 기본값 5명
-    const [teams, setTeams] = useState([]); // 팀 데이터 상태 추가
-    const [teamDetails, setTeamDetails] = useState({}); // 팀 상세 정보 상태 추가
+    const [emailCount, setEmailCount] = useState(5);
+    const [teams, setTeams] = useState([]);
+    const [teamDetails, setTeamDetails] = useState({});
     let userRole = '';
 
-    // LocalStorage에서 액세스 토큰을 가져와서 역할 정보 추출
     const token = localStorage.getItem('accessToken');
     if (token) {
         try {
             const decodedToken = jwtDecode(token);
-            userRole = decodedToken?.roles?.[0] || ''; // 토큰에서 첫 번째 역할 정보 추출
+            userRole = decodedToken?.roles?.[0] || '';
         } catch (error) {
             console.error('토큰 디코딩 오류:', error);
         }
     }
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchWeeks = async () => {
@@ -43,7 +45,7 @@ const TeamLineUp = () => {
                     status: getStatusLabel(week.status)
                 }));
                 setWeeks(weekData);
-                setSelectedWeek(weekData[0]?.id || ''); // 기본적으로 첫 번째 주차를 선택
+                setSelectedWeek(weekData[0]?.id || '');
                 setLoading(false);
             } catch (error) {
                 console.error('주차 정보 조회 실패:', error);
@@ -69,7 +71,6 @@ const TeamLineUp = () => {
                     const teamsData = response.data.data || [];
                     setTeams(teamsData);
 
-                    // 팀 상세 데이터 가져오기
                     for (const team of teamsData) {
                         const teamResponse = await axios.get(`http://localhost:8080/api/weekProgress/${selectedWeek}/teams/${team.id}/users`, {
                             headers: {
@@ -118,8 +119,8 @@ const TeamLineUp = () => {
     const closeTeamCreationModal = () => {
         setIsTeamCreationModalOpen(false);
         setNewTeamSection('A');
-        setEmailCount(5); // 모달 닫을 때 기본값으로 리셋
-        setNewTeamUserEmails(Array(5).fill('')); // 초기 5개의 빈 이메일 필드
+        setEmailCount(5);
+        setNewTeamUserEmails(Array(5).fill(''));
     };
 
     const handleEmailCountChange = (event) => {
@@ -127,7 +128,7 @@ const TeamLineUp = () => {
         setEmailCount(count);
         setNewTeamUserEmails(prevEmails => {
             const newEmails = Array(count).fill('');
-            return newEmails.slice(0, count); // 선택된 개수만큼만 유지
+            return newEmails.slice(0, count);
         });
     };
 
@@ -143,7 +144,7 @@ const TeamLineUp = () => {
         try {
             const userEmails = newTeamUserEmails.filter(email => email.trim() !== '');
             const response = await axios.post(`http://localhost:8080/api/weekProgress/${selectedWeek}/teams`, {
-                periodId: authData.userPeriodId, // userPeriodId 사용
+                periodId: authData.userPeriodId,
                 section: newTeamSection,
                 userEmails
             }, {
@@ -152,12 +153,16 @@ const TeamLineUp = () => {
                 }
             });
             alert('팀이 생성되었습니다.');
-            closeTeamCreationModal(); // 모달 닫기
+            closeTeamCreationModal();
             window.location.reload();
         } catch (error) {
             console.error('팀 생성 오류:', error);
             alert('팀 생성 중 오류가 발생했습니다.');
         }
+    };
+
+    const handleTeamClick = (teamId, teamName) => {
+        navigate(`/team/project/${selectedWeek}/${teamId}`, { state: { teamName } }); // 수정된 라우팅 경로
     };
 
     if (loading) return <p>Loading...</p>;
@@ -200,7 +205,11 @@ const TeamLineUp = () => {
                 <div className={styles.cardContainer}>
                     {teams.length > 0 ? (
                         teams.map(team => (
-                            <div className={styles.card} key={team.id}>
+                            <div
+                                className={styles.card}
+                                key={team.id}
+                                onClick={() => handleTeamClick(team.id, team.teamName)} // 수정된 핸들러
+                            >
                                 <div className={styles.cardTitle}>{team.teamName}</div>
                                 <div className={styles.cardContent}>
                                     {teamDetails[team.id]?.userNames?.length > 0 ? (
