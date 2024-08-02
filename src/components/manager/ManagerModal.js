@@ -2,36 +2,82 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './ManagerModal.module.scss';
 import Pagination from '../pagination/Pagination';
+import useAuthStore from '../../stores/useAuthStore';
 
 const ManagerModal = ({ onClose }) => {
+    const authData = useAuthStore();
     const [pendingUsers, setPendingUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [selectedUsers, setSelectedUsers] = useState({});
+    const [isCreatePeriodModalOpen, setIsCreatePeriodModalOpen] = useState(false);
+    const [newPeriodName, setNewPeriodName] = useState('');
+    const [isChangePeriodStatusModalOpen, setIsChangePeriodStatusModalOpen] = useState(false);
+    const [weeks, setWeeks] = useState([]);
+    const [selectedPeriod, setSelectedPeriod] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('');
+    const [loadingPeriods, setLoadingPeriods] = useState(true);
 
     useEffect(() => {
-        const token = localStorage.getItem('accessToken');
-
-        if (token) {
-            axios.get('http://localhost:8080/api/users/signup/pend', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
-                params: {
-                    page: currentPage
-                }
-            })
-                .then(response => {
-                    if (response.data.message === '회원가입 승인 대기자가 조회 되었습니다.') {
-                        setPendingUsers(response.data.data.content);
-                        setTotalPages(response.data.data.totalPages);
+        const fetchPendingUsers = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/users/signup/pend', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                    },
+                    params: {
+                        page: currentPage
                     }
-                })
-                .catch(error => {
-                    console.error('API 호출 오류:', error);
                 });
-        }
+                if (response.data.message === '회원가입 승인 대기자가 조회 되었습니다.') {
+                    setPendingUsers(response.data.data.content);
+                    setTotalPages(response.data.data.totalPages);
+                }
+            } catch (error) {
+                console.error('회원가입 대기자 조회 오류:', error);
+            }
+        };
+
+        fetchPendingUsers();
     }, [currentPage]);
+
+    useEffect(() => {
+        const fetchWeeks = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/weekProgress/myweekProgress', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                    }
+                });
+                const weekData = response.data.data.map(week => ({
+                    id: week.id,
+                    name: week.name,
+                    status: getStatusLabel(week.status)
+                }));
+                setWeeks(weekData);
+                setSelectedPeriod(weekData[0]?.id || '');
+                setLoadingPeriods(false);
+            } catch (error) {
+                console.error('주차 목록 조회 오류:', error);
+                setLoadingPeriods(false);
+            }
+        };
+
+        fetchWeeks();
+    }, []);
+
+    const getStatusLabel = (status) => {
+        switch (status) {
+            case 'PLANNED':
+                return '진행 예정';
+            case 'ONGOING':
+                return '현재 주차';
+            case 'COMPLETED':
+                return '지난 주차';
+            default:
+                return '알 수 없음';
+        }
+    };
 
     const handlePageChange = async (newPage) => {
         if (newPage > 0 && newPage) {
@@ -94,16 +140,88 @@ const ManagerModal = ({ onClose }) => {
         }
     };
 
+    const openCreatePeriodModal = () => {
+        setIsCreatePeriodModalOpen(true);
+    };
+
+    const closeCreatePeriodModal = () => {
+        setIsCreatePeriodModalOpen(false);
+        setNewPeriodName(''); // 모달 닫을 때 입력 필드 초기화
+    };
+
+    const handleCreatePeriod = async () => {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            try {
+                await axios.post('http://localhost:8080/api/weekProgress', {
+                    name: newPeriodName
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                alert('주차가 생성되었습니다.');
+                closeCreatePeriodModal(); // 모달 닫기
+            } catch (error) {
+                console.error('주차 생성 오류:', error);
+                alert('주차 생성 중 오류가 발생했습니다.');
+            }
+        } else {
+            alert('로그인 토큰이 없습니다.');
+        }
+    };
+
+    const openChangePeriodStatusModal = () => {
+        setIsChangePeriodStatusModalOpen(true);
+    };
+
+    const closeChangePeriodStatusModal = () => {
+        setIsChangePeriodStatusModalOpen(false);
+        setSelectedPeriod('');
+        setSelectedStatus('');
+    };
+
+    const handleChangePeriodStatus = async () => {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            try {
+                await axios.patch(`http://localhost:8080/api/weekProgress/${selectedPeriod}`, {
+                    status: selectedStatus
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                alert('주차 상태가 변경되었습니다.');
+                closeChangePeriodStatusModal();
+                window.location.reload();
+            } catch (error) {
+                console.error('주차 상태 변경 오류:', error);
+                alert('주차 상태 변경 중 오류가 발생했습니다.');
+            }
+        } else {
+            alert('로그인 토큰이 없습니다.');
+        }
+    };
+
+    if (loadingPeriods) return <p>Loading...</p>;
+
     return (
         <div className={styles.modalOverlay} onClick={onClose}>
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                 <button className={styles.closeButton} onClick={onClose}>X</button>
                 <div className={styles.modalHeader}>
-                    <button className={styles.modalButton}>
+                    <button className={styles.modalButton} onClick={() => handleAction('statusChange')}>
                         유저 상태 변경
                     </button>
-                    <button className={styles.modalButton}>
+                    <button className={styles.modalButton} onClick={() => handleAction('notify')}>
                         알림 보내기
+                    </button>
+                    <button className={`${styles.modalButton} ${styles.createPeriod}`} onClick={openCreatePeriodModal}>
+                        주차 생성
+                    </button>
+                    <button className={`${styles.modalButton} ${styles.periodStatusChange}`} onClick={openChangePeriodStatusModal}>
+                        주차 상태 변경
                     </button>
                 </div>
                 <div className={styles.modalBody}>
@@ -135,19 +253,76 @@ const ManagerModal = ({ onClose }) => {
                     />
                     <div className={styles.actionButtons}>
                         <button
-                            className={styles.modalButton}
+                            className={`${styles.modalButton} ${styles.actionButton}`}
                             onClick={() => handleAction('approve')}
                         >
                             승인
                         </button>
                         <button
-                            className={styles.modalButton}
-                            onClick={() => handleAction('refusal')}
+                            className={`${styles.modalButton} ${styles.actionButton}`}
+                            onClick={() => handleAction('reject')}
                         >
                             거부
                         </button>
                     </div>
                 </div>
+                {isCreatePeriodModalOpen && (
+                    <div className={styles.createPeriodOverlay} onClick={closeCreatePeriodModal}>
+                        <div className={styles.createPeriodContent} onClick={(e) => e.stopPropagation()}>
+                            <button className={styles.closeButton} onClick={closeCreatePeriodModal}>X</button>
+                            <h2>주차 생성</h2>
+                            <input
+                                type="text"
+                                value={newPeriodName}
+                                onChange={(e) => setNewPeriodName(e.target.value)}
+                                placeholder="주차 이름"
+                                className={styles.input}
+                            />
+                            <button
+                                className={`${styles.modalButton} ${styles.createPeriodButton}`}
+                                onClick={handleCreatePeriod}
+                            >
+                                생성
+                            </button>
+                        </div>
+                    </div>
+                )}
+                {isChangePeriodStatusModalOpen && (
+                    <div className={styles.changePeriodStatusOverlay} onClick={closeChangePeriodStatusModal}>
+                        <div className={styles.changePeriodStatusContent} onClick={(e) => e.stopPropagation()}>
+                            <button className={styles.closeButton} onClick={closeChangePeriodStatusModal}>X</button>
+                            <h2>주차 상태 변경</h2>
+                            <select
+                                value={selectedPeriod}
+                                onChange={(e) => setSelectedPeriod(e.target.value)}
+                                className={styles.select}
+                            >
+                                <option value="" disabled>주차를 선택하세요</option>
+                                {weeks.map(week => (
+                                    <option key={week.id} value={week.id}>
+                                        {week.name} ({week.status})
+                                    </option>
+                                ))}
+                            </select>
+                            <select
+                                value={selectedStatus}
+                                onChange={(e) => setSelectedStatus(e.target.value)}
+                                className={styles.select}
+                            >
+                                <option value="" disabled>상태를 선택하세요</option>
+                                <option value="PLANNED">진행 예정</option>
+                                <option value="ONGOING">현재 주차</option>
+                                <option value="COMPLETED">지난 주차</option>
+                            </select>
+                            <button
+                                className={`${styles.modalButton} ${styles.changePeriodStatusButton}`}
+                                onClick={handleChangePeriodStatus}
+                            >
+                                변경
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

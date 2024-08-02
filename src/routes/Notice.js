@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import PostItem from '../components/board/PostItem';
 import Pagination from '../components/pagination/Pagination';
 import styles from './Notice.module.scss';
-import useAuthStore from "../stores/useAuthStore";
+import useAuthStore from '../stores/useAuthStore';
+import { jwtDecode } from 'jwt-decode'; // jwt-decode 라이브러리 import
 
 const API_URL = 'http://localhost:8080/api/notices';
 
@@ -14,6 +15,7 @@ const Notice = () => {
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [isManager, setIsManager] = useState(false); // 관리자 여부 상태 추가
 
     const authData = useAuthStore(); // useAuthStore를 사용해 authData를 가져옴
 
@@ -32,7 +34,7 @@ const Notice = () => {
             } catch (err) {
                 console.error(err);
                 if (err.response && err.response.status === 400) {
-                    console.error('잘못된 페이지 번호:', error);
+                    console.error('잘못된 페이지 번호:', err);
                     setCurrentPage(prevPage => Math.max(prevPage - 1, 1));
                 } else {
                     setError(err);
@@ -43,6 +45,27 @@ const Notice = () => {
 
         fetchNotices();
     }, [currentPage]);
+
+    useEffect(() => {
+        // Check if the user is a manager
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            try {
+                const decodedToken = jwtDecode(token);
+                const userRole = decodedToken?.roles?.[0] || ''; // 첫 번째 역할 정보 추출
+                if (userRole === 'MANAGER') {
+                    setIsManager(true);
+                } else {
+                    setIsManager(false);
+                }
+            } catch (error) {
+                console.error('토큰 디코딩 오류:', error);
+                setIsManager(false);
+            }
+        } else {
+            setIsManager(false);
+        }
+    }, []);
 
     const handlePageChange = (pageNumber) => {
         if (pageNumber > 0 && pageNumber <= totalPages) {
@@ -57,9 +80,11 @@ const Notice = () => {
         <div className={styles.noticeContainer}>
             <header className={styles.header}>
                 <h1>{authData?.periodId} 공지사항</h1>
-                <Link to="/notice/create" className={styles.createPostButton}>
-                    공지사항 생성
-                </Link>
+                {isManager && ( // 매니저일 때만 버튼 표시
+                    <Link to="/notice/create" className={styles.createPostButton}>
+                        공지사항 생성
+                    </Link>
+                )}
             </header>
             <div className={styles.noticeList}>
                 {notices.length > 0 ? (
