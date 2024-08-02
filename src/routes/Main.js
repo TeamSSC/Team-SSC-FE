@@ -71,7 +71,7 @@ const Main = () => {
                     if (userData.periodId != null) {
                         navigate(`/period/${userData.periodId}`);
                     } else {
-                        navigate('/');
+                        navigate('/kakao/approvalStatus');
                     }
                 } catch (err) {
                     console.error(err);
