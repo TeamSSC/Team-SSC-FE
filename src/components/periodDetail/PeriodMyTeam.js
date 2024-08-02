@@ -18,7 +18,7 @@ const PeriodMyTeam = () => {
 
     const getMyTeam = async () => {
         try {
-            const response = await axios.get(`ws:${baseUrl}/api/teams/myteam`, {
+            const response = await axios.get(`${baseUrl}/api/teams/myteam`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setTeamList(response.data.data);
@@ -45,7 +45,7 @@ const PeriodMyTeam = () => {
                 {teamList?.map((e) => {
                     return (
                         <option key={e.id} value={e.id}>
-                            {e.id}
+                            {e.teamName}
                         </option>
                     );
                 })}

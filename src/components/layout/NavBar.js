@@ -23,6 +23,18 @@ const NavBar = () => {
         }
     }
 
+    const handleButtonClick = () => {
+        if (authData?.isLoggedIn) {
+            if (userRole === 'ADMIN') {
+                navigate('/admin');
+            } else {
+                navigate(`/period/${authData.userPeriodId}`);
+            }
+        } else {
+            navigate('/');
+        }
+    };
+
     const handleManagerPageClick = () => {
         setManagerModalOpen(true);
     };
@@ -34,7 +46,7 @@ const NavBar = () => {
     return (
         <>
             <div className={styles.navBar_wrapper}>
-                <button className={styles.navBar_button} onClick={() => navigate('/')}>
+                <button className={styles.navBar_button} onClick={handleButtonClick}>
                     Team SSC
                 </button>
                 {authData?.isLoggedIn ? (
