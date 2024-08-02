@@ -48,6 +48,7 @@ const Track = () => {
             console.error('API 호출 에러:', err);
         }
     };
+
     const deleteTrack = async (id) => {
         const confirmed = window.confirm('정말로 삭제하시겠습니까?');
         if (confirmed) {

@@ -1,0 +1,42 @@
+.periodList_wrapper {
+    display: flex;
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.period_info_wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; /* 각 period_info_wrapper 간격을 줌 */
+}
+
+.info_button {
+    background-color: white;
+    color: black;
+    width: 80%;
+}
+
+.info_button:hover {
+    background-color: #f0f0f0; /* 호버 시 배경색 변경 */
+    color: #333; /* 호버 시 글자색 변경 */
+    border-color: #999; /* 호버 시 테두리 색상 변경 */
+}
+
+.period_button_wrapper {
+    display: flex;
+    gap: 10px; /* 버튼들 간격을 줌 */
+    button {
+        width: 150px;
+    }
+}
+
+.delete_button {
+    background-color: #ff3114;
+}
+.delete_button:hover {
+    background-color: #a01300;
+}

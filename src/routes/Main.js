@@ -27,8 +27,8 @@ const Main = () => {
             localStorage.setItem('refreshToken', userData?.refreshToken);
             setUsername(userData?.username);
             setIsLoggedIn(true);
-            setPeriodId(userData.trackName + String(userData.period) + '기');
-            setUserPeriodId(userData.periodId);
+            setPeriodId(userData?.trackName + String(userData?.period) + '기');
+            setUserPeriodId(userData?.periodId);
             if (userData.periodId != null) {
                 navigate(`/period/${userData.periodId}`);
             } else {
