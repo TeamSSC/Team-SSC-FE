@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import useAuthStore from "../stores/useAuthStore";
+import useAuthStore from '../stores/useAuthStore';
 import { useNavigate } from 'react-router-dom';
 import styles from './TeamLineUp.module.scss';
 import { jwtDecode } from 'jwt-decode';
+import { baseUrl } from '../App';
 
 const TeamLineUp = () => {
     const authData = useAuthStore();
@@ -44,13 +45,13 @@ const TeamLineUp = () => {
             try {
                 const response = await axios.get('http://localhost:8080/api/weekProgress/myweekProgress', {
                     headers: {
-                        Authorization: `Bearer ${token}`
-                    }
+                        Authorization: `Bearer ${token}`,
+                    },
                 });
-                const weekData = response.data.data.map(week => ({
+                const weekData = response.data.data.map((week) => ({
                     id: week.id,
                     name: week.name,
-                    status: getStatusLabel(week.status)
+                    status: getStatusLabel(week.status),
                 }));
                 setWeeks(weekData);
                 setSelectedWeek(weekData[0]?.id || '');
@@ -68,26 +69,32 @@ const TeamLineUp = () => {
         if (selectedWeek && selectedSection) {
             const fetchTeams = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8080/api/weekProgress/${selectedWeek}/teams/lineup`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        },
-                        params: {
-                            section: selectedSection
+                    const response = await axios.get(
+                        `http://localhost:8080/api/weekProgress/${selectedWeek}/teams/lineup`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                            params: {
+                                section: selectedSection,
+                            },
                         }
-                    });
+                    );
                     const teamsData = response.data.data || [];
                     setTeams(teamsData);
 
                     for (const team of teamsData) {
-                        const teamResponse = await axios.get(`http://localhost:8080/api/weekProgress/${selectedWeek}/teams/${team.id}/users`, {
-                            headers: {
-                                Authorization: `Bearer ${token}`
+                        const teamResponse = await axios.get(
+                            `http://localhost:8080/api/weekProgress/${selectedWeek}/teams/${team.id}/users`,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                },
                             }
-                        });
-                        setTeamDetails(prevDetails => ({
+                        );
+                        setTeamDetails((prevDetails) => ({
                             ...prevDetails,
-                            [team.id]: teamResponse.data.data
+                            [team.id]: teamResponse.data.data,
                         }));
                     }
                 } catch (error) {
@@ -134,14 +141,14 @@ const TeamLineUp = () => {
     const handleEmailCountChange = (event) => {
         const count = parseInt(event.target.value, 10);
         setEmailCount(count);
-        setNewTeamUserEmails(prevEmails => {
+        setNewTeamUserEmails((prevEmails) => {
             const newEmails = Array(count).fill('');
             return newEmails.slice(0, count);
         });
     };
 
     const handleEmailChange = (index, value) => {
-        setNewTeamUserEmails(prevEmails => {
+        setNewTeamUserEmails((prevEmails) => {
             const updatedEmails = [...prevEmails];
             updatedEmails[index] = value;
             return updatedEmails;
@@ -150,22 +157,44 @@ const TeamLineUp = () => {
 
     const handleCreateTeam = async () => {
         try {
-            const userEmails = newTeamUserEmails.filter(email => email.trim() !== '');
-            const response = await axios.post(`http://localhost:8080/api/weekProgress/${selectedWeek}/teams`, {
-                periodId: authData.userPeriodId,
-                section: newTeamSection,
-                userEmails
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
+            const userEmails = newTeamUserEmails.filter((email) => email.trim() !== '');
+            const response = await axios.post(
+                `http://localhost:8080/api/weekProgress/${selectedWeek}/teams`,
+                {
+                    periodId: authData.userPeriodId,
+                    section: newTeamSection,
+                    userEmails,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 }
-            });
+            );
             alert('팀이 생성되었습니다.');
+            createTeamProject(response.data.data.id);
             closeTeamCreationModal();
             window.location.reload();
         } catch (error) {
             console.error('팀 생성 오류:', error);
             alert('팀 생성 중 오류가 발생했습니다.');
+        }
+    };
+
+    const createTeamProject = async (teamId) => {
+        try {
+            const response = await axios.post(
+                `${baseUrl}/api/weekProgress/${selectedWeek}/teams/${teamId}/page`,
+                {
+                    projectIntro: '',
+                    notionLink: '',
+                    gitLink: '',
+                    figmaLink: '',
+                },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+        } catch (err) {
+            console.error(err);
         }
     };
 
@@ -195,13 +224,8 @@ const TeamLineUp = () => {
                 </div>
                 <div className={styles.filterGroup}>
                     <label htmlFor="week">주차 선택:</label>
-                    <select
-                        id="week"
-                        value={selectedWeek}
-                        onChange={handleWeekChange}
-                        className={styles.weekSelect}
-                    >
-                        {weeks.map(week => (
+                    <select id="week" value={selectedWeek} onChange={handleWeekChange} className={styles.weekSelect}>
+                        {weeks.map((week) => (
                             <option key={week.id} value={week.id}>
                                 {week.name} ({week.status})
                             </option>
@@ -212,7 +236,7 @@ const TeamLineUp = () => {
             <div className={styles.teamLineUpContent}>
                 <div className={styles.cardContainer}>
                     {teams.length > 0 ? (
-                        teams.map(team => (
+                        teams.map((team) => (
                             <div
                                 className={styles.card}
                                 key={team.id}
@@ -245,7 +269,9 @@ const TeamLineUp = () => {
             {isTeamCreationModalOpen && (
                 <div className={styles.modalOverlay} onClick={closeTeamCreationModal}>
                     <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                        <button className={styles.closeButton} onClick={closeTeamCreationModal}>X</button>
+                        <button className={styles.closeButton} onClick={closeTeamCreationModal}>
+                            X
+                        </button>
                         <h2>팀 생성</h2>
                         <label>
                             섹션:
@@ -260,11 +286,7 @@ const TeamLineUp = () => {
                         </label>
                         <label>
                             팀원 수:
-                            <select
-                                value={emailCount}
-                                onChange={handleEmailCountChange}
-                                className={styles.select}
-                            >
+                            <select value={emailCount} onChange={handleEmailCountChange} className={styles.select}>
                                 <option value="1">1명</option>
                                 <option value="2">2명</option>
                                 <option value="3">3명</option>
