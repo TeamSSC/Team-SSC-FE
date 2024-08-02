@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import TeamProjectModal from '../components/team/TeamProjectModal';
 import styles from './TeamProject.module.scss';
 import useAuthStore from '../stores/useAuthStore';
@@ -26,6 +26,8 @@ const TeamProject = () => {
     const [gitLink, setGitLink] = useState('');
     const [notionLink, setNotionLink] = useState('');
     const [projectIntro, setProjectIntro] = useState('');
+    const [memberList, setMemberList] = useState([]);
+    const [memberIdList, setMemberIdList] = useState([]);
 
     const token = localStorage.getItem('accessToken');
 
@@ -35,8 +37,11 @@ const TeamProject = () => {
 
     useEffect(() => {
         getTeam();
+        getTeamMembers();
         setIsLoading(false);
     }, []);
+
+    const navigate = useNavigate();
 
     const getTeam = async () => {
         try {
@@ -50,6 +55,19 @@ const TeamProject = () => {
             setFigmaLink(data.figmaLink);
             setGitLink(data.gitLink);
             setNotionLink(data.notionLink);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const getTeamMembers = async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/api/weekProgress/${weekProgressId}/teams/${teamId}/users`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            console.log(response.data.data);
+            setMemberList(response?.data.data.userNames);
+            setMemberIdList(response?.data.data.userIds);
         } catch (err) {
             console.error(err);
         }
@@ -83,6 +101,14 @@ const TeamProject = () => {
     }
     return (
         <div className={styles.teamProjectContainer}>
+            {memberIdList?.length > 0 &&
+                memberIdList?.map((e, i) => {
+                    return (
+                        <button key={i} onClick={() => navigate(`/profile/${e}`)}>
+                            {memberList[i]}
+                        </button>
+                    );
+                })}
             <p>프로젝트 소개 : {projectIntro}</p>
             <p>
                 깃허브 링크 : <a href={gitLink}>{gitLink}</a>
