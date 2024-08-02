@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Client } from '@stomp/stompjs';
+import useAuthStore from '../../stores/useAuthStore';
 
 const Chat = () => {
     const [inputMessage, setInputMessage] = useState('');
@@ -8,6 +9,7 @@ const Chat = () => {
     const [stompClient, setStompClient] = useState(null);
     const token = localStorage.getItem('accessToken');
     const { periodId } = useParams();
+    const authData = useAuthStore();
 
     useEffect(() => {
         const stomp = new Client({
@@ -66,15 +68,13 @@ const Chat = () => {
         }
     };
 
-    console.log(messages);
-
     return (
         <div>
-            <h1>Chat</h1>
+            <h1>{authData.periodId} 전체 채팅</h1>
             <div>
                 {messages.map((msg, index) => (
                     <div key={index}>
-                        {msg.content} - {msg.sender}
+                        {msg.sender}: {msg.content}
                     </div>
                 ))}
             </div>

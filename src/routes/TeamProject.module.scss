@@ -1,174 +1,180 @@
 .teamProjectContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
 }
 
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  max-width: 1200px;
-  margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 20px;
 }
 
 .editButton {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
 .editButton:hover {
-  opacity: 0.8;
+    opacity: 0.8;
 }
 
 .errorContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* 화면 전체 높이 */
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 화면 전체 높이 */
+    text-align: center;
 }
 
 .errorMessage {
-  font-size: 25px;
-  margin-bottom: 20px;
+    font-size: 25px;
+    margin-bottom: 20px;
 }
 
 .buttonContainer {
-  display: flex;
-  gap: 10px;
+    display: flex;
+    gap: 10px;
 }
 
-.createButton, .backButton {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
+.createButton,
+.backButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
 .backButton {
-  background-color: #6c757d; /* 이전 버튼을 위한 다른 색상 */
+    background-color: #6c757d; /* 이전 버튼을 위한 다른 색상 */
 }
 
-.createButton:hover, .backButton:hover {
-  opacity: 0.8;
+.createButton:hover,
+.backButton:hover {
+    opacity: 0.8;
 }
 
-.createButton:focus, .backButton:focus {
-  outline: none;
+.createButton:focus,
+.backButton:focus {
+    outline: none;
 }
 
 .teamSection {
-  width: 100%;
-  max-width: 1200px;
-  margin-bottom: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 20px;
 }
 
 .leaderInfo {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .memberCards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .memberCard {
-  background-color: #f8f9fa;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: 200px;
-  text-align: center;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 200px;
+    text-align: center;
 }
 
 .memberCard:hover {
-  background-color: #e9ecef;
+    background-color: #e9ecef;
 }
 
 .infoSection {
-  width: 100%;
-  max-width: 1200px;
-  margin-bottom: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 20px;
 }
 
 .infoItem {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .infoItem label {
-  font-weight: bold;
+    font-weight: bold;
 }
 
-.infoItem p, .infoItem a {
-  margin: 5px 0;
+.infoItem p,
+.infoItem a {
+    margin: 5px 0;
 }
 
 .chatSection {
-  width: 100%;
-  max-width: 1200px;
+    width: 100%;
+    max-width: 1200px;
 }
 
 .chatBox {
-  background-color: #f1f1f1;
-  border: 1px solid #ddd;
-  padding: 15px;
-  border-radius: 8px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
 }
 
 .editModal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  width: 400px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
 }
 
 .editModal h2 {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .editModal label {
-  display: block;
-  margin-bottom: 10px;
+    display: block;
+    margin-bottom: 10px;
 }
 
-.editModal input, .editModal textarea {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.editModal input,
+.editModal textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 .editModal button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
 }
 
 .editModal button:hover {
-  opacity: 0.8;
+    opacity: 0.8;
 }
