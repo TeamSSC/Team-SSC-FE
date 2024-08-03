@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Select from 'react-select';
-import styles from './ProfileModal.module.scss'; // 모달의 스타일을 설정합니다.
+import styles from './ProfileModal.module.scss';
+import {baseUrl} from "../../App"; // 모달의 스타일을 설정합니다.
 
 const mbtiOptions = [
     { value: 'INTJ', label: 'INTJ' },
@@ -37,7 +38,7 @@ const ProfileModal = ({ onClose }) => {
         // 프로필 내용을 가져와서 상태를 초기화합니다.
         const fetchProfileData = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/users/profile', {
+                const response = await axios.get(`${baseUrl}/api/users/profile`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                     },
@@ -69,7 +70,7 @@ const ProfileModal = ({ onClose }) => {
         formData.append('file', selectedFile);
 
         try {
-            await axios.patch('http://localhost:8080/api/users/profile/image/update', formData, {
+            await axios.patch(`${baseUrl}/api/users/profile/image/update`, formData, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'multipart/form-data',
@@ -108,7 +109,7 @@ const ProfileModal = ({ onClose }) => {
         }
 
         try {
-            await axios.patch('http://localhost:8080/api/users/profile/update', dataToUpdate, {
+            await axios.patch(`${baseUrl}/api/users/profile/update`, dataToUpdate, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json',

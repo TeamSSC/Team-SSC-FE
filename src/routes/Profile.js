@@ -3,7 +3,8 @@ import axios from 'axios';
 import styles from './Profile.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuthStore from '../stores/useAuthStore';
-import Modal from '../components/profile/ProfileModal'; // 모달 컴포넌트를 불러옵니다.
+import Modal from '../components/profile/ProfileModal';
+import {baseUrl} from "../App"; // 모달 컴포넌트를 불러옵니다.
 
 const Profile = () => {
     const [profile, setProfile] = useState({
@@ -30,7 +31,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/users/${userId}/profile`);
+                const response = await axios.get(`${baseUrl}/api/users/${userId}/profile`);
                 setProfile(response.data.data);
             } catch (error) {
                 console.error('Error fetching profile:', error);

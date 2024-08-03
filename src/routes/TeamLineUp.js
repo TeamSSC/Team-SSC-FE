@@ -43,7 +43,7 @@ const TeamLineUp = () => {
     useEffect(() => {
         const fetchWeeks = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/weekProgress/myweekProgress', {
+                const response = await axios.get(`${baseUrl}/api/weekProgress/myweekProgress`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -70,7 +70,7 @@ const TeamLineUp = () => {
             const fetchTeams = async () => {
                 try {
                     const response = await axios.get(
-                        `http://localhost:8080/api/weekProgress/${selectedWeek}/teams/lineup`,
+                        `${baseUrl}/api/weekProgress/${selectedWeek}/teams/lineup`,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -85,7 +85,7 @@ const TeamLineUp = () => {
 
                     for (const team of teamsData) {
                         const teamResponse = await axios.get(
-                            `http://localhost:8080/api/weekProgress/${selectedWeek}/teams/${team.id}/users`,
+                            `${baseUrl}/api/weekProgress/${selectedWeek}/teams/${team.id}/users`,
                             {
                                 headers: {
                                     Authorization: `Bearer ${token}`,
@@ -159,7 +159,7 @@ const TeamLineUp = () => {
         try {
             const userEmails = newTeamUserEmails.filter((email) => email.trim() !== '');
             const response = await axios.post(
-                `http://localhost:8080/api/weekProgress/${selectedWeek}/teams`,
+                `${baseUrl}/api/weekProgress/${selectedWeek}/teams`,
                 {
                     periodId: authData.userPeriodId,
                     section: newTeamSection,

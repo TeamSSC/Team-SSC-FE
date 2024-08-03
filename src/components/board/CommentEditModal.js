@@ -1,7 +1,8 @@
 // src/components/board/CommentEditModal.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import styles from './CommentEditModal.module.scss';  // CSS 파일 import
+import styles from './CommentEditModal.module.scss';
+import {baseUrl} from "../../App";  // CSS 파일 import
 
 const CommentEditModal = ({ id, initialContent, type, onClose, onUpdate }) => {
     const [content, setContent] = useState(initialContent);
@@ -9,7 +10,7 @@ const CommentEditModal = ({ id, initialContent, type, onClose, onUpdate }) => {
     const handleUpdate = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.patch(`http://localhost:8080/api/comments/${id}`, { content }, {
+            await axios.patch(`${baseUrl}/api/comments/${id}`, { content }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
