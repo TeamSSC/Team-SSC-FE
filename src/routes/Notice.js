@@ -52,8 +52,8 @@ const Notice = () => {
         if (token) {
             try {
                 const decodedToken = jwtDecode(token);
-                const userRole = decodedToken?.roles?.[0] || ''; // 첫 번째 역할 정보 추출
-                if (userRole === 'MANAGER') {
+                const roles = decodedToken?.roles || []; // 첫 번째 역할 정보 추출
+                if (roles.includes('MANAGER')) {
                     setIsManager(true);
                 } else {
                     setIsManager(false);
