@@ -11,14 +11,14 @@ import PeriodDetail from './routes/PeriodDetail.js';
 import Period from './routes/Period.js';
 import MemberCards from './routes/MemberCards.js';
 import Profile from './routes/Profile';
-import Notice from "./routes/Notice";
-import CreateNotice from "./routes/CreateNotice";
-import TeamLineUp from "./routes/TeamLineUp";
-import TeamProject from "./routes/TeamProject";
-import MemberCard from "./routes/MemberCard";
-import KakaoApprovalStatus from "./routes/KakaoApprovalStatus";
+import Notice from './routes/Notice';
+import CreateNotice from './routes/CreateNotice';
+import TeamLineUp from './routes/TeamLineUp';
+import TeamProject from './routes/TeamProject';
+import MemberCard from './routes/MemberCard';
+import KakaoApprovalStatus from './routes/KakaoApprovalStatus';
 
-export const baseUrl = 'http://localhost:8080';
+export const baseUrl = 'http://43.202.54.250:8080';
 
 const router = createBrowserRouter([
     {

@@ -13,7 +13,7 @@ const Chat = () => {
 
     useEffect(() => {
         const stomp = new Client({
-            brokerURL: 'ws://localhost:8080/chat', // Ensure this is correct
+            brokerURL: 'ws://43.202.54.250:8080/chat', // Ensure this is correct
             connectHeaders: {
                 Authorization: `Bearer ${token}`,
             },
