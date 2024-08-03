@@ -6,8 +6,9 @@ import PostItem from '../components/board/PostItem';
 import Pagination from '../components/pagination/Pagination';
 import styles from './Board.module.scss';
 import useAuthStore from "../stores/useAuthStore";
+import {baseUrl} from "../App";
 
-const API_URL = 'http://localhost:8080/api/boards';
+const API_URL = `${baseUrl}/api/boards`;
 
 const Board = () => {
     const [posts, setPosts] = useState([]);

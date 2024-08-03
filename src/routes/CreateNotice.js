@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import styles from './CreateNotice.module.scss'; // SCSS 모듈을 import
+import styles from './CreateNotice.module.scss';
+import {baseUrl} from "../App"; // SCSS 모듈을 import
 
-const API_CREATE_NOTICE_URL = 'http://localhost:8080/api/notices'; // 공지사항 API URL
+const API_CREATE_NOTICE_URL = `${baseUrl}/api/notices`; // 공지사항 API URL
 
 const CreateNotice = () => {
     const [title, setTitle] = useState('');

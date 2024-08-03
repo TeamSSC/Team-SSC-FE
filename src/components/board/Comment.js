@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './Comment.module.scss';
-import CommentEditModal from './CommentEditModal';  // 모달 컴포넌트 import
+import CommentEditModal from './CommentEditModal';
+import {baseUrl} from "../../App";  // 모달 컴포넌트 import
 
 const Comment = ({
                      comment,
@@ -41,7 +42,7 @@ const Comment = ({
         if (window.confirm('정말로 삭제하시겠습니까?')) {
             try {
                 const token = localStorage.getItem('accessToken');
-                await axios.delete(`http://localhost:8080/api/comments/${id}`, {
+                await axios.delete(`${baseUrl}/api/comments/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import styles from './CreateBoard.module.scss'; // SCSS 모듈을 import
+import styles from './CreateBoard.module.scss';
+import {baseUrl} from "../App"; // SCSS 모듈을 import
 
-const API_CREATE_BOARD_URL = 'http://localhost:8080/api/boards';
+const API_CREATE_BOARD_URL = `${baseUrl}/api/boards`;
 
 const CreateBoard = () => {
     const [title, setTitle] = useState('');

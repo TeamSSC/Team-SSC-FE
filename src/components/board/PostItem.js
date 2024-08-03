@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
-import styles from './PostItem.module.scss'; // SCSS 모듈을 import
+import styles from './PostItem.module.scss';
+import {baseUrl} from "../../App"; // SCSS 모듈을 import
 
 const PostItem = ({ post }) => {
     const [likeCount, setLikeCount] = useState(0);
-    const API_LIKE_URL = `http://localhost:8080/api/boards/${post.boardId}/like`;
+    const API_LIKE_URL = `${baseUrl}/api/boards/${post.boardId}/like`;
 
     useEffect(() => {
         const fetchLikeCount = async () => {
