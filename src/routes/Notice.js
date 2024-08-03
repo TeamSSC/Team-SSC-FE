@@ -5,9 +5,10 @@ import PostItem from '../components/board/PostItem';
 import Pagination from '../components/pagination/Pagination';
 import styles from './Notice.module.scss';
 import useAuthStore from '../stores/useAuthStore';
-import { jwtDecode } from 'jwt-decode'; // jwt-decode 라이브러리 import
+import { jwtDecode } from 'jwt-decode';
+import {baseUrl} from "../App"; // jwt-decode 라이브러리 import
 
-const API_URL = 'http://localhost:8080/api/notices';
+const API_URL = `${baseUrl}/api/notices`;
 
 const Notice = () => {
     const [notices, setNotices] = useState([]);

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './PostHeader.module.scss';
+import {baseUrl} from "../../App";
 
 const PostHeader = ({ title, username, createdAt, content, isAuthor, initialImages }) => {
     const { id: boardId } = useParams(); // URL에서 boardId를 추출
@@ -17,7 +18,7 @@ const PostHeader = ({ title, username, createdAt, content, isAuthor, initialImag
 
     const handleEdit = (updatedData) => {
         const token = localStorage.getItem('accessToken'); // 실제 액세스 토큰으로 교체
-        fetch(`http://localhost:8080/api/boards/${boardId}`, {
+        fetch(`${baseUrl}/api/boards/${boardId}`, {
             method: 'PATCH',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -45,7 +46,7 @@ const PostHeader = ({ title, username, createdAt, content, isAuthor, initialImag
     const handleDelete = () => {
         if (window.confirm('정말로 삭제하시겠습니까?')) {
             const token = localStorage.getItem('accessToken'); // 실제 액세스 토큰으로 교체
-            fetch(`http://localhost:8080/api/boards/${boardId}`, {
+            fetch(`${baseUrl}/api/boards/${boardId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
