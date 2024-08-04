@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './PostHeader.module.scss';
-import {baseUrl} from "../../App";
+import { baseUrl } from '../../config';
 
 const PostHeader = ({ title, username, createdAt, content, isAuthor, initialImages }) => {
     const { id: boardId } = useParams(); // URL에서 boardId를 추출
@@ -21,18 +21,18 @@ const PostHeader = ({ title, username, createdAt, content, isAuthor, initialImag
         fetch(`${baseUrl}/api/boards/${boardId}`, {
             method: 'PATCH',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
                 // 'Content-Type': 'multipart/form-data' // Remove this line
             },
             body: updatedData,
         })
-            .then(response => {
+            .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
-            .then(data => {
+            .then((data) => {
                 console.log('Success:', data);
                 alert('수정되었습니다.'); // 알림 표시
                 window.location.reload(); // 페이지 새로 고침
@@ -49,16 +49,16 @@ const PostHeader = ({ title, username, createdAt, content, isAuthor, initialImag
             fetch(`${baseUrl}/api/boards/${boardId}`, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                 },
             })
-                .then(response => {
+                .then((response) => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
                     return response.json();
                 })
-                .then(data => {
+                .then((data) => {
                     console.log('Success:', data);
                     alert('게시글이 삭제되었습니다.'); // 알림 표시
                     window.location.href = '/boards'; // 홈 페이지로 리다이렉트
@@ -75,8 +75,12 @@ const PostHeader = ({ title, username, createdAt, content, isAuthor, initialImag
                 <h1 className={styles.title}>{title}</h1>
                 {isAuthor && (
                     <div className={styles.authorActions}>
-                        <button className={styles.editButton} onClick={openEditModal}>수정</button>
-                        <button className={styles.deleteButton} onClick={handleDelete}>삭제</button>
+                        <button className={styles.editButton} onClick={openEditModal}>
+                            수정
+                        </button>
+                        <button className={styles.deleteButton} onClick={handleDelete}>
+                            삭제
+                        </button>
                     </div>
                 )}
             </div>
@@ -102,9 +106,9 @@ const EditModal = ({ initialData, onSave, onCancel }) => {
     const [imagesToDelete, setImagesToDelete] = useState([]);
 
     const handleImageClick = (url) => {
-        setImagesToDelete(prev => {
+        setImagesToDelete((prev) => {
             if (prev.includes(url)) {
-                return prev.filter(imageUrl => imageUrl !== url);
+                return prev.filter((imageUrl) => imageUrl !== url);
             } else {
                 return [...prev, url];
             }
@@ -134,17 +138,8 @@ const EditModal = ({ initialData, onSave, onCancel }) => {
     return (
         <div className={styles.modal}>
             <h2>게시물 수정</h2>
-            <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="제목"
-            />
-            <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder="내용"
-            />
+            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="제목" />
+            <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="내용" />
             <div className={styles.imageList}>
                 <p>삭제할 이미지를 선택하세요:</p> {/* 문구 추가 */}
                 {images.length > 0 ? (
@@ -154,18 +149,18 @@ const EditModal = ({ initialData, onSave, onCancel }) => {
                             key={index}
                             onClick={() => handleImageClick(url)}
                         >
-                            <img src={url} alt={`uploaded ${index}`} onError={(e) => e.target.src = '/default-image.png'} />
+                            <img
+                                src={url}
+                                alt={`uploaded ${index}`}
+                                onError={(e) => (e.target.src = '/default-image.png')}
+                            />
                         </div>
                     ))
                 ) : (
                     <p>이미지가 없습니다.</p>
                 )}
             </div>
-            <input
-                type="file"
-                multiple
-                onChange={handleFileChange}
-            />
+            <input type="file" multiple onChange={handleFileChange} />
             <div>
                 <button onClick={handleSave}>저장</button>
                 <button onClick={onCancel}>취소</button>

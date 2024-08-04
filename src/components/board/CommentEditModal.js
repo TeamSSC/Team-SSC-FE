@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './CommentEditModal.module.scss';
-import {baseUrl} from "../../App";  // CSS 파일 import
+import { baseUrl } from '../../config';
 
 const CommentEditModal = ({ id, initialContent, type, onClose, onUpdate }) => {
     const [content, setContent] = useState(initialContent);
@@ -10,11 +10,15 @@ const CommentEditModal = ({ id, initialContent, type, onClose, onUpdate }) => {
     const handleUpdate = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.patch(`${baseUrl}/api/comments/${id}`, { content }, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
+            await axios.patch(
+                `${baseUrl}/api/comments/${id}`,
+                { content },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 }
-            });
+            );
             onUpdate(content);
             onClose();
         } catch (error) {
@@ -33,8 +37,12 @@ const CommentEditModal = ({ id, initialContent, type, onClose, onUpdate }) => {
                     placeholder="수정할 내용을 입력하세요..."
                 />
                 <div className={styles.modalActions}>
-                    <button onClick={handleUpdate} className={styles.updateButton}>수정하기</button>
-                    <button onClick={onClose} className={styles.closeButton}>닫기</button>
+                    <button onClick={handleUpdate} className={styles.updateButton}>
+                        수정하기
+                    </button>
+                    <button onClick={onClose} className={styles.closeButton}>
+                        닫기
+                    </button>
                 </div>
             </div>
         </div>

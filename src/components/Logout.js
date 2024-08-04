@@ -1,6 +1,6 @@
 import axios from 'axios';
 import useAuthStore from '../stores/useAuthStore';
-import { baseUrl } from '../App';
+import { baseUrl } from '../config';
 import { useNavigate } from 'react-router-dom';
 
 const Logout = () => {

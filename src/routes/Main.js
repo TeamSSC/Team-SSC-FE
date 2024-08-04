@@ -1,7 +1,7 @@
 import styles from './Main.module.scss';
-import {useNavigate} from 'react-router-dom';
-import {useEffect, useRef, useState} from 'react';
-import {baseUrl} from '../App';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { baseUrl } from '../config';
 import axios from 'axios';
 import useAuthStore from '../stores/useAuthStore';
 
@@ -22,6 +22,8 @@ const Main = () => {
                 email: loginId,
                 password: password,
             });
+
+            console.log(response);
             const userData = response.data.data;
             localStorage.setItem('accessToken', userData?.accessToken);
             localStorage.setItem('refreshToken', userData?.refreshToken);
@@ -35,7 +37,8 @@ const Main = () => {
                 navigate('/admin');
             }
         } catch (err) {
-            alert(err.response.data.message || '로그인 실패 하셨습니다.');
+            console.error(err);
+            // alert(err.response.data.message || '로그인 실패 하셨습니다.');
         }
     };
 
@@ -54,7 +57,7 @@ const Main = () => {
             const fetchKakaoLogin = async () => {
                 try {
                     const response = await axios.get(`${baseUrl}/api/user/kakao/callback`, {
-                        params: {code}
+                        params: { code },
                     });
                     console.log(response);
 
@@ -66,7 +69,7 @@ const Main = () => {
                     setPeriodId(userData?.trackName + String(userData?.period) + '기');
                     setUserPeriodId(userData?.periodId);
 
-                    if (userData.periodId != null, userData.userStatus != 'PENDING') {
+                    if ((userData.periodId != null, userData.userStatus != 'PENDING')) {
                         navigate(`/period/${userData.periodId}`);
                     } else {
                         navigate('/kakao/approvalStatus');
@@ -84,17 +87,13 @@ const Main = () => {
     return (
         <div className={styles.loginForm_wrapper}>
             <h1>로그인 하기</h1>
-            <input
-                placeholder="아이디를 입력하세요..."
-                onChange={(e) => setLoginId(e.target.value)}
-            />
-            <input
-                placeholder="비밀번호를 입력하세요..."
-                onChange={(e) => setPassword(e.target.value)}
-            />
+            <input placeholder="아이디를 입력하세요..." onChange={(e) => setLoginId(e.target.value)} />
+            <input placeholder="비밀번호를 입력하세요..." onChange={(e) => setPassword(e.target.value)} />
             <button onClick={() => login()}>로그인 하기</button>
-            <button onClick={() => navigate('/signup')}>회원가입 하기</button>
-            <button className={styles.kakaoButton} onClick={handleKakaoLogin}>카카오로 로그인하기</button>
+            <button onClick={() => navigate('/signup')}>회원가입 하기ss</button>
+            <button className={styles.kakaoButton} onClick={handleKakaoLogin}>
+                카카오로 로그인하기
+            </button>
         </div>
     );
 };

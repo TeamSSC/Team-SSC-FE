@@ -9,16 +9,13 @@ import BoardDetail from './routes/BoardDetail';
 import Track from './routes/Track.js';
 import PeriodDetail from './routes/PeriodDetail.js';
 import Period from './routes/Period.js';
-import MemberCards from './routes/MemberCards.js';
 import Profile from './routes/Profile';
-import Notice from "./routes/Notice";
-import CreateNotice from "./routes/CreateNotice";
-import TeamLineUp from "./routes/TeamLineUp";
-import TeamProject from "./routes/TeamProject";
-import MemberCard from "./routes/MemberCard";
-import KakaoApprovalStatus from "./routes/KakaoApprovalStatus";
-
-export const baseUrl = 'http://localhost:8080';
+import Notice from './routes/Notice';
+import CreateNotice from './routes/CreateNotice';
+import TeamLineUp from './routes/TeamLineUp';
+import TeamProject from './routes/TeamProject';
+import MemberCard from './routes/MemberCard';
+import KakaoApprovalStatus from './routes/KakaoApprovalStatus';
 
 const router = createBrowserRouter([
     {
@@ -54,10 +51,7 @@ const router = createBrowserRouter([
                 path: '/period/:periodId',
                 element: <PeriodDetail />,
             },
-            {
-                path: '/period/:periodId/memberCards',
-                element: <MemberCards />,
-            },
+
             {
                 path: '/profile/:userId',
                 element: <Profile />,

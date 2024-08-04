@@ -2,23 +2,23 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './Comment.module.scss';
 import CommentEditModal from './CommentEditModal';
-import {baseUrl} from "../../App";  // 모달 컴포넌트 import
+import { baseUrl } from '../../config';
 
 const Comment = ({
-                     comment,
-                     formatDate,
-                     toggleReplies,
-                     expandedReplies,
-                     replies,
-                     toggleReplyForm,
-                     replyContent,
-                     setReplyContent,
-                     handleReplySubmit,
-                     replyFormVisible,
-                     currentUser,
-                     removeComment,  // 부모 컴포넌트에서 댓글 제거를 위한 함수
-                     removeReply      // 부모 컴포넌트에서 답글 제거를 위한 함수
-                 }) => {
+    comment,
+    formatDate,
+    toggleReplies,
+    expandedReplies,
+    replies,
+    toggleReplyForm,
+    replyContent,
+    setReplyContent,
+    handleReplySubmit,
+    replyFormVisible,
+    currentUser,
+    removeComment, // 부모 컴포넌트에서 댓글 제거를 위한 함수
+    removeReply, // 부모 컴포넌트에서 답글 제거를 위한 함수
+}) => {
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
     const [updatedContent, setUpdatedContent] = useState(comment.content);
 
@@ -32,9 +32,9 @@ const Comment = ({
     };
 
     const handleReplyUpdate = (commentId, newContent) => {
-        setUpdatedReplyContent(prev => ({
+        setUpdatedReplyContent((prev) => ({
             ...prev,
-            [commentId]: newContent
+            [commentId]: newContent,
         }));
     };
 
@@ -44,8 +44,8 @@ const Comment = ({
                 const token = localStorage.getItem('accessToken');
                 await axios.delete(`${baseUrl}/api/comments/${id}`, {
                     headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                        Authorization: `Bearer ${token}`,
+                    },
                 });
                 // 댓글 삭제 시
                 if (type === 'comment') {
@@ -70,16 +70,10 @@ const Comment = ({
             <p>{updatedContent}</p>
             {isAuthor && (
                 <div className={styles.commentActions}>
-                    <button
-                        className={styles.editButton}
-                        onClick={() => setIsEditModalVisible(true)}
-                    >
+                    <button className={styles.editButton} onClick={() => setIsEditModalVisible(true)}>
                         수정
                     </button>
-                    <button
-                        className={styles.deleteButton}
-                        onClick={() => handleDelete(comment.commentId, 'comment')}
-                    >
+                    <button className={styles.deleteButton} onClick={() => handleDelete(comment.commentId, 'comment')}>
                         삭제
                     </button>
                 </div>
@@ -101,7 +95,7 @@ const Comment = ({
             )}
             {expandedReplies[comment.commentId] && replies[comment.commentId] && (
                 <div className={styles.replies}>
-                    {replies[comment.commentId].map(reply => (
+                    {replies[comment.commentId].map((reply) => (
                         <div key={reply.commentId} className={styles.comment}>
                             <p>
                                 <strong>{reply.username}</strong>
@@ -112,10 +106,12 @@ const Comment = ({
                                 <div className={styles.commentActions}>
                                     <button
                                         className={styles.editButton}
-                                        onClick={() => setIsReplyEditModalVisible(prev => ({
-                                            ...prev,
-                                            [reply.commentId]: true
-                                        }))}
+                                        onClick={() =>
+                                            setIsReplyEditModalVisible((prev) => ({
+                                                ...prev,
+                                                [reply.commentId]: true,
+                                            }))
+                                        }
                                     >
                                         수정
                                     </button>
@@ -132,10 +128,12 @@ const Comment = ({
                                     id={reply.commentId}
                                     initialContent={reply.content}
                                     type="reply"
-                                    onClose={() => setIsReplyEditModalVisible(prev => ({
-                                        ...prev,
-                                        [reply.commentId]: false
-                                    }))}
+                                    onClose={() =>
+                                        setIsReplyEditModalVisible((prev) => ({
+                                            ...prev,
+                                            [reply.commentId]: false,
+                                        }))
+                                    }
                                     onUpdate={(newContent) => handleReplyUpdate(reply.commentId, newContent)}
                                 />
                             )}
@@ -144,27 +142,25 @@ const Comment = ({
                 </div>
             )}
             <div className={styles.replyFormContainer}>
-                <button
-                    onClick={() => toggleReplyForm(comment.commentId)}
-                    className={styles.toggleReplyFormButton}
-                >
+                <button onClick={() => toggleReplyForm(comment.commentId)} className={styles.toggleReplyFormButton}>
                     {replyFormVisible[comment.commentId] ? '답글 숨기기' : '답글 작성하기'}
                 </button>
                 {replyFormVisible[comment.commentId] && (
-                    <form
-                        onSubmit={(e) => handleReplySubmit(comment.commentId, e)}
-                        className={styles.replyForm}
-                    >
+                    <form onSubmit={(e) => handleReplySubmit(comment.commentId, e)} className={styles.replyForm}>
                         <textarea
                             value={replyContent[comment.commentId] || ''}
-                            onChange={(e) => setReplyContent(prev => ({
-                                ...prev,
-                                [comment.commentId]: e.target.value
-                            }))}
+                            onChange={(e) =>
+                                setReplyContent((prev) => ({
+                                    ...prev,
+                                    [comment.commentId]: e.target.value,
+                                }))
+                            }
                             className={styles.replyTextarea}
                             placeholder="답글을 입력하세요..."
                         />
-                        <button type="submit" className={styles.submitButton}>답글 제출</button>
+                        <button type="submit" className={styles.submitButton}>
+                            답글 제출
+                        </button>
                     </form>
                 )}
             </div>

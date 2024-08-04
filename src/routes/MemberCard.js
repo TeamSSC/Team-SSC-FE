@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigate 훅을 import 합니다.
 import styles from './MemberCard.module.scss'; // 스타일 시트 import
-import { baseUrl } from '../App'; // API 기본 URL
+import { baseUrl } from '../config';
 
 const MemberCard = () => {
     const [managers, setManagers] = useState([]); // 초기값을 빈 배열로 설정
@@ -26,12 +26,12 @@ const MemberCard = () => {
             // 데이터 가져오기
             const response = await axios.get(`${baseUrl}/api/users/profiles`, {
                 params: {
-                    page: currentPage , // 페이지 번호는 0부터 시작
-                    role: selectedRole
+                    page: currentPage, // 페이지 번호는 0부터 시작
+                    role: selectedRole,
                 },
                 headers: {
-                    Authorization: `Bearer ${token}` // 액세스 토큰을 헤더에 추가
-                }
+                    Authorization: `Bearer ${token}`, // 액세스 토큰을 헤더에 추가
+                },
             });
 
             const { content, totalPages } = response.data.data;
@@ -86,17 +86,15 @@ const MemberCard = () => {
                 <h2 className={styles.subtitle}>{selectedRole === 'MANAGER' ? '매니저' : '일반 유저'}</h2>
                 <div className={styles.cardContainer}>
                     {(selectedRole === 'MANAGER' ? managers : users).length > 0 ? (
-                        (selectedRole === 'MANAGER' ? managers : users).map(member => (
-                            <div
-                                key={member.id}
-                                className={styles.card}
-                                onClick={() => handleCardClick(member.id)}
-                            >
+                        (selectedRole === 'MANAGER' ? managers : users).map((member) => (
+                            <div key={member.id} className={styles.card} onClick={() => handleCardClick(member.id)}>
                                 {member.username}
                             </div>
                         ))
                     ) : (
-                        <div>{selectedRole === 'MANAGER' ? '매니저 정보가 없습니다.' : '일반 유저 정보가 없습니다.'}</div>
+                        <div>
+                            {selectedRole === 'MANAGER' ? '매니저 정보가 없습니다.' : '일반 유저 정보가 없습니다.'}
+                        </div>
                     )}
                 </div>
             </div>

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { baseUrl } from '../../App';
+import { baseUrl } from '../../config';
 import { useState, useEffect } from 'react';
 import styles from './PeriodMyTeamDetail.module.scss';
 import { useNavigate } from 'react-router-dom';

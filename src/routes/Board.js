@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 import PostItem from '../components/board/PostItem';
 import Pagination from '../components/pagination/Pagination';
 import styles from './Board.module.scss';
-import useAuthStore from "../stores/useAuthStore";
-import {baseUrl} from "../App";
+import useAuthStore from '../stores/useAuthStore';
+import { baseUrl } from '../config';
 
 const API_URL = `${baseUrl}/api/boards`;
 

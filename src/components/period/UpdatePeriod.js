@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from '../admin/CreateTrack.module.scss';
-import { baseUrl } from '../../App';
+import { baseUrl } from '../../config';
 import axios from 'axios';
 
 const UpdatePeriod = ({ closeModal, periodId }) => {

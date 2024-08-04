@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { baseUrl } from '../../App';
+import { baseUrl } from '../../config';
 import { useEffect, useState } from 'react';
 import PeriodMyTeamDetail from './PeriodMyTeamDetail';
 import styles from './PeriodMyTeam.module.scss';

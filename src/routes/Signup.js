@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import styles from './Signup.module.scss';
-import { baseUrl } from '../App';
+import { baseUrl } from '../config';
 
 const Signup = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -102,11 +102,7 @@ const Signup = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
             />
-            <button
-                className={styles.button}
-                onClick={sendVerificationCode}
-                disabled={isCodeSent}
-            >
+            <button className={styles.button} onClick={sendVerificationCode} disabled={isCodeSent}>
                 인증번호 전송
             </button>
             {isCodeSent && (
@@ -143,11 +139,7 @@ const Signup = () => {
                 onChange={(e) => setConfirmPw(e.target.value)}
             />
             <div className={styles.selectContainer}>
-                <select
-                    className={styles.select}
-                    value={periodId}
-                    onChange={(e) => setPeriodId(e.target.value)}
-                >
+                <select className={styles.select} value={periodId} onChange={(e) => setPeriodId(e.target.value)}>
                     <option value="">트랙을 선택하세요</option>
                     {periodList.map((e) => (
                         <option key={e.id} value={e.id}>

@@ -6,7 +6,7 @@ import Pagination from '../components/pagination/Pagination';
 import styles from './Notice.module.scss';
 import useAuthStore from '../stores/useAuthStore';
 import { jwtDecode } from 'jwt-decode';
-import {baseUrl} from "../App"; // jwt-decode 라이브러리 import
+import { baseUrl } from '../config';
 
 const API_URL = `${baseUrl}/api/notices`;
 
@@ -36,7 +36,7 @@ const Notice = () => {
                 console.error(err);
                 if (err.response && err.response.status === 400) {
                     console.error('잘못된 페이지 번호:', err);
-                    setCurrentPage(prevPage => Math.max(prevPage - 1, 1));
+                    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
                 } else {
                     setError(err);
                 }
@@ -100,11 +100,7 @@ const Notice = () => {
                     <p>No notices available</p>
                 )}
             </div>
-            <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-            />
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
         </div>
     );
 };
