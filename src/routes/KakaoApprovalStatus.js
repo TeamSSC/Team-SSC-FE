@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { baseUrl } from '../App'; // baseUrl을 정의한 파일 경로를 확인하세요.
+import { baseUrl } from '../config';
 import useAuthStore from '../stores/useAuthStore';
 import styles from './KakaoApprovalStatus.module.scss'; // 스타일링 파일 경로를 확인하세요.
 import Modal from 'react-modal'; // 모달 라이브러리 import
@@ -19,14 +19,16 @@ const KakaoApprovalStatus = () => {
             try {
                 const response = await axios.get(`${baseUrl}/api/kakao/users/status`, {
                     headers: {
-                        Authorization: `Bearer ${accessToken}`
-                    }
+                        Authorization: `Bearer ${accessToken}`,
+                    },
                 });
                 const userData = response.data.data;
                 if (userData.periodId === null) {
                     setStatusMessage('기수 신청이 필요합니다.');
                 } else {
-                    setStatusMessage(`${userData.trackName} ${userData.period}기 신청 중입니다. 해당 트랙 승인 대기중입니다.`);
+                    setStatusMessage(
+                        `${userData.trackName} ${userData.period}기 신청 중입니다. 해당 트랙 승인 대기중입니다.`
+                    );
                 }
             } catch (err) {
                 console.error(err);
@@ -62,11 +64,15 @@ const KakaoApprovalStatus = () => {
 
     const handleApply = async () => {
         try {
-            await axios.patch(`${baseUrl}/api/kakao/users/periods/${selectedPeriod}`, {}, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
+            await axios.patch(
+                `${baseUrl}/api/kakao/users/periods/${selectedPeriod}`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
                 }
-            });
+            );
             alert('신청이 완료되었습니다.');
             closeModal();
             window.location.reload(); // 페이지 새로고침
@@ -98,12 +104,9 @@ const KakaoApprovalStatus = () => {
                 </button>
                 <h2>기수 신청</h2>
                 <div className={styles.modalContent}>
-                    <select
-                        value={selectedPeriod}
-                        onChange={(e) => setSelectedPeriod(e.target.value)}
-                    >
+                    <select value={selectedPeriod} onChange={(e) => setSelectedPeriod(e.target.value)}>
                         <option value="">선택하세요</option>
-                        {periods.map(period => (
+                        {periods.map((period) => (
                             <option key={period.id} value={period.id}>
                                 {period.trackName} {period.period}기
                             </option>

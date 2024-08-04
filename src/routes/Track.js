@@ -1,4 +1,4 @@
-import { baseUrl } from '../App';
+import { baseUrl } from '../config';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import styles from './Track.module.scss';

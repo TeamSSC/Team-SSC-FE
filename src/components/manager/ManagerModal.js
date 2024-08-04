@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from './ManagerModal.module.scss';
 import Pagination from '../pagination/Pagination';
 import useAuthStore from '../../stores/useAuthStore';
-import {baseUrl} from "../../App";
+import { baseUrl } from '../../config';
 
 const ManagerModal = ({ onClose }) => {
     const authData = useAuthStore();
@@ -24,11 +24,11 @@ const ManagerModal = ({ onClose }) => {
             try {
                 const response = await axios.get(`${baseUrl}/api/users/signup/pend`, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                     },
                     params: {
-                        page: currentPage
-                    }
+                        page: currentPage,
+                    },
                 });
                 if (response.data.message === '회원가입 승인 대기자가 조회 되었습니다.') {
                     setPendingUsers(response.data.data.content);
@@ -47,13 +47,13 @@ const ManagerModal = ({ onClose }) => {
             try {
                 const response = await axios.get(`${baseUrl}/api/weekProgress/myweekProgress`, {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-                    }
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    },
                 });
-                const weekData = response.data.data.map(week => ({
+                const weekData = response.data.data.map((week) => ({
                     id: week.id,
                     name: week.name,
-                    status: getStatusLabel(week.status)
+                    status: getStatusLabel(week.status),
                 }));
                 setWeeks(weekData);
                 setSelectedPeriod(weekData[0]?.id || '');
@@ -87,18 +87,18 @@ const ManagerModal = ({ onClose }) => {
                 if (token) {
                     await axios.get(`${baseUrl}/api/users/signup/pend`, {
                         headers: {
-                            Authorization: `Bearer ${token}`
+                            Authorization: `Bearer ${token}`,
                         },
                         params: {
-                            page: newPage
-                        }
+                            page: newPage,
+                        },
                     });
                     setCurrentPage(newPage);
                 }
             } catch (error) {
                 if (error.response && error.response.status === 400) {
                     console.error('잘못된 페이지 번호:', error);
-                    setCurrentPage(prevPage => Math.max(prevPage - 1, 1));
+                    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
                 } else {
                     console.error('API 호출 오류:', error);
                 }
@@ -107,25 +107,29 @@ const ManagerModal = ({ onClose }) => {
     };
 
     const handleCheckboxChange = (userId) => {
-        setSelectedUsers(prevState => ({
+        setSelectedUsers((prevState) => ({
             ...prevState,
-            [userId]: !prevState[userId]
+            [userId]: !prevState[userId],
         }));
     };
 
     const handleAction = async (action) => {
-        const selectedUserIds = Object.keys(selectedUsers).filter(userId => selectedUsers[userId]);
+        const selectedUserIds = Object.keys(selectedUsers).filter((userId) => selectedUsers[userId]);
         if (selectedUserIds.length > 0) {
             const token = localStorage.getItem('accessToken');
             if (token) {
                 try {
                     for (let i = 0; i < selectedUserIds.length; i++) {
                         const userId = selectedUserIds[i];
-                        await axios.patch(`${baseUrl}/api/users/${action}/${userId}`, {}, {
-                            headers: {
-                                Authorization: `Bearer ${token}`
+                        await axios.patch(
+                            `${baseUrl}/api/users/${action}/${userId}`,
+                            {},
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                },
                             }
-                        });
+                        );
                     }
                     alert(`${action === 'approve' ? '승인되었습니다.' : '거부되었습니다.'}`);
                     onClose(); // 모달 닫기
@@ -154,13 +158,17 @@ const ManagerModal = ({ onClose }) => {
         const token = localStorage.getItem('accessToken');
         if (token) {
             try {
-                await axios.post(`${baseUrl}/api/weekProgress`, {
-                    name: newPeriodName
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
+                await axios.post(
+                    `${baseUrl}/api/weekProgress`,
+                    {
+                        name: newPeriodName,
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
                     }
-                });
+                );
                 alert('주차가 생성되었습니다.');
                 closeCreatePeriodModal(); // 모달 닫기
             } catch (error) {
@@ -186,13 +194,17 @@ const ManagerModal = ({ onClose }) => {
         const token = localStorage.getItem('accessToken');
         if (token) {
             try {
-                await axios.patch(`${baseUrl}/api/weekProgress/${selectedPeriod}`, {
-                    status: selectedStatus
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
+                await axios.patch(
+                    `${baseUrl}/api/weekProgress/${selectedPeriod}`,
+                    {
+                        status: selectedStatus,
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
                     }
-                });
+                );
                 alert('주차 상태가 변경되었습니다.');
                 closeChangePeriodStatusModal();
                 window.location.reload();
@@ -210,7 +222,9 @@ const ManagerModal = ({ onClose }) => {
     return (
         <div className={styles.modalOverlay} onClick={onClose}>
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                <button className={styles.closeButton} onClick={onClose}>X</button>
+                <button className={styles.closeButton} onClick={onClose}>
+                    X
+                </button>
                 <div className={styles.modalHeader}>
                     <button className={styles.modalButton} onClick={() => handleAction('notify')}>
                         알림 보내기
@@ -218,7 +232,10 @@ const ManagerModal = ({ onClose }) => {
                     <button className={`${styles.modalButton} ${styles.createPeriod}`} onClick={openCreatePeriodModal}>
                         주차 생성
                     </button>
-                    <button className={`${styles.modalButton} ${styles.periodStatusChange}`} onClick={openChangePeriodStatusModal}>
+                    <button
+                        className={`${styles.modalButton} ${styles.periodStatusChange}`}
+                        onClick={openChangePeriodStatusModal}
+                    >
                         주차 상태 변경
                     </button>
                 </div>
@@ -226,7 +243,7 @@ const ManagerModal = ({ onClose }) => {
                     <h2>회원가입 승인 대기자 목록</h2>
                     {pendingUsers.length > 0 ? (
                         <ul className={styles.userList}>
-                            {pendingUsers.map(user => (
+                            {pendingUsers.map((user) => (
                                 <li key={user.userId} className={styles.userItem}>
                                     <input
                                         type="checkbox"
@@ -235,9 +252,23 @@ const ManagerModal = ({ onClose }) => {
                                         className={styles.checkbox}
                                     />
                                     <div className={styles.userInfo}>
-                                        <p><strong>이메일:</strong> {user.email}</p>
-                                        <p><strong>이름:</strong> {user.username}</p>
-                                        <p><strong>가입일:</strong> {new Date(user.createAt[0], user.createAt[1] - 1, user.createAt[2], user.createAt[3], user.createAt[4], user.createAt[5]).toLocaleString()}</p>
+                                        <p>
+                                            <strong>이메일:</strong> {user.email}
+                                        </p>
+                                        <p>
+                                            <strong>이름:</strong> {user.username}
+                                        </p>
+                                        <p>
+                                            <strong>가입일:</strong>{' '}
+                                            {new Date(
+                                                user.createAt[0],
+                                                user.createAt[1] - 1,
+                                                user.createAt[2],
+                                                user.createAt[3],
+                                                user.createAt[4],
+                                                user.createAt[5]
+                                            ).toLocaleString()}
+                                        </p>
                                     </div>
                                 </li>
                             ))}
@@ -245,10 +276,7 @@ const ManagerModal = ({ onClose }) => {
                     ) : (
                         <p>대기자가 없습니다.</p>
                     )}
-                    <Pagination
-                        currentPage={currentPage}
-                        onPageChange={handlePageChange}
-                    />
+                    <Pagination currentPage={currentPage} onPageChange={handlePageChange} />
                     <div className={styles.actionButtons}>
                         <button
                             className={`${styles.modalButton} ${styles.actionButton}`}
@@ -267,7 +295,9 @@ const ManagerModal = ({ onClose }) => {
                 {isCreatePeriodModalOpen && (
                     <div className={styles.createPeriodOverlay} onClick={closeCreatePeriodModal}>
                         <div className={styles.createPeriodContent} onClick={(e) => e.stopPropagation()}>
-                            <button className={styles.closeButton} onClick={closeCreatePeriodModal}>X</button>
+                            <button className={styles.closeButton} onClick={closeCreatePeriodModal}>
+                                X
+                            </button>
                             <h2>주차 생성</h2>
                             <input
                                 type="text"
@@ -288,15 +318,19 @@ const ManagerModal = ({ onClose }) => {
                 {isChangePeriodStatusModalOpen && (
                     <div className={styles.changePeriodStatusOverlay} onClick={closeChangePeriodStatusModal}>
                         <div className={styles.changePeriodStatusContent} onClick={(e) => e.stopPropagation()}>
-                            <button className={styles.closeButton} onClick={closeChangePeriodStatusModal}>X</button>
+                            <button className={styles.closeButton} onClick={closeChangePeriodStatusModal}>
+                                X
+                            </button>
                             <h2>주차 상태 변경</h2>
                             <select
                                 value={selectedPeriod}
                                 onChange={(e) => setSelectedPeriod(e.target.value)}
                                 className={styles.select}
                             >
-                                <option value="" disabled>주차를 선택하세요</option>
-                                {weeks.map(week => (
+                                <option value="" disabled>
+                                    주차를 선택하세요
+                                </option>
+                                {weeks.map((week) => (
                                     <option key={week.id} value={week.id}>
                                         {week.name} ({week.status})
                                     </option>
@@ -307,7 +341,9 @@ const ManagerModal = ({ onClose }) => {
                                 onChange={(e) => setSelectedStatus(e.target.value)}
                                 className={styles.select}
                             >
-                                <option value="" disabled>상태를 선택하세요</option>
+                                <option value="" disabled>
+                                    상태를 선택하세요
+                                </option>
                                 <option value="PLANNED">진행 예정</option>
                                 <option value="ONGOING">현재 주차</option>
                                 <option value="COMPLETED">지난 주차</option>

@@ -3,8 +3,8 @@ import useAuthStore from '../../stores/useAuthStore';
 import Logout from '../Logout';
 import styles from './NavBar.module.scss';
 import { useNavigate } from 'react-router-dom';
-import ManagerModal from "../manager/ManagerModal";
-import {jwtDecode} from "jwt-decode";
+import ManagerModal from '../manager/ManagerModal';
+import { jwtDecode } from 'jwt-decode';
 
 const NavBar = () => {
     const authData = useAuthStore();
@@ -61,10 +61,7 @@ const NavBar = () => {
                 {authData?.isLoggedIn ? (
                     <div className={styles.nav_user}>
                         {userRole === 'MANAGER' && (
-                            <button
-                                className={styles.navBar_button}
-                                onClick={handleManagerPageClick}
-                            >
+                            <button className={styles.navBar_button} onClick={handleManagerPageClick}>
                                 매니저 페이지
                             </button>
                         )}
@@ -75,9 +72,7 @@ const NavBar = () => {
                     </div>
                 ) : null}
             </div>
-            {isManagerModalOpen && (
-                <ManagerModal onClose={closeManagerModal} />
-            )}
+            {isManagerModalOpen && <ManagerModal onClose={closeManagerModal} />}
         </>
     );
 };

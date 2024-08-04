@@ -7,8 +7,11 @@ const Chat = () => {
     const [inputMessage, setInputMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [stompClient, setStompClient] = useState(null);
+
     const token = localStorage.getItem('accessToken');
+
     const { periodId } = useParams();
+
     const authData = useAuthStore();
 
     useEffect(() => {

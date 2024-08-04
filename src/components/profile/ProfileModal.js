@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Select from 'react-select';
 import styles from './ProfileModal.module.scss';
-import {baseUrl} from "../../App"; // 모달의 스타일을 설정합니다.
+import { baseUrl } from '../../config';
 
 const mbtiOptions = [
     { value: 'INTJ', label: 'INTJ' },

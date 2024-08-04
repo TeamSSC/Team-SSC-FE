@@ -3,7 +3,7 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import styles from './PostItem.module.scss';
-import {baseUrl} from "../../App"; // SCSS 모듈을 import
+import { baseUrl } from '../../config';
 
 const PostItem = ({ post }) => {
     const [likeCount, setLikeCount] = useState(0);
@@ -14,8 +14,8 @@ const PostItem = ({ post }) => {
             try {
                 const response = await axios.get(API_LIKE_URL, {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-                    }
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                    },
                 });
                 setLikeCount(response.data.data.likeCount);
             } catch (err) {

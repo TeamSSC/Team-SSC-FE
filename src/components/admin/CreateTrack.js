@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './CreateTrack.module.scss';
 import axios from 'axios';
-import { baseUrl } from '../../App';
+import { baseUrl } from '../../config';
 
 const CreateTrack = ({ closeModal, getTrackListHook }) => {
     const [isModalOpen, setIsModalOpen] = useState(true); // 모달 열림 상태 추가

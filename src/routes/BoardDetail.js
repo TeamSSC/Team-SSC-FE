@@ -8,14 +8,14 @@ import LikeButton from '../components/board/LikeButton';
 import CommentForm from '../components/board/CommentForm';
 import CommentList from '../components/board/CommentList';
 import styles from './BoardDetail.module.scss';
-import { baseUrl } from '../App';
+import { baseUrl } from '../config';
 import useAuthStore from '../stores/useAuthStore';
 
 const BoardDetail = () => {
     const { id } = useParams();
-    const authData = useAuthStore(state => ({
+    const authData = useAuthStore((state) => ({
         isLoggedIn: state.isLoggedIn,
-        username: state.username
+        username: state.username,
     }));
     const [post, setPost] = useState(null);
     const [likes, setLikes] = useState(0);
@@ -73,11 +73,15 @@ const BoardDetail = () => {
     const handleLikeToggle = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.post(`${baseUrl}/api/boards/${id}/like`, {}, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
+            await axios.post(
+                `${baseUrl}/api/boards/${id}/like`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 }
-            });
+            );
             const response = await axios.get(`${baseUrl}/api/boards/${id}/like`);
             setLikes(response.data.data.likeCount);
             setLiked(response.data.data.userLiked);
@@ -90,9 +94,9 @@ const BoardDetail = () => {
     const fetchReplies = async (commentId) => {
         try {
             const response = await axios.get(`${baseUrl}/api/comments/${commentId}`);
-            setReplies(prevReplies => ({
+            setReplies((prevReplies) => ({
                 ...prevReplies,
-                [commentId]: response.data.data.content
+                [commentId]: response.data.data.content,
             }));
         } catch (err) {
             console.error(err);
@@ -104,9 +108,9 @@ const BoardDetail = () => {
         if (!expandedReplies[commentId]) {
             await fetchReplies(commentId);
         }
-        setExpandedReplies(prevState => ({
+        setExpandedReplies((prevState) => ({
             ...prevState,
-            [commentId]: !prevState[commentId]
+            [commentId]: !prevState[commentId],
         }));
     };
 
@@ -116,11 +120,15 @@ const BoardDetail = () => {
 
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.post(`${baseUrl}/api/boards/${id}/comment`, { content: newComment }, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
+            await axios.post(
+                `${baseUrl}/api/boards/${id}/comment`,
+                { content: newComment },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 }
-            });
+            );
             setNewComment('');
             const response = await axios.get(`${baseUrl}/api/boards/${id}/comments`);
             setComments(response.data.data.content);
@@ -136,17 +144,21 @@ const BoardDetail = () => {
 
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.post(`${baseUrl}/api/boards/${id}/comment`, {
-                content: replyContent[parentCommentId],
-                parentCommentId
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
+            await axios.post(
+                `${baseUrl}/api/boards/${id}/comment`,
+                {
+                    content: replyContent[parentCommentId],
+                    parentCommentId,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 }
-            });
-            setReplyContent(prev => ({
+            );
+            setReplyContent((prev) => ({
                 ...prev,
-                [parentCommentId]: ''
+                [parentCommentId]: '',
             }));
             await fetchReplies(parentCommentId);
         } catch (err) {
@@ -156,15 +168,17 @@ const BoardDetail = () => {
     };
 
     const toggleReplyForm = (commentId) => {
-        setReplyFormVisible(prevState => ({
+        setReplyFormVisible((prevState) => ({
             ...prevState,
-            [commentId]: !prevState[commentId]
+            [commentId]: !prevState[commentId],
         }));
     };
 
     const formatDate = (dateArray) => {
         const [year, month, day, hour, minute, second] = dateArray;
-        return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
+        return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hour
+            .toString()
+            .padStart(2, '0')}:${minute.toString().padStart(2, '0')}:${second.toString().padStart(2, '0')}`;
     };
 
     if (loading) return <p>Loading...</p>;
@@ -186,11 +200,7 @@ const BoardDetail = () => {
                         <p>{post.content}</p>
                     </div>
                     <FileLinks fileLinks={post.fileLinks} />
-                    <LikeButton
-                        liked={liked}
-                        likes={likes}
-                        onLikeToggle={handleLikeToggle}
-                    />
+                    <LikeButton liked={liked} likes={likes} onLikeToggle={handleLikeToggle} />
                     <CommentForm
                         newComment={newComment}
                         setNewComment={setNewComment}
@@ -209,7 +219,7 @@ const BoardDetail = () => {
                         replyFormVisible={replyFormVisible}
                         commentsLoading={commentsLoading}
                         commentsError={commentsError}
-                        currentUser={authData?.username}  // currentUser 전달
+                        currentUser={authData?.username} // currentUser 전달
                     />
                 </>
             )}

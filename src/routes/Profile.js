@@ -4,7 +4,7 @@ import styles from './Profile.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAuthStore from '../stores/useAuthStore';
 import Modal from '../components/profile/ProfileModal';
-import {baseUrl} from "../App"; // 모달 컴포넌트를 불러옵니다.
+import { baseUrl } from '../config';
 
 const Profile = () => {
     const [profile, setProfile] = useState({

@@ -4,7 +4,7 @@ import useAuthStore from '../stores/useAuthStore';
 import { useNavigate } from 'react-router-dom';
 import styles from './TeamLineUp.module.scss';
 import { jwtDecode } from 'jwt-decode';
-import { baseUrl } from '../App';
+import { baseUrl } from '../config';
 
 const TeamLineUp = () => {
     const authData = useAuthStore();
@@ -69,17 +69,14 @@ const TeamLineUp = () => {
         if (selectedWeek && selectedSection) {
             const fetchTeams = async () => {
                 try {
-                    const response = await axios.get(
-                        `${baseUrl}/api/weekProgress/${selectedWeek}/teams/lineup`,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                            },
-                            params: {
-                                section: selectedSection,
-                            },
-                        }
-                    );
+                    const response = await axios.get(`${baseUrl}/api/weekProgress/${selectedWeek}/teams/lineup`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                        params: {
+                            section: selectedSection,
+                        },
+                    });
                     const teamsData = response.data.data || [];
                     setTeams(teamsData);
 

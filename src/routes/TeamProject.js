@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import TeamProjectModal from '../components/team/TeamProjectModal';
 import styles from './TeamProject.module.scss';
 import useAuthStore from '../stores/useAuthStore';
-import { baseUrl } from '../App';
+import { baseUrl } from '../config';
 import Modal from '../components/modal/Modal';
 import UpdateProject from '../components/teamProject/UpdateProject';
 

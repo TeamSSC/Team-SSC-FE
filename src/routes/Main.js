@@ -1,7 +1,7 @@
 import styles from './Main.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { baseUrl } from '../App';
+import { baseUrl } from '../config';
 import axios from 'axios';
 import useAuthStore from '../stores/useAuthStore';
 
@@ -22,6 +22,8 @@ const Main = () => {
                 email: loginId,
                 password: password,
             });
+
+            console.log(response);
             const userData = response.data.data;
             localStorage.setItem('accessToken', userData?.accessToken);
             localStorage.setItem('refreshToken', userData?.refreshToken);
@@ -35,7 +37,8 @@ const Main = () => {
                 navigate('/admin');
             }
         } catch (err) {
-            alert(err.response.data.message || '로그인 실패 하셨습니다.');
+            console.error(err);
+            // alert(err.response.data.message || '로그인 실패 하셨습니다.');
         }
     };
 
