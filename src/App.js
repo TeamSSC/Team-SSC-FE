@@ -16,6 +16,7 @@ import TeamLineUp from './routes/TeamLineUp';
 import TeamProject from './routes/TeamProject';
 import MemberCard from './routes/MemberCard';
 import KakaoApprovalStatus from './routes/KakaoApprovalStatus';
+import Alarm from './components/alarm/Alarm.js';
 
 const router = createBrowserRouter([
     {
@@ -83,6 +84,10 @@ const router = createBrowserRouter([
             {
                 path: '/kakao/approvalStatus',
                 element: <KakaoApprovalStatus />,
+            },
+            {
+                path: '/test',
+                element: <Alarm />,
             },
         ],
     },

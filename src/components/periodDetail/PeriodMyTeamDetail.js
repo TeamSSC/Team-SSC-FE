@@ -29,7 +29,7 @@ const PeriodMyTeamDetail = ({ selectedTeam }) => {
             });
             setMemberIdList(response.data.data.userIds);
             setMemberList(response.data.data.userNames);
-            console.log(response.data);
+            console.log(response.data.data);
         } catch (err) {
             console.error(err);
         }
