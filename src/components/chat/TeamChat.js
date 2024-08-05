@@ -6,16 +6,15 @@ import axios from 'axios';
 import { baseUrl } from '../../config';
 import styles from './Chat.module.scss';
 
-const Chat = () => {
+const TeamCaht = ({ teamId }) => {
     const [inputMessage, setInputMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [stompClient, setStompClient] = useState(null);
 
     const token = localStorage.getItem('accessToken');
 
-    const { periodId } = useParams();
-
     const authData = useAuthStore();
+    console.log(teamId);
 
     useEffect(() => {
         const stomp = new Client({
@@ -33,7 +32,7 @@ const Chat = () => {
 
         stomp.onConnect = () => {
             console.log('WebSocket connection opened.');
-            const subscriptionDestination = `/topic/period/${periodId}`;
+            const subscriptionDestination = `/topic/team/${teamId}`;
             console.log(`Subscribing to ${subscriptionDestination}`);
 
             stomp.subscribe(subscriptionDestination, (frame) => {
@@ -69,7 +68,7 @@ const Chat = () => {
     const sendMessage = () => {
         if (stompClient && stompClient.connected) {
             stompClient.publish({
-                destination: `/app/chat/period/${periodId}`,
+                destination: `/app/chat/team/${teamId}`,
                 body: JSON.stringify({ content: inputMessage }),
             });
             getChats();
@@ -81,10 +80,10 @@ const Chat = () => {
 
     const getChats = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/messages/period/${periodId}`, {
+            const response = await axios.get(`${baseUrl}/api/messages/team/${teamId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            // console.log(response.data);
+            console.log(response.data);
             setMessages(response.data);
         } catch (err) {
             console.error(err);
@@ -106,7 +105,7 @@ const Chat = () => {
 
     return (
         <div>
-            <h1>{authData.periodId} 전체 채팅</h1>
+            <h1>{authData.periodId} 채팅</h1>
             <div
                 className={styles.chatList_wrapper}
                 style={{ height: '200px', overflowY: 'scroll' }}
@@ -139,4 +138,4 @@ const Chat = () => {
     );
 };
 
-export default Chat;
+export default TeamCaht;

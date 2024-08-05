@@ -6,6 +6,7 @@ import styles from './Period.module.scss';
 import Modal from '../components/modal/Modal';
 import updatePeriod from '../components/period/UpdatePeriod';
 import UpdatePeriod from '../components/period/UpdatePeriod';
+import CreatePeriod from '../components/period/CreatePeriod';
 
 const customModalStyles = {
     content: {
@@ -21,6 +22,7 @@ const customModalStyles = {
 const Period = () => {
     const [periodList, setPeriodList] = useState([]);
     const [isUpdatePeriod, setIsUpdatePeriod] = useState(false);
+    const [isCreatePeriod, setIsCreatePeriod] = useState(false);
     const [periodId, setPeriodId] = useState(null);
 
     const token = localStorage.getItem('accessToken');
@@ -53,6 +55,15 @@ const Period = () => {
         }
     };
 
+    const handleCreatePeriodClick = (id) => {
+        setIsCreatePeriod(true);
+        setPeriodId(id);
+    };
+
+    const closeCreateModal = () => {
+        setIsCreatePeriod(false);
+    };
+
     const handleUpdatePeriodClick = (id) => {
         setIsUpdatePeriod(true);
         setPeriodId(id);
@@ -64,6 +75,8 @@ const Period = () => {
 
     return (
         <div className={styles.periodList_wrapper}>
+            <button onClick={() => handleCreatePeriodClick(id)}>기수생성</button>
+
             {periodList.map((e) => {
                 return (
                     <div className={styles.period_info_wrapper}>
@@ -81,9 +94,14 @@ const Period = () => {
                     </div>
                 );
             })}
+            {isCreatePeriod && (
+                <Modal isOpen={isCreatePeriod} onRequestClose={closeCreateModal} style={customModalStyles}>
+                    <CreatePeriod closeModal={closeCreateModal} trackId={id} getTrackPeriods={getTrackPeriods} />
+                </Modal>
+            )}
             {isUpdatePeriod && (
                 <Modal isOpen={isUpdatePeriod} onRequestClose={closeUpdateModal} style={customModalStyles}>
-                    <UpdatePeriod closeModal={closeUpdateModal} periodId={periodId} />
+                    <UpdatePeriod closeModal={closeUpdateModal} periodId={periodId} getTrackPeriods={getTrackPeriods} />
                 </Modal>
             )}
         </div>

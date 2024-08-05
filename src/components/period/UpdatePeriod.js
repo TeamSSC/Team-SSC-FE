@@ -3,7 +3,7 @@ import styles from '../admin/CreateTrack.module.scss';
 import { baseUrl } from '../../config';
 import axios from 'axios';
 
-const UpdatePeriod = ({ closeModal, periodId }) => {
+const UpdatePeriod = ({ closeModal, periodId, getTrackPeriods }) => {
     const [period, setPeriod] = useState(null);
     console.log('periodId', periodId);
 
@@ -16,6 +16,8 @@ const UpdatePeriod = ({ closeModal, periodId }) => {
                 { period: period },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
+            getTrackPeriods();
+            closeModal();
             console.log(response.data);
         } catch (err) {
             console.error(err);
