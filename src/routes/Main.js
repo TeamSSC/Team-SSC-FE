@@ -43,7 +43,7 @@ const Main = () => {
     };
 
     const handleKakaoLogin = () => {
-        window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=7cf9695ccd3477922a5d6ddef0793d97&redirect_uri=http://localhost:3000`;
+        window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=7cf9695ccd3477922a5d6ddef0793d97&redirect_uri=https://teamssc.site:443`;
     };
 
     useEffect(() => {
