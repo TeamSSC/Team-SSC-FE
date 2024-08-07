@@ -7,6 +7,7 @@ import useAuthStore from '../stores/useAuthStore';
 import { baseUrl } from '../config';
 import Modal from '../components/modal/Modal';
 import UpdateProject from '../components/teamProject/UpdateProject';
+import TeamCaht from '../components/chat/TeamChat';
 
 const customModalStyles = {
     content: {
@@ -51,6 +52,7 @@ const TeamProject = () => {
                 },
             });
             const data = response.data.data;
+            console.log('data', data);
             setProjectIntro(data.projectIntro);
             setFigmaLink(data.figmaLink);
             setGitLink(data.gitLink);
@@ -101,25 +103,35 @@ const TeamProject = () => {
     }
     return (
         <div className={styles.teamProjectContainer}>
-            {memberIdList?.length > 0 &&
-                memberIdList?.map((e, i) => {
-                    return (
-                        <button key={i} onClick={() => navigate(`/profile/${e}`)}>
-                            {memberList[i]}
-                        </button>
-                    );
-                })}
-            <p>프로젝트 소개 : {projectIntro}</p>
-            <p>
-                깃허브 링크 : <a href={gitLink}>{gitLink}</a>
-            </p>
-            <p>
-                팀 노션 링크 : <a href={notionLink}>{notionLink}</a>
-            </p>
-            <p>
-                피그마 링크 : <a href={figmaLink}>{figmaLink} </a>
-            </p>
-            <button onClick={() => handleUpdateProjectClick()}>수정</button>
+            <div>
+                {memberIdList?.length > 0 &&
+                    memberIdList?.map((e, i) => {
+                        return (
+                            <button key={i} onClick={() => navigate(`/profile/${e}`)}>
+                                {memberList[i]}
+                            </button>
+                        );
+                    })}
+            </div>
+
+            <div>
+                <p>프로젝트 소개 : {projectIntro}</p>
+                <p>
+                    깃허브 링크 : <a href={gitLink}>{gitLink}</a>
+                </p>
+                <p>
+                    팀 노션 링크 : <a href={notionLink}>{notionLink}</a>
+                </p>
+                <p>
+                    피그마 링크 : <a href={figmaLink}>{figmaLink} </a>
+                </p>
+            </div>
+
+            <div>
+                <TeamCaht teamId={teamId} />
+            </div>
+
+            <button onClick={() => handleUpdateProjectClick()}>팀 정보 수정</button>
 
             {isUpdateProject && (
                 <Modal isOpen={isUpdateProject} onRequestClose={closeUpdateModal} style={customModalStyles}>

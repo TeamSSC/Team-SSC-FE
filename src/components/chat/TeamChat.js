@@ -2,36 +2,39 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { Client } from '@stomp/stompjs';
 import useAuthStore from '../../stores/useAuthStore';
-
 import axios from 'axios';
 import { baseUrl } from '../../config';
 import styles from './Chat.module.scss';
 
-const Chat = () => {
+const TeamCaht = ({ teamId }) => {
     const [inputMessage, setInputMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [stompClient, setStompClient] = useState(null);
+
     const token = localStorage.getItem('accessToken');
-    const { periodId } = useParams();
+
     const authData = useAuthStore();
+    console.log(teamId);
+
     useEffect(() => {
         const stomp = new Client({
-
-            brokerURL: 'ws://3.38.181.152:8080/ws/init', // Ensure this is correct
+            brokerURL: 'ws://localhost:8080/ws/init', // Ensure this is correct
             connectHeaders: {
                 Authorization: `Bearer ${token}`,
             },
             debug: (str) => {
                 console.log('STOMP Debug:', str);
             },
-            reconnectDelay: 10000,
-            heartbeatIncoming: 10000,
-            heartbeatOutgoing: 10000,
+            reconnectDelay: 5000,
+            heartbeatIncoming: 4000,
+            heartbeatOutgoing: 4000,
         });
+
         stomp.onConnect = () => {
             console.log('WebSocket connection opened.');
-            const subscriptionDestination = `/topic/chat.period.${periodId}`;
+            const subscriptionDestination = `/topic/team/${teamId}`;
             console.log(`Subscribing to ${subscriptionDestination}`);
+
             stomp.subscribe(subscriptionDestination, (frame) => {
                 console.log('Message received:', frame.body);
                 try {
@@ -42,12 +45,15 @@ const Chat = () => {
                     console.error('Message parsing error:', error);
                 }
             });
+
             stomp.onStompError = (frame) => {
                 console.error('STOMP Error:', frame);
             };
         };
+
         stomp.activate();
         setStompClient(stomp);
+
         return () => {
             if (stomp) {
                 stomp.deactivate();
@@ -62,7 +68,7 @@ const Chat = () => {
     const sendMessage = () => {
         if (stompClient && stompClient.connected) {
             stompClient.publish({
-                destination: `/app/chat.period.${periodId}`,
+                destination: `/app/chat/team/${teamId}`,
                 body: JSON.stringify({ content: inputMessage }),
             });
             getChats();
@@ -74,10 +80,10 @@ const Chat = () => {
 
     const getChats = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/messages/period/${periodId}`, {
+            const response = await axios.get(`${baseUrl}/api/messages/team/${teamId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            // console.log(response.data);
+            console.log(response.data);
             setMessages(response.data);
         } catch (err) {
             console.error(err);
@@ -99,7 +105,7 @@ const Chat = () => {
 
     return (
         <div>
-            <h1>{authData.periodId} 전체 채팅</h1>
+            <h1>{authData.periodId} 채팅</h1>
             <div
                 className={styles.chatList_wrapper}
                 style={{ height: '200px', overflowY: 'scroll' }}
@@ -131,4 +137,5 @@ const Chat = () => {
         </div>
     );
 };
-export default Chat;
+
+export default TeamCaht;
