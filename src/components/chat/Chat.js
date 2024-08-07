@@ -2,21 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Client } from '@stomp/stompjs';
 import useAuthStore from '../../stores/useAuthStore';
-
 const Chat = () => {
     const [inputMessage, setInputMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [stompClient, setStompClient] = useState(null);
-
     const token = localStorage.getItem('accessToken');
-
     const { periodId } = useParams();
-
     const authData = useAuthStore();
-
     useEffect(() => {
         const stomp = new Client({
-            brokerURL: 'ws://43.202.54.250:8080/chat', // Ensure this is correct
+            brokerURL: 'ws://localhost:8080/ws/init', // Ensure this is correct
             connectHeaders: {
                 Authorization: `Bearer ${token}`,
             },
@@ -27,12 +22,10 @@ const Chat = () => {
             heartbeatIncoming: 4000,
             heartbeatOutgoing: 4000,
         });
-
         stomp.onConnect = () => {
             console.log('WebSocket connection opened.');
-            const subscriptionDestination = `/topic/period/${periodId}`;
+            const subscriptionDestination = `/topic/chat.period.${periodId}`;
             console.log(`Subscribing to ${subscriptionDestination}`);
-
             stomp.subscribe(subscriptionDestination, (frame) => {
                 console.log('Message received:', frame.body);
                 try {
@@ -43,26 +36,22 @@ const Chat = () => {
                     console.error('Message parsing error:', error);
                 }
             });
-
             stomp.onStompError = (frame) => {
                 console.error('STOMP Error:', frame);
             };
         };
-
         stomp.activate();
         setStompClient(stomp);
-
         return () => {
             if (stomp) {
                 stomp.deactivate();
             }
         };
     }, [periodId]); // Dependencies to recreate effect when token or periodId changes
-
     const sendMessage = () => {
         if (stompClient && stompClient.connected) {
             stompClient.publish({
-                destination: `/ws/init/chat/period/${periodId}`,
+                destination: `/app/chat.period.${periodId}`,
                 body: JSON.stringify({ content: inputMessage }),
             });
             setInputMessage('');
@@ -70,7 +59,6 @@ const Chat = () => {
             console.error('WebSocket is not connected');
         }
     };
-
     return (
         <div>
             <h1>{authData.periodId} 전체 채팅</h1>
@@ -93,5 +81,4 @@ const Chat = () => {
         </div>
     );
 };
-
 export default Chat;
