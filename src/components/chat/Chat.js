@@ -16,17 +16,16 @@ const Chat = () => {
     const authData = useAuthStore();
     useEffect(() => {
         const stomp = new Client({
-
-            brokerURL: 'ws://3.38.181.152:8080/ws/init', // Ensure this is correct
+            brokerURL: 'ws://52.78.187.71:443/ws/init', // Ensure this is correct
             connectHeaders: {
                 Authorization: `Bearer ${token}`,
             },
             debug: (str) => {
                 console.log('STOMP Debug:', str);
             },
-            reconnectDelay: 10000,
-            heartbeatIncoming: 10000,
-            heartbeatOutgoing: 10000,
+            reconnectDelay: 5000,
+            heartbeatIncoming: 4000,
+            heartbeatOutgoing: 4000,
         });
         stomp.onConnect = () => {
             console.log('WebSocket connection opened.');
