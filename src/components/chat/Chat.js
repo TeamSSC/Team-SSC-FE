@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { Client } from '@stomp/stompjs';
 import useAuthStore from '../../stores/useAuthStore';
+
 import axios from 'axios';
 import { baseUrl } from '../../config';
 import styles from './Chat.module.scss';
@@ -10,16 +11,12 @@ const Chat = () => {
     const [inputMessage, setInputMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [stompClient, setStompClient] = useState(null);
-
     const token = localStorage.getItem('accessToken');
-
     const { periodId } = useParams();
-
     const authData = useAuthStore();
-
     useEffect(() => {
         const stomp = new Client({
-            brokerURL: 'ws://localhost:8080/ws/init', // Ensure this is correct
+            brokerURL: 'ws://52.78.187.71:443/ws/init', // Ensure this is correct
             connectHeaders: {
                 Authorization: `Bearer ${token}`,
             },
@@ -30,12 +27,10 @@ const Chat = () => {
             heartbeatIncoming: 4000,
             heartbeatOutgoing: 4000,
         });
-
         stomp.onConnect = () => {
             console.log('WebSocket connection opened.');
-            const subscriptionDestination = `/topic/period/${periodId}`;
+            const subscriptionDestination = `/topic/chat.period.${periodId}`;
             console.log(`Subscribing to ${subscriptionDestination}`);
-
             stomp.subscribe(subscriptionDestination, (frame) => {
                 console.log('Message received:', frame.body);
                 try {
@@ -46,15 +41,12 @@ const Chat = () => {
                     console.error('Message parsing error:', error);
                 }
             });
-
             stomp.onStompError = (frame) => {
                 console.error('STOMP Error:', frame);
             };
         };
-
         stomp.activate();
         setStompClient(stomp);
-
         return () => {
             if (stomp) {
                 stomp.deactivate();
@@ -69,7 +61,7 @@ const Chat = () => {
     const sendMessage = () => {
         if (stompClient && stompClient.connected) {
             stompClient.publish({
-                destination: `/app/chat/period/${periodId}`,
+                destination: `/app/chat.period.${periodId}`,
                 body: JSON.stringify({ content: inputMessage }),
             });
             getChats();
@@ -138,5 +130,4 @@ const Chat = () => {
         </div>
     );
 };
-
 export default Chat;
