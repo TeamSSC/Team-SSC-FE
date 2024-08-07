@@ -1,2 +1,2 @@
-export const baseUrl = 'https://52.78.187.71:8080';
+export const baseUrl = 'https://teamssc.site:443';
 // export const baseUrl = 'http://localhost:8080';
