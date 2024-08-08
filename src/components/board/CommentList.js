@@ -4,20 +4,21 @@ import Comment from './Comment';
 import styles from './CommentList.module.scss';
 
 const CommentList = ({
-                         comments,
-                         formatDate,
-                         toggleReplies,
-                         expandedReplies,
-                         replies,
-                         toggleReplyForm,
-                         replyContent,
-                         setReplyContent,
-                         handleReplySubmit,
-                         replyFormVisible,
-                         commentsLoading,
-                         commentsError,
-                         currentUser
-                     }) => {
+    comments,
+    formatDate,
+    toggleReplies,
+    expandedReplies,
+    replies,
+    toggleReplyForm,
+    replyContent,
+    setReplyContent,
+    handleReplySubmit,
+    replyFormVisible,
+    commentsLoading,
+    commentsError,
+    currentUser,
+    fetchComments,
+}) => {
     return (
         <div className={styles.commentsSection}>
             {commentsLoading ? (
@@ -25,7 +26,7 @@ const CommentList = ({
             ) : commentsError ? (
                 <p>Error loading comments: {commentsError.message}</p>
             ) : (
-                comments.map(comment => (
+                comments.map((comment) => (
                     <Comment
                         key={comment.commentId}
                         comment={comment}
@@ -39,6 +40,7 @@ const CommentList = ({
                         handleReplySubmit={handleReplySubmit}
                         replyFormVisible={replyFormVisible}
                         currentUser={currentUser}
+                        fetchComments={fetchComments}
                     />
                 ))
             )}

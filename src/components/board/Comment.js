@@ -18,6 +18,7 @@ const Comment = ({
     currentUser,
     removeComment, // 부모 컴포넌트에서 댓글 제거를 위한 함수
     removeReply, // 부모 컴포넌트에서 답글 제거를 위한 함수
+    fetchComments,
 }) => {
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
     const [updatedContent, setUpdatedContent] = useState(comment.content);
@@ -58,6 +59,7 @@ const Comment = ({
             } catch (error) {
                 console.error('Error deleting content:', error);
             }
+            fetchComments();
         }
     };
 
@@ -83,6 +85,7 @@ const Comment = ({
                     id={comment.commentId}
                     initialContent={comment.content}
                     type="comment"
+                    fetchComments={fetchComments}
                     onClose={() => setIsEditModalVisible(false)}
                     onUpdate={handleUpdate}
                 />
@@ -159,7 +162,7 @@ const Comment = ({
                             placeholder="답글을 입력하세요..."
                         />
                         <button type="submit" className={styles.submitButton}>
-                            답글 제출
+                            답글 작성
                         </button>
                     </form>
                 )}
