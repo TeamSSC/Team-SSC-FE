@@ -16,7 +16,7 @@ const Chat = () => {
     const authData = useAuthStore();
     useEffect(() => {
         const stomp = new Client({
-            brokerURL: 'wss://teamssc.site:61613/ws/init', // Ensure this is correct
+            brokerURL: 'wss://teamssc.site:61613/wss/init', // Ensure this is correct
             connectHeaders: {
                 Authorization: `Bearer ${token}`,
             },
