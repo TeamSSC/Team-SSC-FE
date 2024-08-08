@@ -1,0 +1,45 @@
+.modal {
+  position: relative;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent; /* 배경을 투명하게 설정 */
+  color: #000; /* X 글자 색상을 검은색으로 설정 */
+  border: none;
+  font-size: 24px; /* X 글자 크기 */
+  width: 24px; /* X 글자 크기와 동일한 너비 */
+  height: 24px; /* X 글자 크기와 동일한 높이 */
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  line-height: 1; /* X 글자가 버튼 중앙에 오도록 설정 */
+  text-align: center; /* X 글자를 버튼 중앙에 정렬 */
+  display: flex; /* Flexbox를 사용하여 X 글자를 중앙에 정렬 */
+  align-items: center; /* Flexbox로 수직 중앙 정렬 */
+  justify-content: center; /* Flexbox로 수평 중앙 정렬 */
+}
+
+.input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
