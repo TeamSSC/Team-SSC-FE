@@ -13,7 +13,9 @@ const Main = () => {
 
     const [loginId, setLoginId] = useState('');
     const [password, setPassword] = useState('');
+
     const navigate = useNavigate();
+
     const hasFetched = useRef(false); // useRef를 사용하여 useEffect가 실행되었는지 추적
 
     const login = async () => {
@@ -38,7 +40,7 @@ const Main = () => {
             }
         } catch (err) {
             console.error(err);
-            // alert(err.response.data.message || '로그인 실패 하셨습니다.');
+            alert(err.response.data.message || '로그인 실패 하셨습니다.');
         }
     };
 
@@ -88,7 +90,11 @@ const Main = () => {
         <div className={styles.loginForm_wrapper}>
             <h1>로그인 하기</h1>
             <input placeholder="아이디를 입력하세요..." onChange={(e) => setLoginId(e.target.value)} />
-            <input placeholder="비밀번호를 입력하세요..." onChange={(e) => setPassword(e.target.value)} />
+            <input
+                placeholder="비밀번호를 입력하세요..."
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+            />
             <button onClick={() => login()}>로그인 하기</button>
             <button onClick={() => navigate('/signup')}>회원가입 하기</button>
             <button className={styles.kakaoButton} onClick={handleKakaoLogin}>

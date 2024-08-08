@@ -10,15 +10,16 @@ const Profile = () => {
     const [profile, setProfile] = useState({
         email: '',
         username: '',
-        gitLink: null,
-        vlogLink: null,
-        intro: null,
-        mbti: null,
         profileImage: null,
         section: null,
         team: null,
         period: null,
     });
+
+    const [gitLink, setGitLink] = useState(null);
+    const [vlogLink, setVlogLink] = useState(null);
+    const [intro, setIntro] = useState(null);
+    const [mbti, setMbti] = useState(null);
 
     const { userId } = useParams();
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,17 +30,22 @@ const Profile = () => {
         'https://team-ssc.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%EB%B3%B8+%ED%94%84%EB%A1%9C%ED%95%84+%EC%82%AC%EC%A7%84.webp';
 
     useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const response = await axios.get(`${baseUrl}/api/users/${userId}/profile`);
-                setProfile(response.data.data);
-            } catch (error) {
-                console.error('Error fetching profile:', error);
-            }
-        };
-
         fetchProfile();
-    }, [userId]);
+    }, []);
+
+    const fetchProfile = async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/api/users/${userId}/profile`);
+            const data = response.data.data;
+            setProfile(data);
+            setGitLink(data.gitLink);
+            setVlogLink(data.vlogLink);
+            setIntro(data.intro);
+            setMbti(data.mbti);
+        } catch (error) {
+            console.error('Error fetching profile:', error);
+        }
+    };
 
     const handleEditProfile = () => {
         setIsModalOpen(true); // 모달 열기
@@ -99,7 +105,17 @@ const Profile = () => {
                 </div>
             </div>
             {isModalOpen && (
-                <Modal onClose={closeModal}>
+                <Modal
+                    onClose={closeModal}
+                    gitLink={gitLink}
+                    setGitLink={setGitLink}
+                    vlogLink={vlogLink}
+                    setVlogLink={setVlogLink}
+                    intro={intro}
+                    setIntro={setIntro}
+                    mbti={mbti}
+                    setMbti={setMbti}
+                >
                     <div className={styles.modalContent}>
                         <button
                             className={styles.modalButton}

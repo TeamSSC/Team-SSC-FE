@@ -25,8 +25,9 @@ const NavBar = () => {
             } else if (roles.includes('USER')) {
                 // 'USER'만 포함되어 있으면 'USER'로 설정
                 userRole = 'USER';
+            } else if (roles.includes('ADMIN')) {
+                userRole = 'ADMIN';
             }
-            console.log(userRole);
         } catch (error) {
             console.error('토큰 디코딩 오류:', error);
         }
