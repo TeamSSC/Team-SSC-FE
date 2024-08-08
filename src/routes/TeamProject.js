@@ -19,7 +19,8 @@ const customModalStyles = {
         transform: 'translate(-50%, -50%)',
     },
 };
-
+// http://localhost:8080/api/weekProgress/1/teams/5/teamInfo patch
+// http://localhost:8080/api/weekProgress/1/teams/5 get
 const TeamProject = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isUpdateProject, setIsUpdateProject] = useState(false);
