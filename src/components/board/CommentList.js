@@ -24,7 +24,7 @@ const CommentList = ({
             {commentsLoading ? (
                 <p>Loading comments...</p>
             ) : commentsError ? (
-                <p>Error loading comments: {commentsError.message}</p>
+                <p>댓글이 없습니다. 댓글을 달아보세요!</p>
             ) : (
                 comments.map((comment) => (
                     <Comment

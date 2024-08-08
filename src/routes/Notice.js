@@ -97,7 +97,7 @@ const Notice = () => {
                         </div>
                     ))
                 ) : (
-                    <p>No notices available</p>
+                    <p>공지사항 글이 존재하지 않습니다.</p>
                 )}
             </div>
             <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
