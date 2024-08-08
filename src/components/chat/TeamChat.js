@@ -18,7 +18,7 @@ const TeamCaht = ({ teamId }) => {
 
     useEffect(() => {
         const stomp = new Client({
-            brokerURL: 'ws://localhost:8080/ws/init', // Ensure this is correct
+            brokerURL: 'ws://teamssc.site:443/ws/init', // Ensure this is correct
             connectHeaders: {
                 Authorization: `Bearer ${token}`,
             },
