@@ -90,3 +90,19 @@
         background-color: #5a6268; // 예시: 어두운 회색
     }
 }
+
+// 어드민 모드 버튼 색상
+.admin_mode_button {
+    background-color: #6c757d; // 어드민 버튼 색상
+    &:hover {
+        background-color: #5a6268; // 어두운 회색
+    }
+}
+
+// 일반 모드 버튼 색상
+.general_mode_button {
+    background-color: #17a2b8; // 일반 모드 버튼 색상
+    &:hover {
+        background-color: #138496; // 어두운 청록색
+    }
+}

@@ -19,6 +19,7 @@ const Signup = () => {
     const [enteredCode, setEnteredCode] = useState('');
     const [isCodeValid, setIsCodeValid] = useState(false);
     const [isSending, setIsSending] = useState(false);
+    const [isAdminMode, setIsAdminMode] = useState(false); // 추가된 상태
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -125,13 +126,15 @@ const Signup = () => {
                 </button>
             ) : (
                 <>
-                    <button
-                        className={`${styles.button} ${isSending ? styles.sending : ''}`}
-                        onClick={resendVerificationCode}
-                        disabled={isSending}
-                    >
-                        {isSending ? '재전송 중...' : '인증번호 재전송'}
-                    </button>
+                    {!isCodeValid && (
+                        <button
+                            className={`${styles.button} ${isSending ? styles.sending : ''}`}
+                            onClick={resendVerificationCode}
+                            disabled={isSending}
+                        >
+                            {isSending ? '재전송 중...' : '인증번호 재전송'}
+                        </button>
+                    )}
                     <input
                         className={styles.input}
                         placeholder="인증번호를 입력하세요..."
@@ -167,7 +170,7 @@ const Signup = () => {
                 value={confirmPw}
                 onChange={(e) => setConfirmPw(e.target.value)}
             />
-            {!isAdmin && (
+            {!isAdmin && !isAdminMode && (
                 <div className={styles.selectContainer}>
                     <select className={styles.select} value={periodId} onChange={(e) => setPeriodId(e.target.value)}>
                         <option value="">트랙을 선택하세요</option>
@@ -180,16 +183,23 @@ const Signup = () => {
                 </div>
             )}
 
-            {!isAdmin ? (
-                <button onClick={() => setIsAdmin(true)} className={styles.admin_button}>
+            {!isAdminMode ? (
+                <button onClick={() => setIsAdminMode(true)} className={`${styles.admin_button} ${styles.admin_mode_button}`}>
                     어드민 회원가입
                 </button>
             ) : (
-                <input
-                    placeholder="어드민 키를 입력하세요..."
-                    value={adminKey}
-                    onChange={(e) => setAdminKey(e.target.value)}
-                />
+                <>
+                    <input
+                        placeholder="어드민 키를 입력하세요..."
+                        value={adminKey}
+                        onChange={(e) => setAdminKey(e.target.value)}
+                    />
+                    <button onClick={() => setIsAdminMode(false)}
+                            className={`${styles.admin_button} ${styles.general_mode_button}`}>
+                        일반 회원가입으로 돌아가기
+                    </button>
+
+                </>
             )}
 
             <button className={styles.button} onClick={signup}>
