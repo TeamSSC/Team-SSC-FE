@@ -40,6 +40,7 @@ const TeamProject = () => {
     useEffect(() => {
         getTeam();
         getTeamMembers();
+        getTeamTitle();
         setIsLoading(false);
     }, []);
 
@@ -68,7 +69,7 @@ const TeamProject = () => {
             const response = await axios.get(`${baseUrl}/api/weekProgress/${weekProgressId}/teams/${teamId}/users`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            console.log(response.data.data);
+            // console.log(response.data.data);
             setMemberList(response?.data.data.userNames);
             setMemberIdList(response?.data.data.userIds);
         } catch (err) {
@@ -88,6 +89,19 @@ const TeamProject = () => {
             console.log(response.data);
         } catch (err) {
             console.error(err);
+        }
+    };
+
+    const getTeamTitle = async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/api/weekProgress/${weekProgressId}/teams/${teamId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log('팀 타이틀', response.data.data);
+        } catch (err) {
+            console.error('팀타이틀', err);
         }
     };
 
