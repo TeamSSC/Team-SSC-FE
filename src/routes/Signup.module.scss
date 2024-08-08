@@ -10,37 +10,6 @@
     margin-bottom: 20px;
 }
 
-.inputContainer {
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
-
-    .input {
-        width: 240px;
-        margin-right: 10px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 16px;
-    }
-
-    .verifyButton {
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: bold;
-        transition: background-color 0.3s;
-
-        &:hover {
-            background-color: #0056b3;
-        }
-    }
-}
-
 .input {
     width: 300px;
     margin: 10px 0;
@@ -83,5 +52,41 @@
 
     &:hover {
         background-color: #0056b3;
+    }
+}
+
+// 전송 중 상태 스타일
+.sending {
+    background-color: #17a2b8; // 예시: 청록색
+    cursor: not-allowed;
+}
+
+.sending:hover {
+    background-color: #138496; // 예시: 어두운 청록색
+}
+
+// 인증 완료 상태 스타일
+.valid {
+    background-color: #28a745; // 예시: 초록색
+}
+
+.valid:hover {
+    background-color: #218838; // 예시: 어두운 초록색
+}
+
+.admin_button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #6c757d; // 예시: 회색
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #5a6268; // 예시: 어두운 회색
     }
 }
