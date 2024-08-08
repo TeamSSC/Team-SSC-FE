@@ -43,29 +43,28 @@ const ManagerModal = ({ onClose }) => {
     }, [currentPage]);
 
     useEffect(() => {
-        const fetchWeeks = async () => {
-            try {
-                const response = await axios.get(`${baseUrl}/api/weekProgress/myweekProgress`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-                    },
-                });
-                const weekData = response.data.data.map((week) => ({
-                    id: week.id,
-                    name: week.name,
-                    status: getStatusLabel(week.status),
-                }));
-                setWeeks(weekData);
-                setSelectedPeriod(weekData[0]?.id || '');
-                setLoadingPeriods(false);
-            } catch (error) {
-                console.error('주차 목록 조회 오류:', error);
-                setLoadingPeriods(false);
-            }
-        };
-
         fetchWeeks();
     }, []);
+    const fetchWeeks = async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/api/weekProgress/myweekProgress`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                },
+            });
+            const weekData = response.data.data.map((week) => ({
+                id: week.id,
+                name: week.name,
+                status: getStatusLabel(week.status),
+            }));
+            setWeeks(weekData);
+            setSelectedPeriod(weekData[0]?.id || '');
+            setLoadingPeriods(false);
+        } catch (error) {
+            console.error('주차 목록 조회 오류:', error);
+            setLoadingPeriods(false);
+        }
+    };
 
     const getStatusLabel = (status) => {
         switch (status) {
@@ -170,6 +169,7 @@ const ManagerModal = ({ onClose }) => {
                     }
                 );
                 alert('주차가 생성되었습니다.');
+                fetchWeeks();
                 closeCreatePeriodModal(); // 모달 닫기
             } catch (error) {
                 console.error('주차 생성 오류:', error);
@@ -206,8 +206,8 @@ const ManagerModal = ({ onClose }) => {
                     }
                 );
                 alert('주차 상태가 변경되었습니다.');
+                fetchWeeks();
                 closeChangePeriodStatusModal();
-                window.location.reload();
             } catch (error) {
                 console.error('주차 상태 변경 오류:', error);
                 alert('주차 상태 변경 중 오류가 발생했습니다.');
