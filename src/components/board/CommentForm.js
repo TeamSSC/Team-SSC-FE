@@ -12,7 +12,9 @@ const CommentForm = ({ newComment, setNewComment, handleCommentSubmit }) => {
                     className={styles.commentTextarea}
                     placeholder="댓글을 입력하세요..."
                 />
-                <button type="submit" className={styles.submitButton}>댓글 제출</button>
+                <button type="submit" className={styles.submitButton}>
+                    댓글 작성
+                </button>
             </form>
         </div>
     );

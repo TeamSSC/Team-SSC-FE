@@ -4,7 +4,7 @@ import axios from 'axios';
 import styles from './CommentEditModal.module.scss';
 import { baseUrl } from '../../config';
 
-const CommentEditModal = ({ id, initialContent, type, onClose, onUpdate }) => {
+const CommentEditModal = ({ id, initialContent, type, onClose, onUpdate, fetchComments }) => {
     const [content, setContent] = useState(initialContent);
 
     const handleUpdate = async () => {
@@ -20,6 +20,7 @@ const CommentEditModal = ({ id, initialContent, type, onClose, onUpdate }) => {
                 }
             );
             onUpdate(content);
+            fetchComments();
             onClose();
         } catch (error) {
             console.error('Error updating content:', error);
