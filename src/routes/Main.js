@@ -37,7 +37,12 @@ const Main = () => {
                 navigate('/admin');
             }
         } catch (err) {
-            console.error(err);
+            if (err.response?.data?.message === "아직 승인 받지 않은 회원입니다.") {
+                alert('회원가입 승인 대기중입니다.');
+            } else {
+                alert('로그인에 실패하였습니다. 관리자한테 문의해주세요')
+                console.error(err);
+            }
             // alert(err.response.data.message || '로그인 실패 하셨습니다.');
         }
     };
@@ -69,7 +74,7 @@ const Main = () => {
                     setPeriodId(userData?.trackName + String(userData?.period) + '기');
                     setUserPeriodId(userData?.periodId);
 
-                    if ((userData.periodId != null, userData.userStatus != 'PENDING')) {
+                    if (userData.periodId != null, userData.userStatus != 'PENDING') {
                         navigate(`/period/${userData.periodId}`);
                     } else {
                         navigate('/kakao/approvalStatus');

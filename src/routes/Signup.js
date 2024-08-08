@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import styles from './Signup.module.scss';
 import { baseUrl } from '../config';
+import {useNavigate} from "react-router-dom";
 
 const Signup = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -18,6 +19,7 @@ const Signup = () => {
     const [enteredCode, setEnteredCode] = useState('');
     const [isCodeValid, setIsCodeValid] = useState(false);
     const [isSending, setIsSending] = useState(false); // 추가된 상태
+    const navigate = useNavigate();
 
     useEffect(() => {
         getPeriod();
@@ -90,6 +92,7 @@ const Signup = () => {
                     periodId: Number(periodId),
                 });
                 alert(response.data.message);
+                navigate(`/`)
             } catch (err) {
                 console.error(err);
                 alert(err.response?.data?.message || '회원가입에 실패했습니다.');
