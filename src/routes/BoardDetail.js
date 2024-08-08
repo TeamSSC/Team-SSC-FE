@@ -32,43 +32,43 @@ const BoardDetail = () => {
     const [replyFormVisible, setReplyFormVisible] = useState({});
 
     useEffect(() => {
-        const fetchPost = async () => {
-            try {
-                const response = await axios.get(`${baseUrl}/api/boards/${id}`);
-                setPost(response.data.data);
-            } catch (err) {
-                setError(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        const fetchLikes = async () => {
-            try {
-                const response = await axios.get(`${baseUrl}/api/boards/${id}/like`);
-                setLikes(response.data.data.likeCount);
-                setLiked(response.data.data.userLiked);
-            } catch (err) {
-                console.error(err);
-                setError(err);
-            }
-        };
-
-        const fetchComments = async () => {
-            try {
-                const response = await axios.get(`${baseUrl}/api/boards/${id}/comments`);
-                setComments(response.data.data.content);
-            } catch (err) {
-                setCommentsError(err);
-            } finally {
-                setCommentsLoading(false);
-            }
-        };
-
         fetchPost();
         fetchLikes();
         fetchComments();
     }, [id]);
+
+    const fetchPost = async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/api/boards/${id}`);
+            setPost(response.data.data);
+        } catch (err) {
+            setError(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchLikes = async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/api/boards/${id}/like`);
+            setLikes(response.data.data.likeCount);
+            setLiked(response.data.data.userLiked);
+        } catch (err) {
+            console.error(err);
+            setError(err);
+        }
+    };
+
+    const fetchComments = async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/api/boards/${id}/comments`);
+            setComments(response.data.data.content);
+        } catch (err) {
+            setCommentsError(err);
+        } finally {
+            setCommentsLoading(false);
+        }
+    };
 
     const handleLikeToggle = async () => {
         try {
@@ -130,8 +130,7 @@ const BoardDetail = () => {
                 }
             );
             setNewComment('');
-            const response = await axios.get(`${baseUrl}/api/boards/${id}/comments`);
-            setComments(response.data.data.content);
+            fetchComments();
         } catch (err) {
             console.error(err);
             setError(err);
@@ -156,6 +155,7 @@ const BoardDetail = () => {
                     },
                 }
             );
+            fetchComments();
             setReplyContent((prev) => ({
                 ...prev,
                 [parentCommentId]: '',
@@ -216,6 +216,7 @@ const BoardDetail = () => {
                         replyContent={replyContent}
                         setReplyContent={setReplyContent}
                         handleReplySubmit={handleReplySubmit}
+                        fetchComments={fetchComments}
                         replyFormVisible={replyFormVisible}
                         commentsLoading={commentsLoading}
                         commentsError={commentsError}
