@@ -17,6 +17,7 @@ const Signup = () => {
     const [isCodeSent, setIsCodeSent] = useState(false);
     const [enteredCode, setEnteredCode] = useState('');
     const [isCodeValid, setIsCodeValid] = useState(false);
+    const [isSending, setIsSending] = useState(false); // 추가된 상태
 
     useEffect(() => {
         getPeriod();
@@ -34,6 +35,7 @@ const Signup = () => {
     };
 
     const sendVerificationCode = async () => {
+        setIsSending(true); // 버튼 비활성화
         try {
             const response = await axios.post(`${baseUrl}/api/email/send`, null, {
                 params: {
@@ -46,6 +48,14 @@ const Signup = () => {
         } catch (err) {
             console.error(err);
             alert('인증번호 전송에 실패했습니다.');
+        } finally {
+            setIsSending(false); // 버튼 활성화
+        }
+    };
+
+    const resendVerificationCode = async () => {
+        if (window.confirm('인증번호를 재전송 받으시겠습니까?')) {
+            sendVerificationCode();
         }
     };
 
@@ -102,19 +112,27 @@ const Signup = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
             />
-            <button className={styles.button} onClick={sendVerificationCode} disabled={isCodeSent}>
-                인증번호 전송
-            </button>
-            {isCodeSent && (
+            {!isCodeSent ? (
+                <button className={styles.button} onClick={sendVerificationCode} disabled={isSending}>
+                    {isSending ? '전송 중...' : '인증번호 전송'}
+                </button>
+            ) : (
                 <>
+                    <button className={styles.button} onClick={resendVerificationCode} disabled={isSending}>
+                        {isSending ? '재전송 중...' : '인증번호 재전송'}
+                    </button>
                     <input
                         className={styles.input}
                         placeholder="인증번호를 입력하세요..."
                         value={enteredCode}
                         onChange={(e) => setEnteredCode(e.target.value)}
                     />
-                    <button className={styles.button} onClick={verifyCode}>
-                        인증번호 확인
+                    <button
+                        className={styles.button}
+                        onClick={verifyCode}
+                        disabled={isCodeValid}
+                    >
+                        {isCodeValid ? '인증 완료' : '인증번호 확인'}
                     </button>
                 </>
             )}
