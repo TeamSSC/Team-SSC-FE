@@ -6,15 +6,30 @@ import axios from 'axios';
 import useAuthStore from '../stores/useAuthStore';
 
 const Main = () => {
-    const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
-    const setUsername = useAuthStore((state) => state.setUsername);
-    const setPeriodId = useAuthStore((state) => state.setPeriodId);
-    const setUserPeriodId = useAuthStore((state) => state.setUserPeriodId);
+    const { isLoggedIn, userPeriodId, setIsLoggedIn, setUsername, setPeriodId, setUserPeriodId } = useAuthStore((state) => ({
+        isLoggedIn: state.isLoggedIn,
+        userPeriodId: state.userPeriodId,
+        setIsLoggedIn: state.setIsLoggedIn,
+        setUsername: state.setUsername,
+        setPeriodId: state.setPeriodId,
+        setUserPeriodId: state.setUserPeriodId,
+    }));
 
     const [loginId, setLoginId] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const hasFetched = useRef(false); // useRef를 사용하여 useEffect가 실행되었는지 추적
+
+    // 로그인 상태에 따라 리디렉션 처리
+    useEffect(() => {
+        if (isLoggedIn) {
+            if (userPeriodId) {
+                navigate(`/period/${userPeriodId}`);
+            } else {
+                navigate('/admin');
+            }
+        }
+    }, [isLoggedIn, userPeriodId, navigate]);
 
     const login = async () => {
         try {
@@ -37,7 +52,12 @@ const Main = () => {
                 navigate('/admin');
             }
         } catch (err) {
-            console.error(err);
+            if (err.response?.data?.message === "아직 승인 받지 않은 회원입니다.") {
+                alert('회원가입 승인 대기중입니다. 관리자한테 문의해주세요');
+            } else {
+                alert('로그인에 실패하였습니다. 관리자한테 문의해주세요')
+                console.error(err);
+            }
             // alert(err.response.data.message || '로그인 실패 하셨습니다.');
         }
     };
@@ -69,7 +89,7 @@ const Main = () => {
                     setPeriodId(userData?.trackName + String(userData?.period) + '기');
                     setUserPeriodId(userData?.periodId);
 
-                    if ((userData.periodId != null, userData.userStatus != 'PENDING')) {
+                    if (userData.periodId != null, userData.userStatus != 'PENDING') {
                         navigate(`/period/${userData.periodId}`);
                     } else {
                         navigate('/kakao/approvalStatus');
