@@ -90,7 +90,7 @@ const Main = () => {
             <input placeholder="아이디를 입력하세요..." onChange={(e) => setLoginId(e.target.value)} />
             <input placeholder="비밀번호를 입력하세요..." onChange={(e) => setPassword(e.target.value)} />
             <button onClick={() => login()}>로그인 하기</button>
-            <button onClick={() => navigate('/signup')}>회원가입 하기ss</button>
+            <button onClick={() => navigate('/signup')}>회원가입 하기</button>
             <button className={styles.kakaoButton} onClick={handleKakaoLogin}>
                 카카오로 로그인하기
             </button>
