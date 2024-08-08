@@ -6,17 +6,32 @@ import axios from 'axios';
 import useAuthStore from '../stores/useAuthStore';
 
 const Main = () => {
-    const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
-    const setUsername = useAuthStore((state) => state.setUsername);
-    const setPeriodId = useAuthStore((state) => state.setPeriodId);
-    const setUserPeriodId = useAuthStore((state) => state.setUserPeriodId);
+    const { isLoggedIn, userPeriodId, setIsLoggedIn, setUsername, setPeriodId, setUserPeriodId } = useAuthStore(
+        (state) => ({
+            isLoggedIn: state.isLoggedIn,
+            userPeriodId: state.userPeriodId,
+            setIsLoggedIn: state.setIsLoggedIn,
+            setUsername: state.setUsername,
+            setPeriodId: state.setPeriodId,
+            setUserPeriodId: state.setUserPeriodId,
+        })
+    );
 
     const [loginId, setLoginId] = useState('');
     const [password, setPassword] = useState('');
-
     const navigate = useNavigate();
-
     const hasFetched = useRef(false); // useRef를 사용하여 useEffect가 실행되었는지 추적
+
+    // 로그인 상태에 따라 리디렉션 처리
+    useEffect(() => {
+        if (isLoggedIn) {
+            if (userPeriodId) {
+                navigate(`/period/${userPeriodId}`);
+            } else {
+                navigate('/admin');
+            }
+        }
+    }, [isLoggedIn, userPeriodId, navigate]);
 
     const login = async () => {
         try {
@@ -39,8 +54,13 @@ const Main = () => {
                 navigate('/admin');
             }
         } catch (err) {
-            console.error(err);
-            alert(err.response.data.message || '로그인 실패 하셨습니다.');
+            if (err.response?.data?.message === '아직 승인 받지 않은 회원입니다.') {
+                alert('회원가입 승인 대기중입니다. 관리자한테 문의해주세요');
+            } else {
+                alert('로그인에 실패하였습니다. 관리자한테 문의해주세요');
+                console.error(err);
+            }
+            // alert(err.response.data.message || '로그인 실패 하셨습니다.');
         }
     };
 
@@ -90,11 +110,7 @@ const Main = () => {
         <div className={styles.loginForm_wrapper}>
             <h1>로그인 하기</h1>
             <input placeholder="아이디를 입력하세요..." onChange={(e) => setLoginId(e.target.value)} />
-            <input
-                placeholder="비밀번호를 입력하세요..."
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-            />
+            <input placeholder="비밀번호를 입력하세요..." onChange={(e) => setPassword(e.target.value)} />
             <button onClick={() => login()}>로그인 하기</button>
             <button onClick={() => navigate('/signup')}>회원가입 하기</button>
             <button className={styles.kakaoButton} onClick={handleKakaoLogin}>

@@ -20,7 +20,9 @@ const NavBar = () => {
             const roles = decodedToken?.roles || [];
 
             // 'MANAGER'가 역할 목록에 포함되어 있으면 'MANAGER'로 설정
-            if (roles.includes('MANAGER')) {
+            if (roles.includes('ADMIN')) {
+                userRole = 'ADMIN';
+            } else if (roles.includes('MANAGER')) {
                 userRole = 'MANAGER';
             } else if (roles.includes('USER')) {
                 // 'USER'만 포함되어 있으면 'USER'로 설정
