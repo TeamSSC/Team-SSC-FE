@@ -71,7 +71,7 @@ const Board = () => {
                         </div>
                     ))
                 ) : (
-                    <p>No posts available</p>
+                    <p>아직 게시글이 없습니다. 첫 게시글을 생성해 보세요!!</p>
                 )}
             </div>
             <Pagination currentPage={currentPage} onPageChange={handlePageChange} />
