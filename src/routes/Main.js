@@ -6,15 +6,30 @@ import axios from 'axios';
 import useAuthStore from '../stores/useAuthStore';
 
 const Main = () => {
-    const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
-    const setUsername = useAuthStore((state) => state.setUsername);
-    const setPeriodId = useAuthStore((state) => state.setPeriodId);
-    const setUserPeriodId = useAuthStore((state) => state.setUserPeriodId);
+    const { isLoggedIn, userPeriodId, setIsLoggedIn, setUsername, setPeriodId, setUserPeriodId } = useAuthStore((state) => ({
+        isLoggedIn: state.isLoggedIn,
+        userPeriodId: state.userPeriodId,
+        setIsLoggedIn: state.setIsLoggedIn,
+        setUsername: state.setUsername,
+        setPeriodId: state.setPeriodId,
+        setUserPeriodId: state.setUserPeriodId,
+    }));
 
     const [loginId, setLoginId] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const hasFetched = useRef(false); // useRef를 사용하여 useEffect가 실행되었는지 추적
+
+    // 로그인 상태에 따라 리디렉션 처리
+    useEffect(() => {
+        if (isLoggedIn) {
+            if (userPeriodId) {
+                navigate(`/period/${userPeriodId}`);
+            } else {
+                navigate('/admin');
+            }
+        }
+    }, [isLoggedIn, userPeriodId, navigate]);
 
     const login = async () => {
         try {

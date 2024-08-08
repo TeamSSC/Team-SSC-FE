@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import styles from './Signup.module.scss';
 import { baseUrl } from '../config';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -78,7 +78,7 @@ const Signup = () => {
         }
 
         if (password === confirmPw) {
-            if (periodId === '') {
+            if (!isAdmin && periodId === '') {
                 alert('트랙을 선택하세요.');
                 return;
             }
@@ -88,8 +88,8 @@ const Signup = () => {
                     email: email,
                     password: password,
                     username: username,
-                    adminKey: adminKey,
-                    periodId: Number(periodId),
+                    adminKey: isAdmin ? adminKey : '', // 어드민일 때만 adminKey 전송
+                    periodId: isAdmin ? null : Number(periodId), // 어드민일 때 periodId를 전송하지 않음
                 });
                 alert(response.data.message);
                 navigate(`/`)
@@ -159,16 +159,18 @@ const Signup = () => {
                 value={confirmPw}
                 onChange={(e) => setConfirmPw(e.target.value)}
             />
-            <div className={styles.selectContainer}>
-                <select className={styles.select} value={periodId} onChange={(e) => setPeriodId(e.target.value)}>
-                    <option value="">트랙을 선택하세요</option>
-                    {periodList.map((e) => (
-                        <option key={e.id} value={e.id}>
-                            {e.trackName} {e.period} 기
-                        </option>
-                    ))}
-                </select>
-            </div>
+            {!isAdmin && (
+                <div className={styles.selectContainer}>
+                    <select className={styles.select} value={periodId} onChange={(e) => setPeriodId(e.target.value)}>
+                        <option value="">트랙을 선택하세요</option>
+                        {periodList.map((e) => (
+                            <option key={e.id} value={e.id}>
+                                {e.trackName} {e.period} 기
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            )}
 
             {!isAdmin ? (
                 <button onClick={() => setIsAdmin(true)} className={styles.admin_button}>
