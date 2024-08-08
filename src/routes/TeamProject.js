@@ -28,6 +28,10 @@ const TeamProject = () => {
     const [gitLink, setGitLink] = useState('');
     const [notionLink, setNotionLink] = useState('');
     const [projectIntro, setProjectIntro] = useState('');
+    const [teamName, setTeamName] = useState('');
+    const [teamInfo, setTeamInfo] = useState('');
+    const [teamLeader, setTeamLeader] = useState('');
+
     const [memberList, setMemberList] = useState([]);
     const [memberIdList, setMemberIdList] = useState([]);
 
@@ -99,7 +103,11 @@ const TeamProject = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log('팀 타이틀', response.data.data);
+
+            const data = response.data.data;
+            setTeamInfo(data.teamInfo);
+            setTeamLeader(data.leaderName);
+            setTeamName(data.teamName);
         } catch (err) {
             console.error('팀타이틀', err);
         }
@@ -113,12 +121,14 @@ const TeamProject = () => {
         setIsUpdateProject(false);
     };
 
+    console.log(teamInfo);
+
     if (isLoading) {
         <div>로딩 중 입니다...</div>;
     }
     return (
         <div className={styles.teamProjectContainer}>
-            <div>
+            <div className={styles.memberList_wrapper}>
                 {memberIdList?.length > 0 &&
                     memberIdList?.map((e, i) => {
                         return (
@@ -129,7 +139,10 @@ const TeamProject = () => {
                     })}
             </div>
 
-            <div>
+            <div className={styles.projectDetails}>
+                <h1>{teamName}</h1>
+                <h3>리더 : {teamLeader}</h3>
+                <h3>팀 소개 : {teamInfo}</h3>
                 <p>프로젝트 소개 : {projectIntro}</p>
                 <p>
                     깃허브 링크 : <a href={gitLink}>{gitLink}</a>
@@ -140,13 +153,11 @@ const TeamProject = () => {
                 <p>
                     피그마 링크 : <a href={figmaLink}>{figmaLink} </a>
                 </p>
-            </div>
 
-            <div>
                 <TeamCaht teamId={teamId} />
-            </div>
 
-            <button onClick={() => handleUpdateProjectClick()}>팀 정보 수정</button>
+                <button onClick={() => handleUpdateProjectClick()}>팀 정보 수정</button>
+            </div>
 
             {isUpdateProject && (
                 <Modal isOpen={isUpdateProject} onRequestClose={closeUpdateModal} style={customModalStyles}>
