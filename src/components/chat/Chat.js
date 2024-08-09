@@ -16,7 +16,7 @@ const Chat = () => {
     const authData = useAuthStore();
     useEffect(() => {
         const stomp = new Client({
-            brokerURL: 'wss://team-ssc.vercel.app/wss/init', // Ensure this is correct
+            brokerURL: 'wss://teamssc.site:15674/wss/init', // Ensure this is correct
             connectHeaders: {
                 Authorization: `Bearer ${token}`,
             },
