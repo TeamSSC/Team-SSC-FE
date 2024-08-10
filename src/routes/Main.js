@@ -6,16 +6,16 @@ import axios from 'axios';
 import useAuthStore from '../stores/useAuthStore';
 
 const Main = () => {
-    const { isLoggedIn, userPeriodId, setIsLoggedIn, setUsername, setPeriodId, setUserPeriodId } = useAuthStore(
-        (state) => ({
+    const { isLoggedIn, userPeriodId, status, setIsLoggedIn, setUsername, setPeriodId, setUserPeriodId, setStatus } =
+        useAuthStore((state) => ({
             isLoggedIn: state.isLoggedIn,
             userPeriodId: state.userPeriodId,
             setIsLoggedIn: state.setIsLoggedIn,
             setUsername: state.setUsername,
             setPeriodId: state.setPeriodId,
             setUserPeriodId: state.setUserPeriodId,
-        })
-    );
+            setStatus: state.status,
+        }));
 
     const [loginId, setLoginId] = useState('');
     const [password, setPassword] = useState('');
@@ -31,7 +31,7 @@ const Main = () => {
                 navigate('/admin');
             }
         }
-    }, [isLoggedIn, userPeriodId, navigate]);
+    }, []);
 
     const login = async () => {
         try {
@@ -40,7 +40,6 @@ const Main = () => {
                 password: password,
             });
 
-            console.log(response);
             const userData = response.data.data;
             localStorage.setItem('accessToken', userData?.accessToken);
             localStorage.setItem('refreshToken', userData?.refreshToken);
@@ -48,6 +47,7 @@ const Main = () => {
             setIsLoggedIn(true);
             setPeriodId(userData?.trackName + String(userData?.period) + '기');
             setUserPeriodId(userData?.periodId);
+            setStatus(userData.userStatus);
             if (userData.periodId != null) {
                 navigate(`/period/${userData.periodId}`);
             } else {
@@ -90,8 +90,9 @@ const Main = () => {
                     setIsLoggedIn(true);
                     setPeriodId(userData?.trackName + String(userData?.period) + '기');
                     setUserPeriodId(userData?.periodId);
+                    setStatus(userData.userStatus);
 
-                    if ((userData.periodId != null, userData.userStatus != 'PENDING')) {
+                    if ((userData.periodId != null, status != 'PENDING')) {
                         navigate(`/period/${userData.periodId}`);
                     } else {
                         navigate('/kakao/approvalStatus');

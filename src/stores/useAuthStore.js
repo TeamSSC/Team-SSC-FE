@@ -8,6 +8,7 @@ const useAuthStore = create(
             username: '',
             periodId: '',
             userPeriodId: '',
+            status: '',
             setIsLoggedIn: (value) => {
                 console.log('Setting isLoggedIn:', value);
                 set({ isLoggedIn: value });
@@ -22,6 +23,9 @@ const useAuthStore = create(
             },
             setUserPeriodId: (value) => {
                 set({ userPeriodId: value });
+            },
+            setStatus: (value) => {
+                set({ status: value });
             },
         }),
         {
