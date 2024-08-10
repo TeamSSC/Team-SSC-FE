@@ -25,6 +25,8 @@ const useAuthStore = create(
                 set({ userPeriodId: value });
             },
             setStatus: (value) => {
+                console.log('Setting ㅎㅎㅎㅎ:', value);
+
                 set({ status: value });
             },
         }),

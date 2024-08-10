@@ -10,11 +10,12 @@ const Main = () => {
         useAuthStore((state) => ({
             isLoggedIn: state.isLoggedIn,
             userPeriodId: state.userPeriodId,
+            status: state.status,
             setIsLoggedIn: state.setIsLoggedIn,
             setUsername: state.setUsername,
             setPeriodId: state.setPeriodId,
             setUserPeriodId: state.setUserPeriodId,
-            setStatus: state.status,
+            setStatus: state.setStatus,
         }));
 
     const [loginId, setLoginId] = useState('');
@@ -25,10 +26,12 @@ const Main = () => {
     // 로그인 상태에 따라 리디렉션 처리
     useEffect(() => {
         if (isLoggedIn) {
-            if (status == 'ACTIVE' && userPeriodId != null) {
-                navigate(`/period/${userPeriodId}`);
-            } else if (status == 'ACTIVE' && userPeriodId == null) {
-                navigate('/admin');
+            if (status == 'ACTIVE') {
+                if (userPeriodId != null) {
+                    navigate(`/period/${userPeriodId}`);
+                } else {
+                    navigate('/admin');
+                }
             } else {
                 navigate('/kakao/approvalStatus');
             }
@@ -49,9 +52,10 @@ const Main = () => {
             setIsLoggedIn(true);
             setPeriodId(userData?.trackName + String(userData?.period) + '기');
             setUserPeriodId(userData?.periodId);
-            setStatus(userData.userStatus);
-            if (userData.periodId != null && status == 'ACTIVE') {
-                navigate(`/period/${userData.periodId}`);
+            setStatus(userData?.userStatus);
+
+            if (userPeriodId != null) {
+                navigate(`/period/${userData?.periodId}`);
             } else {
                 navigate('/admin');
             }
@@ -92,10 +96,10 @@ const Main = () => {
                     setIsLoggedIn(true);
                     setPeriodId(userData?.trackName + String(userData?.period) + '기');
                     setUserPeriodId(userData?.periodId);
-                    setStatus(userData.userStatus);
+                    setStatus(userData?.userStatus);
 
-                    if (userData.periodId != null && status == 'ACTIVE') {
-                        navigate(`/period/${userData.periodId}`);
+                    if (userPeriodId != null && status == 'ACTIVE') {
+                        navigate(`/period/${userData?.periodId}`);
                     } else {
                         navigate('/kakao/approvalStatus');
                     }
