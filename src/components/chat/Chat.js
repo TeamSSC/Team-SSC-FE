@@ -63,7 +63,6 @@ const Chat = () => {
         if (stompClient && stompClient.connected) {
             const messagePayload = {
                 content: inputMessage,
-                sender: authData.username, // 메시지에 현재 사용자 정보 포함
             };
 
             stompClient.publish({
