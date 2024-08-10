@@ -24,8 +24,8 @@ const Chat = () => {
                 console.log('STOMP Debug:', str);
             },
             reconnectDelay: 5000,
-            heartbeatIncoming: 20000,
-            heartbeatOutgoing: 20000,
+            heartbeatIncoming: 10000,
+            heartbeatOutgoing: 10000,
         });
         stomp.onConnect = () => {
             console.log('WebSocket connection opened.');
@@ -46,6 +46,7 @@ const Chat = () => {
             };
         };
         stomp.activate();
+        getChats();
         setStompClient(stomp);
         return () => {
             if (stomp) {
