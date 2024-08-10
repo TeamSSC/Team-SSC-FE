@@ -61,9 +61,14 @@ const Chat = () => {
 
     const sendMessage = () => {
         if (stompClient && stompClient.connected) {
+            const messagePayload = {
+                content: inputMessage,
+                sender: authData.username, // 메시지에 현재 사용자 정보 포함
+            };
+
             stompClient.publish({
                 destination: `/app/chat.period.${periodId}`,
-                body: JSON.stringify({ content: inputMessage }),
+                body: JSON.stringify({ messagePayload }),
             });
             getChats();
             setInputMessage('');
