@@ -170,11 +170,24 @@ const TeamLineUp = () => {
             );
             alert('팀이 생성되었습니다.');
             createTeamProject(response.data.data.id);
+            createTeamInfo(response.data.data.id);
             closeTeamCreationModal();
             window.location.reload();
         } catch (error) {
             console.error('팀 생성 오류:', error);
             alert('팀 생성 중 오류가 발생했습니다.');
+        }
+    };
+
+    const createTeamInfo = async (teamId) => {
+        try {
+            const response = await axios.patch(`${baseUrl}/api/weekProgress/${selectedWeek}/teams/${teamId}/teamInfo`, {
+                name: '',
+                teamInfo: '',
+            });
+            console.log(response.data);
+        } catch (err) {
+            console.error(err);
         }
     };
 
