@@ -37,10 +37,14 @@ const NavBar = () => {
 
     const handleButtonClick = () => {
         if (authData?.isLoggedIn) {
-            if (userRole === 'ADMIN') {
-                navigate('/admin');
+            if (authData.status == 'ACTIVE') {
+                if (userRole === 'ADMIN') {
+                    navigate('/admin');
+                } else {
+                    navigate(`/period/${authData.userPeriodId}`);
+                }
             } else {
-                navigate(`/period/${authData.userPeriodId}`);
+                navigate('/kakao/approvalStatus');
             }
         } else {
             navigate('/');
