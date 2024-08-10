@@ -46,7 +46,6 @@ const Chat = () => {
             };
         };
         stomp.activate();
-        getChats();
         setStompClient(stomp);
         return () => {
             if (stomp) {
@@ -61,13 +60,9 @@ const Chat = () => {
 
     const sendMessage = () => {
         if (stompClient && stompClient.connected) {
-            const messagePayload = {
-                content: inputMessage,
-            };
-
             stompClient.publish({
                 destination: `/app/chat.period.${periodId}`,
-                body: JSON.stringify({ messagePayload }),
+                body: JSON.stringify({ content: inputMessage }),
             });
             getChats();
             setInputMessage('');
@@ -75,6 +70,7 @@ const Chat = () => {
             console.error('WebSocket is not connected');
         }
     };
+
 
     const getChats = async () => {
         try {
