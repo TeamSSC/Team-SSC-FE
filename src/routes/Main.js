@@ -25,10 +25,12 @@ const Main = () => {
     // 로그인 상태에 따라 리디렉션 처리
     useEffect(() => {
         if (isLoggedIn) {
-            if (userPeriodId) {
+            if (status == 'ACTIVE' && userPeriodId != null) {
                 navigate(`/period/${userPeriodId}`);
-            } else {
+            } else if (status == 'ACTIVE' && userPeriodId == null) {
                 navigate('/admin');
+            } else {
+                navigate('/kakao/approvalStatus');
             }
         }
     }, []);
@@ -48,7 +50,7 @@ const Main = () => {
             setPeriodId(userData?.trackName + String(userData?.period) + '기');
             setUserPeriodId(userData?.periodId);
             setStatus(userData.userStatus);
-            if (userData.periodId != null) {
+            if (userData.periodId != null && status == 'ACTIVE') {
                 navigate(`/period/${userData.periodId}`);
             } else {
                 navigate('/admin');
@@ -92,7 +94,7 @@ const Main = () => {
                     setUserPeriodId(userData?.periodId);
                     setStatus(userData.userStatus);
 
-                    if ((userData.periodId != null, status != 'PENDING')) {
+                    if (userData.periodId != null && status == 'ACTIVE') {
                         navigate(`/period/${userData.periodId}`);
                     } else {
                         navigate('/kakao/approvalStatus');
