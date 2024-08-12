@@ -53,11 +53,11 @@ const Main = () => {
             setPeriodId(userData?.trackName + String(userData?.period) + '기');
             setUserPeriodId(userData?.periodId);
             setStatus(userData?.userStatus);
-
-            if (userPeriodId != null) {
-                navigate(`/period/${userData?.periodId}`);
-            } else {
+            if (userData?.trackName === null) {
+                console.log(userPeriodId);
                 navigate('/admin');
+            } else {
+                navigate(`/period/${userData?.periodId}`);
             }
         } catch (err) {
             if (err.response?.data?.message === '아직 승인 받지 않은 회원입니다.') {
@@ -98,7 +98,7 @@ const Main = () => {
                     setUserPeriodId(userData?.periodId);
                     setStatus(userData?.userStatus);
 
-                    if (userPeriodId != null && status == 'ACTIVE') {
+                    if (userPeriodId != null && userData.userStatus == 'ACTIVE') {
                         navigate(`/period/${userData?.periodId}`);
                     } else {
                         navigate('/kakao/approvalStatus');

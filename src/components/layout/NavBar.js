@@ -11,7 +11,7 @@ const NavBar = () => {
     const navigate = useNavigate();
     const [isManagerModalOpen, setManagerModalOpen] = useState(false); // 모달 상태 관리
     let userRole = '';
-
+    console.log(authData);
     // localStorage에서 액세스 토큰을 가져와서 역할 정보 추출
     const token = localStorage.getItem('accessToken');
     if (token) {
@@ -73,7 +73,7 @@ const NavBar = () => {
                             </button>
                         )}
                         <p>
-                            {authData?.username}님 ({authData?.periodId})
+                            {authData?.username}님 ({userRole === 'ADMIN' ? '어드민' : authData?.periodId})
                         </p>
                         <Logout />
                     </div>

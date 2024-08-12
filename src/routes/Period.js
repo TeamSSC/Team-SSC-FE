@@ -3,10 +3,9 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './Period.module.scss';
 import Modal from '../components/modal/Modal';
-import UpdatePeriod from '../components/period/UpdatePeriod';
 import CreatePeriod from '../components/period/CreatePeriod';
-import PeriodModal from "../components/modal/PeriodModal";
-import {baseUrl} from "../config";
+import PeriodModal from '../components/modal/PeriodModal';
+import { baseUrl } from '../config';
 
 const customModalStyles = {
     content: {
@@ -67,15 +66,6 @@ const Period = () => {
         setIsCreatePeriod(false);
     };
 
-    const handleUpdatePeriodClick = (id) => {
-        setIsUpdatePeriod(true);
-        setPeriodId(id);
-    };
-
-    const closeUpdateModal = () => {
-        setIsUpdatePeriod(false);
-    };
-
     const handleManagerClick = (id) => {
         setIsPeriodModal(true); // 수정된 부분
         setPeriodId(id);
@@ -96,7 +86,6 @@ const Period = () => {
                     </button>
                     <div className={styles.period_button_wrapper}>
                         <button onClick={() => handleManagerClick(e.id)}>매니저 설정</button>
-                        <button onClick={() => handleUpdatePeriodClick(e.id)}>수정</button>
                         <button className={styles.delete_button} onClick={() => deletePeriod(e.id)}>
                             삭제
                         </button>
@@ -107,12 +96,6 @@ const Period = () => {
             {isCreatePeriod && (
                 <Modal isOpen={isCreatePeriod} onRequestClose={closeCreateModal} style={customModalStyles}>
                     <CreatePeriod closeModal={closeCreateModal} trackId={id} getTrackPeriods={getTrackPeriods} />
-                </Modal>
-            )}
-
-            {isUpdatePeriod && (
-                <Modal isOpen={isUpdatePeriod} onRequestClose={closeUpdateModal} style={customModalStyles}>
-                    <UpdatePeriod closeModal={closeUpdateModal} periodId={periodId} getTrackPeriods={getTrackPeriods} />
                 </Modal>
             )}
 
