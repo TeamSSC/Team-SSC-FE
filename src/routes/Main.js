@@ -60,12 +60,6 @@ const Main = () => {
                 navigate(`/period/${userData?.periodId}`);
             }
         } catch (err) {
-            if (err.response?.data?.message === '아직 승인 받지 않은 회원입니다.') {
-                alert('회원가입 승인 대기중입니다. 관리자한테 문의해주세요');
-            } else {
-                alert('로그인에 실패하였습니다. 관리자한테 문의해주세요');
-                console.error(err);
-            }
             alert(err.response.data.message || '로그인 실패 하셨습니다.');
         }
     };
