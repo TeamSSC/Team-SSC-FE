@@ -1,10 +1,71 @@
 .chatList_wrapper {
-    border: 2px solid black;
+    height: 400px; /* 크기를 두 배로 증가 */
+    overflow-y: scroll;
+    padding: 20px; /* 패딩도 증가 */
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    z-index: 999; /* 모달창보다 낮은 z-index */
+    position: relative; /* z-index가 적용되려면 position이 relative 또는 absolute여야 함 */
+}
+
+.chatMessage {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px; /* 간격도 증가 */
+}
+
+.chatMessage.sender {
+    align-items: flex-end;
+}
+
+.chatMessage.receiver {
+    align-items: flex-start;
+}
+
+.chatBubble {
+    max-width: 60%;
+    padding: 15px; /* 패딩을 약간 늘림 */
+    border-radius: 20px;
+    font-size: 16px; /* 글자 크기를 약간 늘림 */
+    line-height: 1.5; /* 줄 높이 증가 */
+    color: #fff;
+    position: relative;
+}
+
+.chatBubble.sender {
+    background-color: #389aff; /* 더 강렬한 색상 */
+}
+
+.chatBubble.receiver {
+    background-color: #efdcff;
+    color: #000;
+}
+
+.messageHeader {
+    font-weight: bold;
+    margin-bottom: 8px; /* 마진을 약간 증가 */
+    font-size: 14px; /* 글자 크기 증가 */
 }
 
 .chat_wrapper {
     display: flex;
-    input {
-        border: 3px solid black;
-    }
+    margin-top: 15px; /* 마진 증가 */
+}
+
+.chat_wrapper input {
+    flex: 1;
+    padding: 12px; /* 패딩 증가 */
+    border: 1px solid #ccc;
+    border-radius: 20px;
+}
+
+.chat_wrapper button {
+    padding: 12px; /* 패딩 증가 */
+    width: 30%;
+    border: none;
+    border-radius: 20px;
+    background-color: #007aff;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 10px;
 }
