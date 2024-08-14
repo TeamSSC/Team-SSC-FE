@@ -2,7 +2,6 @@
 
 import axios from 'axios';
 import { baseUrl } from './config';
-import { useNavigate } from 'react-router-dom';
 import useAuthStore from "./stores/useAuthStore";
 
 // Axios 인스턴스 생성
@@ -27,15 +26,15 @@ axiosInstance.interceptors.response.use(
 
             try {
                 const refreshToken = localStorage.getItem('refreshToken');
-                const response = await axios.post(`${baseUrl}/users/token/refresh`, null, {
+                const response = await axios.post(`${baseUrl}/api/users/token/refresh`, null, {
                     headers: {
                         refreshToken: refreshToken,
                     },
                 });
                 console.log('2222')
 
-                const newAccessToken = response.data.accessToken;
-                const newRefreshToken = response.data.refreshToken;
+                const newAccessToken = response.data.data.accessToken;
+                const newRefreshToken = response.data.data.refreshToken;
                 localStorage.setItem('accessToken', newAccessToken);
                 localStorage.setItem('refreshToken', newRefreshToken);
                 console.log("토큰 재발급 완료")
@@ -61,7 +60,6 @@ axiosInstance.interceptors.response.use(
 // 로그아웃 및 리다이렉트 함수
 const logoutAndNavigate = () => {
     const { setIsLoggedIn, setUsername, setPeriodId } = useAuthStore.getState(); // useAuthStore 상태 가져오기
-    const navigate = useNavigate();
 
     // 로그아웃 처리
     localStorage.clear();
@@ -69,7 +67,7 @@ const logoutAndNavigate = () => {
     setIsLoggedIn(false);
     setPeriodId('');
     alert('다시 로그인 해주세요.');
-    navigate('/'); // 메인 페이지로 리다이렉트
+    window.location.href = '/'; // 메인 페이지로 리다이렉트
 };
 
 export default axiosInstance;
