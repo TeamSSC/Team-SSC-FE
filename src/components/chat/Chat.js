@@ -18,8 +18,8 @@ const Chat = () => {
 
     // 메시지 리스트를 끝으로 스크롤
     const scrollToBottom = () => {
-        if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        if (messagesContainerRef.current) {
+            messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
         }
     };
 
@@ -130,9 +130,20 @@ const Chat = () => {
                 ref={messagesContainerRef}
             >
                 {messages.map((msg, index) => (
-                    <div key={index} className={`${styles.chatMessage} ${msg.sender === authData.username ? styles.sender : styles.receiver}`}>
+                    <div
+                        key={index}
+                        className={`${styles.chatMessage} ${
+                            msg.sender === authData.username ? styles.sender : styles.receiver
+                        }`}
+                    >
                         <div className={styles.messageHeader}>{msg.sender}</div>
-                        <div className={styles.chatBubble}>{msg.content}</div>
+                        <div
+                            className={`${styles.chatBubble} ${
+                                msg.sender === authData.username ? styles.sender : styles.receiver
+                            }`}
+                        >
+                            {msg.content}
+                        </div>
                     </div>
                 ))}
                 <div ref={messagesEndRef} />
@@ -156,5 +167,4 @@ const Chat = () => {
         </div>
     );
 };
-
 export default Chat;

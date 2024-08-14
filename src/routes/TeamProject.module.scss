@@ -1,23 +1,41 @@
 .teamProjectContainer {
     display: flex;
-    justify-content: center; /* 가로 방향으로 중앙 정렬 */
-    align-items: center; /* 세로 방향으로 중앙 정렬 */
-    height: 100vh; /* 화면 전체 높이 사용 */
-    gap: 20px; /* 두 블록 사이의 간격 조정 */
+    justify-content: center; /* Center the content horizontally */
+    align-items: stretch; /* Ensure all children have the same height */
+    width: 90%;
+    max-width: 1200px; /* Optionally, set a max width to prevent it from getting too wide */
+    margin: 0 auto; /* Center the container within the page */
+    gap: 40px;
+    height: 100vh;
 }
 
+.projectDetails,
 .memberList_wrapper,
+.teamChat {
+    flex: 1;
+    margin: 0 10px; /* Adds some spacing between the sections */
+}
+
 .projectDetails {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* 내부 내용도 중앙 정렬 */
-    gap: 10px;
+    flex: 2; /* Make this section a bit wider */
 }
 
 .memberList_wrapper {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.projectDetails {
-    flex: 1;
+.teamChat {
+    flex: 2;
+    /* Additional styling as needed */
+}
+
+/* Ensure buttons and other content are properly sized */
+button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    box-sizing: border-box;
 }

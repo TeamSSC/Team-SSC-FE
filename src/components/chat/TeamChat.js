@@ -5,9 +5,9 @@ import useAuthStore from '../../stores/useAuthStore';
 import axios from 'axios';
 import { baseUrl } from '../../config';
 import styles from './Chat.module.scss';
-import axiosInstance from "../../axiosInstance";
+import axiosInstance from '../../axiosInstance';
 
-const TeamCaht = ({ teamId }) => {
+const TeamCaht = ({ teamId, teamName }) => {
     const [inputMessage, setInputMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [stompClient, setStompClient] = useState(null);
@@ -106,7 +106,7 @@ const TeamCaht = ({ teamId }) => {
 
     return (
         <div>
-            <h1>{authData.periodId} 채팅</h1>
+            <h1>{teamName}팀 채팅</h1>
             <div
                 className={styles.chatList_wrapper}
                 style={{ height: '200px', overflowY: 'scroll' }}

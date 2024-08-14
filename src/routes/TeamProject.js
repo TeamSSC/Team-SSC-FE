@@ -8,7 +8,7 @@ import { baseUrl } from '../config';
 import Modal from '../components/modal/Modal';
 import UpdateProject from '../components/teamProject/UpdateProject';
 import TeamCaht from '../components/chat/TeamChat';
-import axiosInstance from "../axiosInstance";
+import axiosInstance from '../axiosInstance';
 
 const customModalStyles = {
     content: {
@@ -53,11 +53,14 @@ const TeamProject = () => {
 
     const getTeam = async () => {
         try {
-            const response = await axiosInstance.get(`${baseUrl}/api/weekProgress/${weekProgressId}/teams/${teamId}/page`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            const response = await axiosInstance.get(
+                `${baseUrl}/api/weekProgress/${weekProgressId}/teams/${teamId}/page`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
             const data = response.data.data;
             console.log('data', data);
             setProjectIntro(data.projectIntro);
@@ -71,9 +74,12 @@ const TeamProject = () => {
 
     const getTeamMembers = async () => {
         try {
-            const response = await axiosInstance.get(`${baseUrl}/api/weekProgress/${weekProgressId}/teams/${teamId}/users`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            const response = await axiosInstance.get(
+                `${baseUrl}/api/weekProgress/${weekProgressId}/teams/${teamId}/users`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
             // console.log(response.data.data);
             setMemberList(response?.data.data.userNames);
             setMemberIdList(response?.data.data.userIds);
@@ -92,6 +98,25 @@ const TeamProject = () => {
             getTeam();
             closeUpdateModal();
             console.log(response.data);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const updateTeamTitle = async (leaderId) => {
+        try {
+            const response = await axiosInstance.patch(
+                `${baseUrl}/api/weekProgress/${weekProgressId}/teams/${teamId}/teamInfo`,
+                {
+                    name: teamName,
+                    leaderId: leaderId,
+                    teamInfo: teamInfo,
+                },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            getTeamTitle();
         } catch (err) {
             console.error(err);
         }
@@ -130,6 +155,7 @@ const TeamProject = () => {
     return (
         <div className={styles.teamProjectContainer}>
             <div className={styles.memberList_wrapper}>
+                <h3>팀 멤버 구성</h3>
                 {memberIdList?.length > 0 &&
                     memberIdList?.map((e, i) => {
                         return (
@@ -139,7 +165,6 @@ const TeamProject = () => {
                         );
                     })}
             </div>
-
             <div className={styles.projectDetails}>
                 <h1>{teamName}</h1>
                 <h3>리더 : {teamLeader}</h3>
@@ -154,10 +179,11 @@ const TeamProject = () => {
                 <p>
                     피그마 링크 : <a href={figmaLink}>{figmaLink} </a>
                 </p>
-
-                <TeamCaht teamId={teamId} />
-
                 <button onClick={() => handleUpdateProjectClick()}>팀 정보 수정</button>
+            </div>
+
+            <div className={styles.teamChat}>
+                <TeamCaht teamId={teamId} teamName={teamName} />
             </div>
 
             {isUpdateProject && (
@@ -165,6 +191,7 @@ const TeamProject = () => {
                     <UpdateProject
                         closeModal={closeUpdateModal}
                         updateTeam={updateTeam}
+                        updateTeamTitle={updateTeamTitle}
                         setNotionLink={setNotionLink}
                         setFigmaLink={setFigmaLink}
                         setGitLink={setGitLink}
@@ -173,6 +200,16 @@ const TeamProject = () => {
                         figmaLink={figmaLink}
                         gitLink={gitLink}
                         projectIntro={projectIntro}
+                        teamName={teamName}
+                        setTeamName={setTeamName}
+                        teamInfo={teamInfo}
+                        setTeamInfo={setTeamInfo}
+                        teamLeader={teamLeader}
+                        setTeamLeader={setTeamLeader}
+                        memberList={memberList}
+                        memberIdList={memberIdList}
+                        getTeam={getTeam}
+                        getTeamTitle={getTeamTitle}
                     />
                 </Modal>
             )}
