@@ -2,11 +2,9 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { Client } from '@stomp/stompjs';
 import useAuthStore from '../../stores/useAuthStore';
-
-import axios from 'axios';
+import axiosInstance from "../../axiosInstance";
 import { baseUrl } from '../../config';
 import styles from './Chat.module.scss';
-import axiosInstance from "../../axiosInstance";
 
 const Chat = () => {
     const [inputMessage, setInputMessage] = useState('');
@@ -15,6 +13,9 @@ const Chat = () => {
     const token = localStorage.getItem('accessToken');
     const { periodId } = useParams();
     const authData = useAuthStore();
+    const messagesEndRef = useRef(null);
+    const messagesContainerRef = useRef(null);
+
     useEffect(() => {
         const stomp = new Client({
             brokerURL: 'wss://teamssc.site/wss/init', // Ensure this is correct
@@ -53,11 +54,11 @@ const Chat = () => {
                 stomp.deactivate();
             }
         };
-    }, []);
+    }, [periodId, token]);
 
     useEffect(() => {
         getChats();
-    }, []);
+    }, [periodId]);
 
     const sendMessage = () => {
         if (stompClient && stompClient.connected) {
@@ -72,21 +73,16 @@ const Chat = () => {
         }
     };
 
-
     const getChats = async () => {
         try {
             const response = await axiosInstance.get(`${baseUrl}/api/messages/period/${periodId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            // console.log(response.data);
             setMessages(response.data);
         } catch (err) {
             console.error(err);
         }
     };
-
-    const messagesEndRef = useRef(null);
-    const messagesContainerRef = useRef(null);
 
     const scrollToBottom = () => {
         if (messagesContainerRef.current) {
@@ -103,12 +99,17 @@ const Chat = () => {
             <h1>{authData.periodId} 전체 채팅</h1>
             <div
                 className={styles.chatList_wrapper}
-                style={{ height: '200px', overflowY: 'scroll' }}
                 ref={messagesContainerRef}
             >
                 {messages.map((msg, index) => (
-                    <div key={index}>
-                        {msg.sender}: {msg.content}
+                    <div
+                        key={index}
+                        className={`${styles.chatMessage} ${msg.sender === authData.username ? styles.sender : styles.receiver}`}
+                    >
+                        <div className={styles.messageHeader}>{msg.sender}</div>
+                        <div className={`${styles.chatBubble} ${msg.sender === authData.username ? styles.sender : styles.receiver}`}>
+                            {msg.content}
+                        </div>
                     </div>
                 ))}
                 <div ref={messagesEndRef} />
@@ -132,4 +133,5 @@ const Chat = () => {
         </div>
     );
 };
+
 export default Chat;
