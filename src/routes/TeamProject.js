@@ -20,11 +20,11 @@ const customModalStyles = {
         transform: 'translate(-50%, -50%)',
     },
 };
-// http://localhost:8080/api/weekProgress/1/teams/5/teamInfo patch
-// http://localhost:8080/api/weekProgress/1/teams/5 get
+
 const TeamProject = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isUpdateProject, setIsUpdateProject] = useState(false);
+    const [isTeamMember, setIsTeamMember] = useState(false);
     const [figmaLink, setFigmaLink] = useState('');
     const [gitLink, setGitLink] = useState('');
     const [notionLink, setNotionLink] = useState('');
@@ -36,6 +36,7 @@ const TeamProject = () => {
     const [memberList, setMemberList] = useState([]);
     const [memberIdList, setMemberIdList] = useState([]);
 
+    const authData = useAuthStore();
     const token = localStorage.getItem('accessToken');
 
     const { weekProgressId, teamId } = useParams();
@@ -147,7 +148,11 @@ const TeamProject = () => {
         setIsUpdateProject(false);
     };
 
-    console.log(teamInfo);
+    memberList.map((e) => {
+        if (e === authData.username) {
+            setIsTeamMember(true);
+        }
+    });
 
     if (isLoading) {
         <div>로딩 중 입니다...</div>;
@@ -182,9 +187,11 @@ const TeamProject = () => {
                 <button onClick={() => handleUpdateProjectClick()}>팀 정보 수정</button>
             </div>
 
-            <div className={styles.teamChat}>
-                <TeamCaht teamId={teamId} teamName={teamName} />
-            </div>
+            {isTeamMember && (
+                <div className={styles.teamChat}>
+                    <TeamCaht teamId={teamId} teamName={teamName} />
+                </div>
+            )}
 
             {isUpdateProject && (
                 <Modal isOpen={isUpdateProject} onRequestClose={closeUpdateModal} style={customModalStyles}>

@@ -66,7 +66,7 @@ const Main = () => {
                 alert('로그인에 실패하였습니다. 관리자한테 문의해주세요');
                 console.error(err);
             }
-            // alert(err.response.data.message || '로그인 실패 하셨습니다.');
+            alert(err.response.data.message || '로그인 실패 하셨습니다.');
         }
     };
 

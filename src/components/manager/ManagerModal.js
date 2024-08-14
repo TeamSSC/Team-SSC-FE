@@ -4,7 +4,7 @@ import styles from './ManagerModal.module.scss';
 import Pagination from '../pagination/Pagination';
 import useAuthStore from '../../stores/useAuthStore';
 import { baseUrl } from '../../config';
-import axiosInstance from "../../axiosInstance";
+import axiosInstance from '../../axiosInstance';
 
 const ManagerModal = ({ onClose }) => {
     const authData = useAuthStore();
@@ -227,9 +227,6 @@ const ManagerModal = ({ onClose }) => {
                     X
                 </button>
                 <div className={styles.modalHeader}>
-                    <button className={styles.modalButton} onClick={() => handleAction('notify')}>
-                        알림 보내기
-                    </button>
                     <button className={`${styles.modalButton} ${styles.createPeriod}`} onClick={openCreatePeriodModal}>
                         주차 생성
                     </button>
