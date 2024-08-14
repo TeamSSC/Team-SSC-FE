@@ -7,6 +7,7 @@ import styles from './Notice.module.scss';
 import useAuthStore from '../stores/useAuthStore';
 import { jwtDecode } from 'jwt-decode';
 import { baseUrl } from '../config';
+import axiosInstance from "../axiosInstance";
 
 const API_URL = `${baseUrl}/api/notices`;
 
@@ -23,7 +24,7 @@ const Notice = () => {
     useEffect(() => {
         const fetchNotices = async () => {
             try {
-                const response = await axios.get(API_URL, {
+                const response = await axiosInstance.get(API_URL, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                     },

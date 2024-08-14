@@ -3,6 +3,7 @@ import { baseUrl } from '../../config';
 import { useState, useEffect } from 'react';
 import styles from './PeriodMyTeamDetail.module.scss';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from "../../axiosInstance";
 
 const PeriodMyTeamDetail = ({ selectedTeam }) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -24,7 +25,7 @@ const PeriodMyTeamDetail = ({ selectedTeam }) => {
 
     const getMyTeamMember = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/teams/myteam/${selectedTeam}/members`, {
+            const response = await axiosInstance.get(`${baseUrl}/api/teams/myteam/${selectedTeam}/members`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setMemberIdList(response.data.data.userIds);

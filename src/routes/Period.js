@@ -6,6 +6,7 @@ import Modal from '../components/modal/Modal';
 import CreatePeriod from '../components/period/CreatePeriod';
 import PeriodModal from '../components/modal/PeriodModal';
 import { baseUrl } from '../config';
+import axiosInstance from "../axiosInstance";
 
 const customModalStyles = {
     content: {
@@ -34,7 +35,7 @@ const Period = () => {
 
     const getTrackPeriods = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/tracks/${id}/periods`, {
+            const response = await axiosInstance.get(`${baseUrl}/api/tracks/${id}/periods`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setPeriodList(response.data.data);
@@ -47,7 +48,7 @@ const Period = () => {
     const deletePeriod = async (periodId) => {
         console.log(periodId);
         try {
-            const response = await axios.delete(`${baseUrl}/api/periods/${periodId}`, {
+            const response = await axiosInstance.delete(`${baseUrl}/api/periods/${periodId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             console.log(response.data);

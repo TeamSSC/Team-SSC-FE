@@ -8,6 +8,7 @@ import { baseUrl } from '../config';
 import Modal from '../components/modal/Modal';
 import UpdateProject from '../components/teamProject/UpdateProject';
 import TeamCaht from '../components/chat/TeamChat';
+import axiosInstance from "../axiosInstance";
 
 const customModalStyles = {
     content: {
@@ -52,7 +53,7 @@ const TeamProject = () => {
 
     const getTeam = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/weekProgress/${weekProgressId}/teams/${teamId}/page`, {
+            const response = await axiosInstance.get(`${baseUrl}/api/weekProgress/${weekProgressId}/teams/${teamId}/page`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -70,7 +71,7 @@ const TeamProject = () => {
 
     const getTeamMembers = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/weekProgress/${weekProgressId}/teams/${teamId}/users`, {
+            const response = await axiosInstance.get(`${baseUrl}/api/weekProgress/${weekProgressId}/teams/${teamId}/users`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             // console.log(response.data.data);
@@ -83,7 +84,7 @@ const TeamProject = () => {
 
     const updateTeam = async () => {
         try {
-            const response = await axios.patch(
+            const response = await axiosInstance.patch(
                 `${baseUrl}/api/weekProgress/${weekProgressId}/teams/${teamId}/page`,
                 { projectIntro: projectIntro, figmaLink: figmaLink, gitLink: gitLink, notionLink: notionLink },
                 { headers: { Authorization: `Bearer ${token}` } }
@@ -98,7 +99,7 @@ const TeamProject = () => {
 
     const getTeamTitle = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/weekProgress/${weekProgressId}/teams/${teamId}`, {
+            const response = await axiosInstance.get(`${baseUrl}/api/weekProgress/${weekProgressId}/teams/${teamId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

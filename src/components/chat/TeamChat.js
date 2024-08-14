@@ -5,6 +5,7 @@ import useAuthStore from '../../stores/useAuthStore';
 import axios from 'axios';
 import { baseUrl } from '../../config';
 import styles from './Chat.module.scss';
+import axiosInstance from "../../axiosInstance";
 
 const TeamCaht = ({ teamId }) => {
     const [inputMessage, setInputMessage] = useState('');
@@ -80,7 +81,7 @@ const TeamCaht = ({ teamId }) => {
 
     const getChats = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/messages/team/${teamId}`, {
+            const response = await axiosInstance.get(`${baseUrl}/api/messages/team/${teamId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             console.log(response.data);

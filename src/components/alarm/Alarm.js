@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { requestFirebaseNotificationPermission, onMessageListener } from '../../firebase';
 import axios from 'axios';
 import { baseUrl } from '../../config';
+import axiosInstance from "../../axiosInstance";
 
 const Alarm = () => {
     const [notification, setNotification] = useState({ title: '', body: '' });
@@ -38,7 +39,7 @@ const Alarm = () => {
 
     const postAlarm = async () => {
         try {
-            const response = await axios.post(
+            const response = await axiosInstance.post(
                 `${baseUrl}/api/notifications/message/period/${1}`,
                 {
                     content: 'content',

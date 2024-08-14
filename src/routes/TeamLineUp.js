@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './TeamLineUp.module.scss';
 import { jwtDecode } from 'jwt-decode';
 import { baseUrl } from '../config';
+import axiosInstance from "../axiosInstance";
 
 const TeamLineUp = () => {
     const authData = useAuthStore();
@@ -43,7 +44,7 @@ const TeamLineUp = () => {
     useEffect(() => {
         const fetchWeeks = async () => {
             try {
-                const response = await axios.get(`${baseUrl}/api/weekProgress/myweekProgress`, {
+                const response = await axiosInstance.get(`${baseUrl}/api/weekProgress/myweekProgress`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -69,7 +70,7 @@ const TeamLineUp = () => {
         if (selectedWeek && selectedSection) {
             const fetchTeams = async () => {
                 try {
-                    const response = await axios.get(`${baseUrl}/api/weekProgress/${selectedWeek}/teams/lineup`, {
+                    const response = await axiosInstance.get(`${baseUrl}/api/weekProgress/${selectedWeek}/teams/lineup`, {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
@@ -81,7 +82,7 @@ const TeamLineUp = () => {
                     setTeams(teamsData);
 
                     for (const team of teamsData) {
-                        const teamResponse = await axios.get(
+                        const teamResponse = await axiosInstance.get(
                             `${baseUrl}/api/weekProgress/${selectedWeek}/teams/${team.id}/users`,
                             {
                                 headers: {
@@ -155,7 +156,7 @@ const TeamLineUp = () => {
     const handleCreateTeam = async () => {
         try {
             const userEmails = newTeamUserEmails.filter((email) => email.trim() !== '');
-            const response = await axios.post(
+            const response = await axiosInstance.post(
                 `${baseUrl}/api/weekProgress/${selectedWeek}/teams`,
                 {
                     periodId: authData.userPeriodId,
@@ -181,7 +182,7 @@ const TeamLineUp = () => {
 
     const createTeamInfo = async (teamId) => {
         try {
-            const response = await axios.patch(`${baseUrl}/api/weekProgress/${selectedWeek}/teams/${teamId}/teamInfo`, {
+            const response = await axiosInstance.patch(`${baseUrl}/api/weekProgress/${selectedWeek}/teams/${teamId}/teamInfo`, {
                 name: '',
                 teamInfo: '',
             });
@@ -193,7 +194,7 @@ const TeamLineUp = () => {
 
     const createTeamProject = async (teamId) => {
         try {
-            const response = await axios.post(
+            const response = await axiosInstance.post(
                 `${baseUrl}/api/weekProgress/${selectedWeek}/teams/${teamId}/page`,
                 {
                     projectIntro: '',

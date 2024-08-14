@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './CommentEditModal.module.scss';
 import { baseUrl } from '../../config';
+import axiosInstance from "../../axiosInstance";
 
 const CommentEditModal = ({ id, initialContent, type, onClose, onUpdate, fetchComments }) => {
     const [content, setContent] = useState(initialContent);
@@ -10,7 +11,7 @@ const CommentEditModal = ({ id, initialContent, type, onClose, onUpdate, fetchCo
     const handleUpdate = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.patch(
+            await axiosInstance.patch(
                 `${baseUrl}/api/comments/${id}`,
                 { content },
                 {

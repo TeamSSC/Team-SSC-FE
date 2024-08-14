@@ -3,7 +3,8 @@ import axios from 'axios';
 import { baseUrl } from '../config';
 import useAuthStore from '../stores/useAuthStore';
 import styles from './KakaoApprovalStatus.module.scss'; // 스타일링 파일 경로를 확인하세요.
-import Modal from 'react-modal'; // 모달 라이브러리 import
+import Modal from 'react-modal';
+import axiosInstance from "../axiosInstance"; // 모달 라이브러리 import
 
 Modal.setAppElement('#root'); // Modal이 렌더링될 엘리먼트 지정
 
@@ -17,7 +18,7 @@ const KakaoApprovalStatus = () => {
     useEffect(() => {
         const fetchUserStatus = async () => {
             try {
-                const response = await axios.get(`${baseUrl}/api/kakao/users/status`, {
+                const response = await axiosInstance.get(`${baseUrl}/api/kakao/users/status`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                     },
@@ -54,7 +55,7 @@ const KakaoApprovalStatus = () => {
 
     const fetchPeriods = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/periods`);
+            const response = await axiosInstance.get(`${baseUrl}/api/periods`);
             setPeriods(response.data.data);
         } catch (err) {
             console.error(err);
@@ -64,7 +65,7 @@ const KakaoApprovalStatus = () => {
 
     const handleApply = async () => {
         try {
-            await axios.patch(
+            await axiosInstance.patch(
                 `${baseUrl}/api/kakao/users/periods/${selectedPeriod}`,
                 {},
                 {

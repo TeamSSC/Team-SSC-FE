@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { baseUrl } from '../../config';
 import axios from 'axios';
 import styles from './CreateTrack.module.scss';
+import axiosInstance from "../../axiosInstance";
 
 const UpdateTrack = ({ closeModal, getTrackListHook, trackId }) => {
     const [isModalOpen, setIsModalOpen] = useState(true); // 모달 열림 상태 추가
@@ -11,7 +12,7 @@ const UpdateTrack = ({ closeModal, getTrackListHook, trackId }) => {
 
     const updateTrack = async () => {
         try {
-            const response = await axios.put(
+            const response = await axiosInstance.put(
                 `${baseUrl}/api/tracks/${trackId}`,
                 {
                     name: tarckName,

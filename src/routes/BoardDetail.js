@@ -10,6 +10,7 @@ import CommentList from '../components/board/CommentList';
 import styles from './BoardDetail.module.scss';
 import { baseUrl } from '../config';
 import useAuthStore from '../stores/useAuthStore';
+import axiosInstance from "../axiosInstance";
 
 const BoardDetail = () => {
     const { id } = useParams();
@@ -39,7 +40,7 @@ const BoardDetail = () => {
 
     const fetchPost = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/boards/${id}`);
+            const response = await axiosInstance.get(`${baseUrl}/api/boards/${id}`);
             setPost(response.data.data);
         } catch (err) {
             setError(err);
@@ -50,7 +51,7 @@ const BoardDetail = () => {
 
     const fetchLikes = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/boards/${id}/like`);
+            const response = await axiosInstance.get(`${baseUrl}/api/boards/${id}/like`);
             setLikes(response.data.data.likeCount);
             setLiked(response.data.data.userLiked);
         } catch (err) {
@@ -61,7 +62,7 @@ const BoardDetail = () => {
 
     const fetchComments = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/boards/${id}/comments`);
+            const response = await axiosInstance.get(`${baseUrl}/api/boards/${id}/comments`);
             setComments(response.data.data.content);
         } catch (err) {
             setCommentsError(err);
@@ -73,7 +74,7 @@ const BoardDetail = () => {
     const handleLikeToggle = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.post(
+            await axiosInstance.post(
                 `${baseUrl}/api/boards/${id}/like`,
                 {},
                 {
@@ -82,7 +83,7 @@ const BoardDetail = () => {
                     },
                 }
             );
-            const response = await axios.get(`${baseUrl}/api/boards/${id}/like`);
+            const response = await axiosInstance.get(`${baseUrl}/api/boards/${id}/like`);
             setLikes(response.data.data.likeCount);
             setLiked(response.data.data.userLiked);
         } catch (err) {
@@ -93,7 +94,7 @@ const BoardDetail = () => {
 
     const fetchReplies = async (commentId) => {
         try {
-            const response = await axios.get(`${baseUrl}/api/comments/${commentId}`);
+            const response = await axiosInstance.get(`${baseUrl}/api/comments/${commentId}`);
             setReplies((prevReplies) => ({
                 ...prevReplies,
                 [commentId]: response.data.data.content,
@@ -120,7 +121,7 @@ const BoardDetail = () => {
 
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.post(
+            await axiosInstance.post(
                 `${baseUrl}/api/boards/${id}/comment`,
                 { content: newComment },
                 {
@@ -143,7 +144,7 @@ const BoardDetail = () => {
 
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.post(
+            await axiosInstance.post(
                 `${baseUrl}/api/boards/${id}/comment`,
                 {
                     content: replyContent[parentCommentId],
