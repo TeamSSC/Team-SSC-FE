@@ -50,6 +50,13 @@ const TeamProject = () => {
         setIsLoading(false);
     }, []);
 
+    useEffect(() => {
+        if (memberList.includes(authData.username)) {
+            setIsTeamMember(true);
+        }
+        setIsLoading(false);
+    }, [memberList, authData.username]);
+
     const navigate = useNavigate();
 
     const getTeam = async () => {
@@ -148,15 +155,11 @@ const TeamProject = () => {
         setIsUpdateProject(false);
     };
 
-    memberList.map((e) => {
-        if (e === authData.username) {
-            setIsTeamMember(true);
-        }
-    });
-
     if (isLoading) {
         <div>로딩 중 입니다...</div>;
     }
+
+    console.log(isTeamMember);
     return (
         <div className={styles.teamProjectContainer}>
             <div className={styles.memberList_wrapper}>
@@ -184,7 +187,7 @@ const TeamProject = () => {
                 <p>
                     피그마 링크 : <a href={figmaLink}>{figmaLink} </a>
                 </p>
-                <button onClick={() => handleUpdateProjectClick()}>팀 정보 수정</button>
+                {isTeamMember && <button onClick={() => handleUpdateProjectClick()}>팀 정보 수정</button>}
             </div>
 
             {isTeamMember && (
