@@ -17,12 +17,14 @@ const Chat = () => {
     const messagesContainerRef = useRef(null);
 
     // 메시지 리스트를 끝으로 스크롤
-    const scrollToBottom = () => {
+    const scrollToBottom = (smooth = false) => {
         if (messagesContainerRef.current) {
-            messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+            messagesContainerRef.current.scrollTo({
+                top: messagesContainerRef.current.scrollHeight,
+                behavior: smooth ? 'smooth' : 'auto',
+            });
         }
     };
-
     // 초기 메시지를 로드하는 함수
     const getChats = useCallback(async () => {
         try {
@@ -83,13 +85,18 @@ const Chat = () => {
         };
 
         stomp.activate();
-        getChats(); // 초기 메시지 로드
         setStompClient(stomp);
+
+        const intervalId = setInterval(() => {
+            getChats(); // 1초마다 getChats 함수 호출
+            scrollToBottom();
+        }, 500);
 
         return () => {
             if (stomp) {
                 stomp.deactivate();
             }
+            clearInterval(intervalId); // 컴포넌트 언마운트 시 인터벌 정리
         };
     }, [periodId, token, getChats]);
 
