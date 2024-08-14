@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { Client } from '@stomp/stompjs';
 import useAuthStore from '../../stores/useAuthStore';
-import axiosInstance from "../../axiosInstance";
+import axiosInstance from '../../axiosInstance';
 import { baseUrl } from '../../config';
 import styles from './Chat.module.scss';
 
@@ -15,20 +15,20 @@ const Chat = () => {
     const authData = useAuthStore();
     const messagesEndRef = useRef(null);
     const messagesContainerRef = useRef(null);
-
     useEffect(() => {
         const stomp = new Client({
-            brokerURL: 'wss://teamssc.site/wss/init', // Ensure this is correct
+            brokerURL: 'wss://teamssc.site/wss/init',
             connectHeaders: {
                 Authorization: `Bearer ${token}`,
             },
             debug: (str) => {
-                console.log('STOMP Debug:', str);
+                console.log('STOMP Debug:', str); // WebSocket 관련 디버깅 메시지 출력
             },
             reconnectDelay: 5000,
             heartbeatIncoming: 10000,
             heartbeatOutgoing: 10000,
         });
+
         stomp.onConnect = () => {
             console.log('WebSocket connection opened.');
             const subscriptionDestination = `/topic/chat.period.${periodId}`;
@@ -43,31 +43,38 @@ const Chat = () => {
                     console.error('Message parsing error:', error);
                 }
             });
+
             stomp.onStompError = (frame) => {
                 console.error('STOMP Error:', frame);
             };
         };
+
+        stomp.onWebSocketClose = () => {
+            console.log('WebSocket connection closed.');
+        };
+
         stomp.activate();
         setStompClient(stomp);
+
         return () => {
             if (stomp) {
                 stomp.deactivate();
             }
         };
-    }, [periodId, token]);
+    }, []);
 
     useEffect(() => {
         getChats();
-    }, [periodId]);
+    }, []);
 
     const sendMessage = () => {
-        if (stompClient && stompClient.connected) {
+        if (stompClient && stompClient.connected && inputMessage.length > 0) {
             stompClient.publish({
                 destination: `/app/chat.period.${periodId}`,
                 body: JSON.stringify({ content: inputMessage }),
             });
-            getChats();
             setInputMessage('');
+            // getChats();
         } else {
             console.error('WebSocket is not connected');
         }
@@ -97,17 +104,20 @@ const Chat = () => {
     return (
         <div>
             <h1>{authData.periodId} 전체 채팅</h1>
-            <div
-                className={styles.chatList_wrapper}
-                ref={messagesContainerRef}
-            >
+            <div className={styles.chatList_wrapper} ref={messagesContainerRef}>
                 {messages.map((msg, index) => (
                     <div
                         key={index}
-                        className={`${styles.chatMessage} ${msg.sender === authData.username ? styles.sender : styles.receiver}`}
+                        className={`${styles.chatMessage} ${
+                            msg.sender === authData.username ? styles.sender : styles.receiver
+                        }`}
                     >
                         <div className={styles.messageHeader}>{msg.sender}</div>
-                        <div className={`${styles.chatBubble} ${msg.sender === authData.username ? styles.sender : styles.receiver}`}>
+                        <div
+                            className={`${styles.chatBubble} ${
+                                msg.sender === authData.username ? styles.sender : styles.receiver
+                            }`}
+                        >
                             {msg.content}
                         </div>
                     </div>
