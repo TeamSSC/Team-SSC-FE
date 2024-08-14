@@ -13,8 +13,8 @@ const Chat = () => {
     const token = localStorage.getItem('accessToken');
     const { periodId } = useParams();
     const authData = useAuthStore();
-    const messagesEndRef = useRef(null);
     const messagesContainerRef = useRef(null);
+    const [initialLoad, setInitialLoad] = useState(true); // 초기 로드 상태를 관리
 
     // 메시지 리스트를 끝으로 스크롤
     const scrollToBottom = (smooth = false) => {
@@ -25,14 +25,19 @@ const Chat = () => {
             });
         }
     };
+
     // 초기 메시지를 로드하는 함수
-    const getChats = useCallback(async () => {
+    const getChats = useCallback(async (shouldScroll = false) => {
         try {
             const response = await axios.get(`${baseUrl}/api/messages/period/${periodId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            setMessages(response.data); // 초기 메시지를 받아오기
-            scrollToBottom(); // 메시지를 로드한 후 스크롤을 하단으로 이동
+            setMessages(response.data);
+
+            // 초기 로드 시에만 스크롤을 맨 아래로 이동
+            if (shouldScroll) {
+                scrollToBottom();
+            }
         } catch (err) {
             console.error(err);
         }
@@ -57,23 +62,12 @@ const Chat = () => {
             console.log('WebSocket connection opened.');
             const subscriptionDestination = `/topic/chat.period.${periodId}`;
 
-            console.log(`Subscribing to ${subscriptionDestination}`);
-
             stomp.subscribe(subscriptionDestination, (frame) => {
-                console.log('Message received:', frame.body);
                 try {
                     const parsedMessage = JSON.parse(frame.body);
-                    console.log('Parsed Message:', parsedMessage);
-
-                    // 실시간으로 수신한 메시지를 상태에 추가
                     setMessages((prevMessages) => {
-                        const updatedMessages = [...prevMessages, parsedMessage];
-                        console.log('Updated Messages:', updatedMessages);
-                        return updatedMessages;
+                        return [...prevMessages, parsedMessage];
                     });
-
-                    // 메시지를 수신한 후 스크롤을 하단으로 이동
-                    scrollToBottom();
                 } catch (error) {
                     console.error('Message parsing error:', error);
                 }
@@ -87,16 +81,19 @@ const Chat = () => {
         stomp.activate();
         setStompClient(stomp);
 
+        // 초기 메시지 로드 시 스크롤을 맨 아래로 이동
+        getChats(true);
+
+        // 1초마다 메시지를 가져오지만 스크롤은 움직이지 않도록 설정
         const intervalId = setInterval(() => {
-            getChats(); // 1초마다 getChats 함수 호출
-            scrollToBottom();
-        }, 500);
+            getChats(false); // 이후 주기적 호출 시에는 스크롤을 건드리지 않음
+        }, 1000);
 
         return () => {
             if (stomp) {
                 stomp.deactivate();
             }
-            clearInterval(intervalId); // 컴포넌트 언마운트 시 인터벌 정리
+            clearInterval(intervalId);
         };
     }, [periodId, token, getChats]);
 
@@ -108,21 +105,17 @@ const Chat = () => {
                 destination: `/app/chat.period.${periodId}`,
                 body: JSON.stringify({ content: messageContent }),
             });
-            console.log('Message sent:', messageContent);
 
-            // 메시지를 보낸 후 상태 업데이트
             setMessages((prevMessages) => {
                 const newMessage = {
                     sender: authData.username,
                     content: messageContent,
                 };
-                const updatedMessages = [...prevMessages, newMessage];
-                console.log('Updated Messages after send:', updatedMessages);
-                return updatedMessages;
+                setTimeout(() => scrollToBottom(true), 0); // 메시지 보낸 후 스크롤
+                return [...prevMessages, newMessage];
             });
 
             setInputMessage(''); // 메시지를 보낸 후 입력 필드를 초기화
-            setTimeout(scrollToBottom, 0);
         } else {
             console.error('WebSocket is not connected');
         }
@@ -153,7 +146,6 @@ const Chat = () => {
                         </div>
                     </div>
                 ))}
-                <div ref={messagesEndRef} />
             </div>
             <form
                 onSubmit={(e) => {
@@ -174,4 +166,5 @@ const Chat = () => {
         </div>
     );
 };
+
 export default Chat;
