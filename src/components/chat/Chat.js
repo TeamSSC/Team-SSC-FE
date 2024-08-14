@@ -18,8 +18,8 @@ const Chat = () => {
 
     // 메시지 리스트를 끝으로 스크롤
     const scrollToBottom = () => {
-        if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        if (messagesContainerRef.current) {
+            messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
         }
     };
 
@@ -167,5 +167,4 @@ const Chat = () => {
         </div>
     );
 };
-
 export default Chat;
