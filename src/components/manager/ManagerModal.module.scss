@@ -8,6 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000; /* 채팅창보다 높은 z-index */
 }
 
 .modalContent {
