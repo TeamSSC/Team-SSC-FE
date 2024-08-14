@@ -6,6 +6,7 @@ import Modal from '../components/modal/Modal';
 import CreateTrack from '../components/admin/CreateTrack';
 import UpdateTrack from '../components/admin/UpdateTrack';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from "../axiosInstance";
 
 const customModalStyles = {
     content: {
@@ -37,7 +38,7 @@ const Track = () => {
 
     const getTrackListHook = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/tracks`, {
+            const response = await axiosInstance.get(`${baseUrl}/api/tracks`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -53,7 +54,7 @@ const Track = () => {
         const confirmed = window.confirm('정말로 삭제하시겠습니까?');
         if (confirmed) {
             try {
-                await axios.delete(`${baseUrl}/api/tracks/${id}`, {
+                await axiosInstance.delete(`${baseUrl}/api/tracks/${id}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 // 삭제 후 트랙 리스트를 갱신합니다.

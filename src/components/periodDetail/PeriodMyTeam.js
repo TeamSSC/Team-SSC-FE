@@ -3,6 +3,7 @@ import { baseUrl } from '../../config';
 import { useEffect, useState } from 'react';
 import PeriodMyTeamDetail from './PeriodMyTeamDetail';
 import styles from './PeriodMyTeam.module.scss';
+import axiosInstance from "../../axiosInstance";
 
 const PeriodMyTeam = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -18,7 +19,7 @@ const PeriodMyTeam = () => {
 
     const getMyTeam = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/teams/myteam`, {
+            const response = await axiosInstance.get(`${baseUrl}/api/teams/myteam`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setTeamList(response.data.data);

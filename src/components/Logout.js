@@ -2,6 +2,7 @@ import axios from 'axios';
 import useAuthStore from '../stores/useAuthStore';
 import { baseUrl } from '../config';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from "../axiosInstance";
 
 const Logout = () => {
     const { setIsLoggedIn } = useAuthStore((state) => state);
@@ -13,7 +14,7 @@ const Logout = () => {
     const navigate = useNavigate();
     const logout = async () => {
         try {
-            const response = await axios.post(
+            const response = await axiosInstance.post(
                 `${baseUrl}/api/users/logout`,
                 {},
                 { headers: { Authorization: `Bearer ${token}` } }

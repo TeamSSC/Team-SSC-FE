@@ -3,6 +3,7 @@ import axios from 'axios';
 import styles from './Comment.module.scss';
 import CommentEditModal from './CommentEditModal';
 import { baseUrl } from '../../config';
+import axiosInstance from "../../axiosInstance";
 
 const Comment = ({
     comment,
@@ -43,7 +44,7 @@ const Comment = ({
         if (window.confirm('정말로 삭제하시겠습니까?')) {
             try {
                 const token = localStorage.getItem('accessToken');
-                await axios.delete(`${baseUrl}/api/comments/${id}`, {
+                await axiosInstance.delete(`${baseUrl}/api/comments/${id}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },

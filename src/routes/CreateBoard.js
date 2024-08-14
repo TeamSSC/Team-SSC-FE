@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from './CreateBoard.module.scss';
 import { baseUrl } from '../config';
+import axiosInstance from "../axiosInstance";
 
 const API_CREATE_BOARD_URL = `${baseUrl}/api/boards`;
 
@@ -30,7 +31,7 @@ const CreateBoard = () => {
         });
 
         try {
-            await axios.post(API_CREATE_BOARD_URL, formData, {
+            await axiosInstance.post(API_CREATE_BOARD_URL, formData, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'multipart/form-data',

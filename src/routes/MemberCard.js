@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigate 훅을 import 합니다.
 import styles from './MemberCard.module.scss'; // 스타일 시트 import
 import { baseUrl } from '../config';
+import axiosInstance from "../axiosInstance";
 
 const MemberCard = () => {
     const [managers, setManagers] = useState([]); // 초기값을 빈 배열로 설정
@@ -24,7 +25,7 @@ const MemberCard = () => {
             const token = localStorage.getItem('accessToken'); // 액세스 토큰 가져오기
 
             // 데이터 가져오기
-            const response = await axios.get(`${baseUrl}/api/users/profiles`, {
+            const response = await axiosInstance.get(`${baseUrl}/api/users/profiles`, {
                 params: {
                     page: currentPage, // 페이지 번호는 0부터 시작
                     role: selectedRole,

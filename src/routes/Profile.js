@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useAuthStore from '../stores/useAuthStore';
 import Modal from '../components/profile/ProfileModal';
 import { baseUrl } from '../config';
+import axiosInstance from "../axiosInstance";
 
 const Profile = () => {
     const [profile, setProfile] = useState({
@@ -35,7 +36,7 @@ const Profile = () => {
 
     const fetchProfile = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/users/${userId}/profile`);
+            const response = await axiosInstance.get(`${baseUrl}/api/users/${userId}/profile`);
             const data = response.data.data;
             setProfile(data);
             setGitLink(data.gitLink);

@@ -6,6 +6,7 @@ import useAuthStore from '../../stores/useAuthStore';
 import axios from 'axios';
 import { baseUrl } from '../../config';
 import styles from './Chat.module.scss';
+import axiosInstance from "../../axiosInstance";
 
 const Chat = () => {
     const [inputMessage, setInputMessage] = useState('');
@@ -74,7 +75,7 @@ const Chat = () => {
 
     const getChats = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/messages/period/${periodId}`, {
+            const response = await axiosInstance.get(`${baseUrl}/api/messages/period/${periodId}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             // console.log(response.data);

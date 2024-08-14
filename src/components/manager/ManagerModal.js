@@ -4,6 +4,7 @@ import styles from './ManagerModal.module.scss';
 import Pagination from '../pagination/Pagination';
 import useAuthStore from '../../stores/useAuthStore';
 import { baseUrl } from '../../config';
+import axiosInstance from "../../axiosInstance";
 
 const ManagerModal = ({ onClose }) => {
     const authData = useAuthStore();
@@ -22,7 +23,7 @@ const ManagerModal = ({ onClose }) => {
     useEffect(() => {
         const fetchPendingUsers = async () => {
             try {
-                const response = await axios.get(`${baseUrl}/api/users/signup/pend`, {
+                const response = await axiosInstance.get(`${baseUrl}/api/users/signup/pend`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                     },
@@ -47,7 +48,7 @@ const ManagerModal = ({ onClose }) => {
     }, []);
     const fetchWeeks = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/weekProgress/myweekProgress`, {
+            const response = await axiosInstance.get(`${baseUrl}/api/weekProgress/myweekProgress`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
@@ -84,7 +85,7 @@ const ManagerModal = ({ onClose }) => {
             try {
                 const token = localStorage.getItem('accessToken');
                 if (token) {
-                    await axios.get(`${baseUrl}/api/users/signup/pend`, {
+                    await axiosInstance.get(`${baseUrl}/api/users/signup/pend`, {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
@@ -120,7 +121,7 @@ const ManagerModal = ({ onClose }) => {
                 try {
                     for (let i = 0; i < selectedUserIds.length; i++) {
                         const userId = selectedUserIds[i];
-                        await axios.patch(
+                        await axiosInstance.patch(
                             `${baseUrl}/api/users/${action}/${userId}`,
                             {},
                             {
@@ -157,7 +158,7 @@ const ManagerModal = ({ onClose }) => {
         const token = localStorage.getItem('accessToken');
         if (token) {
             try {
-                await axios.post(
+                await axiosInstance.post(
                     `${baseUrl}/api/weekProgress`,
                     {
                         name: newPeriodName,
@@ -194,7 +195,7 @@ const ManagerModal = ({ onClose }) => {
         const token = localStorage.getItem('accessToken');
         if (token) {
             try {
-                await axios.patch(
+                await axiosInstance.patch(
                     `${baseUrl}/api/weekProgress/${selectedPeriod}`,
                     {
                         status: selectedStatus,

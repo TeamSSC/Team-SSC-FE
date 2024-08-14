@@ -7,6 +7,7 @@ import Pagination from '../components/pagination/Pagination';
 import styles from './Board.module.scss';
 import useAuthStore from '../stores/useAuthStore';
 import { baseUrl } from '../config';
+import axiosInstance from "../axiosInstance";
 
 const API_URL = `${baseUrl}/api/boards`;
 
@@ -21,7 +22,7 @@ const Board = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await axios.get(API_URL, {
+                const response = await axiosInstance.get(API_URL, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                     },

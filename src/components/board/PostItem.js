@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import styles from './PostItem.module.scss';
 import { baseUrl } from '../../config';
+import axiosInstance from "../../axiosInstance";
 
 const PostItem = ({ post }) => {
     const [likeCount, setLikeCount] = useState(0);
@@ -12,7 +13,7 @@ const PostItem = ({ post }) => {
     useEffect(() => {
         const fetchLikeCount = async () => {
             try {
-                const response = await axios.get(API_LIKE_URL, {
+                const response = await axiosInstance.get(API_LIKE_URL, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                     },

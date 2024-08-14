@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styles from '../admin/CreateTrack.module.scss';
 import { baseUrl } from '../../config';
 import axios from 'axios';
+import axiosInstance from "../../axiosInstance";
 
 const CreatePeriod = ({ closeModal, trackId, getTrackPeriods }) => {
     const [period, setPeriod] = useState(0);
@@ -11,7 +12,7 @@ const CreatePeriod = ({ closeModal, trackId, getTrackPeriods }) => {
 
     const createPeriod = async () => {
         try {
-            const response = await axios.post(
+            const response = await axiosInstance.post(
                 `${baseUrl}/api/periods`,
                 {
                     trackId: trackId,

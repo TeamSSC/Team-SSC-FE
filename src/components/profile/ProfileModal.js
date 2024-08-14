@@ -3,6 +3,7 @@ import axios from 'axios';
 import Select from 'react-select';
 import styles from './ProfileModal.module.scss';
 import { baseUrl } from '../../config';
+import axiosInstance from "../../axiosInstance";
 
 const mbtiOptions = [
     'INTJ',
@@ -37,7 +38,7 @@ const ProfileModal = ({ onClose, gitLink, setGitLink, vlogLink, setVlogLink, int
     // 프로필 내용을 가져와서 상태를 초기화합니다.
     const fetchProfileData = async () => {
         try {
-            const response = await axios.get(`${baseUrl}/api/users/profile`, {
+            const response = await axiosInstance.get(`${baseUrl}/api/users/profile`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
@@ -66,7 +67,7 @@ const ProfileModal = ({ onClose, gitLink, setGitLink, vlogLink, setVlogLink, int
         formData.append('file', selectedFile);
 
         try {
-            await axios.patch(`${baseUrl}/api/users/profile/image/update`, formData, {
+            await axiosInstance.patch(`${baseUrl}/api/users/profile/image/update`, formData, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'multipart/form-data',
@@ -94,7 +95,7 @@ const ProfileModal = ({ onClose, gitLink, setGitLink, vlogLink, setVlogLink, int
     const handleUpdateProfile = async () => {
         // 비어있는 필드를 제외한 데이터만 포함
         try {
-            await axios.patch(
+            await axiosInstance.patch(
                 `${baseUrl}/api/users/profile/update`,
                 { gitLink: gitLink, vlogLink: vlogLink, intro: intro, mbti: updateMbti },
                 {
