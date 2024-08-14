@@ -110,6 +110,7 @@ const Main = () => {
     return (
         <div className={styles.loginForm_wrapper}>
             <h1>로그인 하기</h1>
+            <h1>!!!!! 회원가입은 웬만해선 자바스프링부트 1기로 해주세요 !!!!!</h1>
             <input placeholder="아이디를 입력하세요..." onChange={(e) => setLoginId(e.target.value)} />
             <input
                 placeholder="비밀번호를 입력하세요..."
